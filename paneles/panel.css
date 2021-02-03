@@ -1,0 +1,144 @@
+html,
+body {
+    margin:0;
+    padding:0;
+    height:100%;
+}
+#wrapper {
+    min-height:100%;
+    position:relative;
+	background: #161616;
+}
+#header {
+	height:150px;
+	//background:#ccc;
+}
+#content {
+    padding-bottom:100px; /* Altura del footer */
+}
+#footer {
+    width:100%;
+    height:70px;
+    position:absolute;
+    bottom:0;
+    left:0;
+	background:#161616; 
+}
+#logo{
+	//border: 1px solid;
+	width: 200px;
+	height: 150px;
+	position: absolute;
+	background: #FFF;
+}
+#primero{
+	//border: 1px solid;
+	margin: 0 0 0 200px;
+	height: 95px;	
+}
+#ult_tiempo{
+	margin: -21px 0 0 1250px;
+	position: absolute;
+	width:440px;
+}
+#dor_pista{
+	height: 55px;
+	margin: 0 0 0 200px;
+}
+#tiempo1{
+	//border: 1px solid;
+	width: 800px;
+	margin: 0 auto;
+	margin: 0 465px;
+}
+#tiempo2{
+	
+}
+#reloj{
+	width: 200px;
+	border: 1px solid;
+	height: 68px;
+	position: absolute;
+}
+#manga {
+	position: absolute;
+	border: 1px solid;
+	margin: 0 0 0 200px;
+	width: auto;
+	height: 68px;
+}
+#num_enpista{
+	position: absolute;
+	margin: -21px 0 0 20px;
+}
+.nomargen{
+		margin:0 auto;
+}
+.fuente{
+	font-family: 'Open 24 Display St';
+}
+.t1{
+	font-size: 40px;
+}
+.t2{
+	font-size:42px;
+}
+.todos_tiempos{
+	
+}
+.enpista{
+	float: left;
+	margin: 0 0 0 20px;
+	border: 1px solid;
+	padding: 0 8px 0 7px;
+	border-radius: 5px;
+}
+.t3{
+	font-size:25px;
+}
+.t4{
+	font-size:58px;
+}
+.t5{
+	font-size:100px
+}
+.t6{
+	font-size:75px;
+}
+.t7{
+	font-size:140px;
+	letter-spacing: 6px;
+}
+.centro{
+	text-align:center;
+}
+.negrita{
+	font-weight:bold;
+}
+.logo{
+	margin: 20px 20px;
+}
+@font-face{
+    font-family:'Open 24 Display St';
+    src: local('Open 24 Display St'),url('Open24DisplaySt.ttf') format('truetype');
+}
+.fuente1{
+  font-family: 'Open 24 Display St';
+  font-size:80px;
+}
+.fuente2{
+  font-family: 'Open 24 Display St';
+  font-size:100px;
+}
+.verde{
+	color: #00FF00;
+}
+.rojo{
+	color: #FF0000;
+}
+.amarillo{
+	color: #F7FE2E;
+}
+.blanco{
+	color:#FFFFFF;
+}

@@ -1,0 +1,191 @@
+﻿<SplitTimes TC="04">
+<entry alias="1" carNo="1">
+<hours hour0="2020-02-29 11:34:12.800000+01:00" hour1="2020-02-29 11:35:37.800000+01:00" hour2="2020-02-29 11:36:48.700000+01:00"/>
+</entry>
+<entry alias="2" carNo="2">
+<hours hour0="2020-02-29 11:35:12.800000+01:00" hour1="2020-02-29 11:36:48.300000+01:00" hour2="2020-02-29 11:38:02.700000+01:00"/>
+</entry>
+<entry alias="3" carNo="3">
+<hours hour0="2020-02-29 11:36:14.500000+01:00" hour1="2020-02-29 11:37:49.300000+01:00" hour2="2020-02-29 11:39:03.600000+01:00"/>
+</entry>
+<entry alias="4" carNo="4">
+<hours hour0="2020-02-29 11:37:14+01:00" hour1="2020-02-29 11:38:47.400000+01:00" hour2="2020-02-29 11:40:02.100000+01:00"/>
+</entry>
+<entry alias="5" carNo="5">
+<hours hour0="2020-02-29 11:38:13.600000+01:00" hour1="2020-02-29 11:39:52.400000+01:00" hour2="2020-02-29 11:41:06.300000+01:00"/>
+</entry>
+<entry alias="6" carNo="6">
+<hours hour0="2020-02-29 11:39:12.900000+01:00" hour1="2020-02-29 11:40:46.700000+01:00" hour2="2020-02-29 11:42:00.400000+01:00"/>
+</entry>
+<entry alias="7" carNo="7">
+<hours hour0="2020-02-29 11:41:12.800000+01:00" hour1="2020-02-29 11:42:50.400000+01:00" hour2="2020-02-29 11:44:12.500000+01:00"/>
+</entry>
+<entry alias="8" carNo="8">
+<hours hour0="2020-02-29 11:42:13.700000+01:00" hour1="2020-02-29 11:43:52.400000+01:00" hour2="2020-02-29 11:45:08.400000+01:00"/>
+</entry>
+<entry alias="9" carNo="9">
+<hours hour0="2020-02-29 11:43:12.600000+01:00" hour1="2020-02-29 11:44:44.300000+01:00" hour2="2020-02-29 11:46:04.900000+01:00"/>
+</entry>
+<entry alias="10" carNo="10">
+<hours hour0="2020-02-29 11:44:13.700000+01:00" hour1="2020-02-29 11:45:47.700000+01:00" hour2="2020-02-29 11:47:02.700000+01:00"/>
+</entry>
+<entry alias="11" carNo="11">
+<hours hour0="2020-02-29 11:45:13.900000+01:00" hour1="2020-02-29 11:46:55.500000+01:00" hour2="2020-02-29 11:48:12.200000+01:00"/>
+</entry>
+<entry alias="12" carNo="12">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="14" carNo="14">
+<hours hour0="2020-02-29 11:48:13.600000+01:00" hour1="2020-02-29 11:49:53.500000+01:00" hour2="2020-02-29 11:51:10.300000+01:00"/>
+</entry>
+<entry alias="15" carNo="15">
+<hours hour0="2020-02-29 11:46:14.400000+01:00" hour1="2020-02-29 11:47:55.100000+01:00" hour2="2020-02-29 11:49:12.100000+01:00"/>
+</entry>
+<entry alias="16" carNo="16">
+<hours hour0="2020-02-29 11:47:13.800000+01:00" hour1="2020-02-29 11:48:59.300000+01:00" hour2="2020-02-29 11:50:18.200000+01:00"/>
+</entry>
+<entry alias="17" carNo="17">
+<hours hour0="2020-02-29 11:49:14+01:00" hour1="2020-02-29 11:50:57.500000+01:00" hour2="2020-02-29 11:52:16.500000+01:00"/>
+</entry>
+<entry alias="18" carNo="18">
+<hours hour0="2020-02-29 11:50:15.700000+01:00" hour1="2020-02-29 11:52:12.300000+01:00" hour2="2020-02-29 11:53:38.600000+01:00"/>
+</entry>
+<entry alias="19" carNo="19">
+<hours hour0="2020-02-29 11:51:14.200000+01:00" hour1="2020-02-29 11:53:04.300000+01:00" hour2="2020-02-29 11:54:24.400000+01:00"/>
+</entry>
+<entry alias="20" carNo="20">
+<hours hour0="2020-02-29 11:52:13.500000+01:00" hour1="2020-02-29 11:53:52.300000+01:00" hour2="2020-02-29 11:55:10.800000+01:00"/>
+</entry>
+<entry alias="21" carNo="21">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="22" carNo="22">
+<hours hour0="2020-02-29 11:53:13.400000+01:00" hour1="2020-02-29 11:54:51.700000+01:00" hour2="2020-02-29 11:56:09.500000+01:00"/>
+</entry>
+<entry alias="23" carNo="23">
+<hours hour0="2020-02-29 11:54:15.400000+01:00" hour1="2020-02-29 11:56:19.500000+01:00" hour2="2020-02-29 11:57:46.600000+01:00"/>
+</entry>
+<entry alias="24" carNo="24">
+<hours hour0="2020-02-29 11:55:14+01:00" hour1="2020-02-29 11:56:53.600000+01:00" hour2="2020-02-29 11:58:13.600000+01:00"/>
+</entry>
+<entry alias="25" carNo="25">
+<hours hour0="2020-02-29 11:56:12.700000+01:00" hour1="2020-02-29 11:57:58.600000+01:00" hour2="2020-02-29 11:59:17.700000+01:00"/>
+</entry>
+<entry alias="26" carNo="26">
+<hours hour0="2020-02-29 11:57:15.200000+01:00" hour1="2020-02-29 11:59:07.700000+01:00" hour2="2020-02-29 12:00:33.200000+01:00"/>
+</entry>
+<entry alias="27" carNo="27">
+<hours hour0="2020-02-29 11:58:14.800000+01:00" hour1="2020-02-29 12:00:01.600000+01:00" hour2="2020-02-29 12:01:23.900000+01:00"/>
+</entry>
+<entry alias="28" carNo="28">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="29" carNo="29">
+<hours hour0="2020-02-29 11:59:14.500000+01:00" hour1="2020-02-29 12:01:02.400000+01:00" hour2="2020-02-29 12:02:24.200000+01:00"/>
+</entry>
+<entry alias="30" carNo="30">
+<hours hour0="2020-02-29 12:00:14.400000+01:00" hour1="2020-02-29 12:02:05.400000+01:00" hour2="2020-02-29 12:03:27.500000+01:00"/>
+</entry>
+<entry alias="31" carNo="31">
+<hours hour0="2020-02-29 12:01:16.200000+01:00" hour1="2020-02-29 12:03:25.400000+01:00" hour2="2020-02-29 12:04:59.400000+01:00"/>
+</entry>
+<entry alias="50" carNo="50">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="51" carNo="51">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="52" carNo="52">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="53" carNo="53">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="54" carNo="54">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="55" carNo="55">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="70" carNo="70">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="71" carNo="71">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="72" carNo="72">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="73" carNo="73">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="74" carNo="74">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="75" carNo="75">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="76" carNo="76">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="77" carNo="77">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="78" carNo="78">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="79" carNo="79">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="80" carNo="80">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="81" carNo="81">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="ESC" carNo="801">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="0" carNo="802">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="D0" carNo="803">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="T0" carNo="804">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="R1" carNo="805">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="R2" carNo="806">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="S1" carNo="807">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="S2" carNo="808">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="FAA" carNo="809">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="reserva1" carNo="901">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="reserva2" carNo="902">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="reserva3" carNo="903">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="reserva4" carNo="904">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="reserva5" carNo="905">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+<entry alias="reserva6" carNo="906">
+<hours hour0="***" hour1="***" hour2="***"/>
+</entry>
+</SplitTimes>

@@ -1,0 +1,160 @@
+<?php
+	session_start();
+	include("valida2.php");
+	include('conexion.php');
+	$pass = $_SESSION['pass'];
+	//echo $pass;
+		$sql = mysql_query("SELECT id_prueba FROM direccion WHERE pass='$pass'");
+			if(mysql_num_rows($sql)>0)
+			{
+				while($fila = mysql_fetch_array($sql))
+				{
+				$prueba = $fila['id_prueba'];	
+				}
+			}
+	$dbQuery = "SELECT titulo FROM carreras WHERE idcarreras = '$prueba' AND (desactivada = '0' OR desactivada IS NULL) ORDER BY fecha DESC";
+		$resultado = mysql_query($dbQuery);
+		if (mysql_num_rows($resultado) != 0){
+			$tituloJS = @mysql_result($resultado, 0, "titulo");
+		}
+	$idCarrera = $prueba;
+	//$idManga = 560;
+	//echo "<br>".$prueba."<br>";
+	//lo primero es hacer la pedazo de consulta
+	include_once("funcionesTiempos.php");//Para algunas funciones que hacen falta para los tiempos online
+	include_once("nombresTildes.php");//Para formatear los nombres, especialmente los de las pruebas creadas por el programa
+/*	
+	if(isset($_GET['copa']))
+		$micopa = $_GET['copa'];
+	else
+		$micopa = 0;
+		
+	if(isset($_GET['manga']))
+		$mimanga = $_GET['manga'];
+	else
+		$mimanga = 0;
+	echo $micopa."<br>".$mimanga;
+	
+	*/
+	?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="Cronometradores y Oficiales de Automovilismo" />
+<title>C.O.D.A.  .:: Direcci&oacute;n de Carrera ::.</title>
+<meta name="description" content="Cronometradores y Oficiales de Automovilismo" />
+<meta name="keywords" content="Rally, Rallies, Cronometradores, Automovilismo, automovilista, carreras, carrera, tiempos online, tiempos on-line, tiempos en directo, coches, automoviles, rally, rallies, cronometradores, automovilismo" />
+<link type="text/css" href="direccion.css" rel="stylesheet">
+<link rel="shortcut icon" href="../normal/paginas/favicon.ico" />
+		<script type="text/javascript" src=" https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+</head>
+<body>
+<p><a href="cerrar.php">CERRAR SESION</a></p>
+<div id="todo">
+	<div id="titulo">
+        <?php
+		echo "DIRECCI&Oacute;N DE CARRERA: ".$tituloJS;
+		echo "</div><div id='menu'>Copas: <ul>";
+		if (!isset($_GET['copa']) || $_GET['copa']=='')
+			echo "<li class='marcada'><a href='direccion.php?manga=".$_GET['manga']."'>TODAS</a></li>";
+		else
+			echo "<li class='estilo1'><a href='direccion.php?manga=".$_GET['manga']."'>TODAS</a></li>";
+		/*ESTO AHORA MISMO MUESTRA LAS COPAS*/
+		$cons = mysql_query("SELECT * FROM copas WHERE idcarreras='$prueba'");
+		if(mysql_num_rows($cons)>0)
+			{
+				while($fila = mysql_fetch_array($cons))
+				{
+				$copa = $fila['descripcion'];	
+				$idcopas = $fila['idcopas'];
+				if(isset($_GET['manga']))
+					{
+					if ($idcopas == $_GET['copa'])
+						echo "<li class='marcada'><a href='direccion.php?copa=".$idcopas."&manga=".$_GET['manga']."'>".$copa."</a></li>";
+					else
+						echo "<li class='estilo1'><a href='direccion.php?copa=".$idcopas."&manga=".$_GET['manga']."'>".$copa."</a></li>";
+					}
+				else
+					if ($idcopas == $_GET['copa'])
+						echo "<li class='marcada'><a href='direccion.php?copa=".$idcopas."'>".$copa."</a></li>";
+					else
+						echo "<li class='estilo1'><a href='direccion.php?copa=".$idcopas."'>".$copa."</a></li>";
+				}
+			}
+		echo "</ul></div><div id='menu2'>Mangas:<ul>";
+		$query_copas = "select idmangas, descripcion, orden, longitud from mangas where idcarreras = $idCarrera order by orden asc";
+        $resultado = mysql_query($query_copas) or print 'No se puede acceder a las copas';
+        if (mysql_num_rows($resultado) != 0)
+        {
+            while($fila=mysql_fetch_array($resultado)){
+                $idmanga = $fila["idmangas"];
+                $descripcion = $fila["descripcion"];
+                $longitud = $fila["longitud"];
+                $orden = $fila["orden"];
+				if(isset($_GET['manga']) && $_GET['manga']==$idmanga)
+					echo "<li class='marcada'><a href='direccion.php?manga=".$idmanga."'>".$descripcion."</a></li>";
+				else
+					echo "<li class='estilo1'><a href='direccion.php?manga=".$idmanga."'>".$descripcion."</a></li>";
+                //echo "<option value=\"$idmanga\">$descripcion</option>";
+	
+            }
+        }
+		echo "</ul></div>";
+	if(isset($_GET['manga']))
+		{
+		//echo "he recibido".$_GET['manga'];
+		$mimanga = $_GET['manga'];
+			if(isset($_GET['copa']))
+			{
+			//echo "<br>este es el if";
+			$micopa = $_GET['copa'];
+			$sql2 =mysql_query("SELECT ci.idinscritos, i.dorsal, i.piloto, i.copiloto, i.concursante, i.vehiculo, i.clase, 
+			i.cilindrada, t1.tiempo_salida, t1.tiempo_llegada, t1.tiempo_total FROM tiempos t1 JOIN inscritos i 
+			ON  i.idinscritos = t1.idinscritos INNER JOIN copas_inscritos as ci ON t1.idinscritos = ci.idinscritos
+			WHERE t1.idmangas = '$mimanga' AND t1.idcarreras = '$prueba' AND i.autorizado = 1 AND i.excluido = 0 AND ci.idcopas='$micopa'
+			ORDER BY t1.tiempo_salida ASC");
+			}
+			else
+			{
+			//echo "este es el else";
+			$sql2 =mysql_query("SELECT i.dorsal, i.piloto, i.copiloto, i.concursante, i.vehiculo, i.clase, i.cilindrada, t1.tiempo_salida, t1.tiempo_llegada, t1.tiempo_total FROM tiempos t1 JOIN inscritos i ON  i.idinscritos = t1.idinscritos WHERE t1.idmangas = '$mimanga' AND t1.idcarreras = 164 AND i.autorizado = 1 AND i.excluido = 0
+			ORDER BY t1.tiempo_salida ASC");
+			}
+		}
+	else{
+		echo "<p class='titulos2'>SELECCIONE MANGA</p>";
+		/*$sql2 =mysql_query("SELECT i.dorsal, i.piloto, i.copiloto, i.concursante, i.vehiculo, i.clase, i.cilindrada, t1.tiempo_salida, t1.tiempo_llegada, t1.tiempo_total FROM tiempos t1 JOIN inscritos i ON  i.idinscritos = t1.idinscritos WHERE t1.idcarreras = $idcarreras AND i.autorizado = 1 AND i.excluido = 0
+ORDER BY t1.tiempo_salida ASC");*/
+		}	
+echo "<br>";		
+
+if(mysql_num_rows($sql2)>0)
+			{
+				while($fila = mysql_fetch_array($sql2))
+				{
+				$dorsal = $fila['dorsal'];
+				$t_sal = FormatearTiempo($fila['tiempo_salida']);
+				$t_lle = FormatearTiempo($fila['tiempo_llegada']);
+				$t_total = FormatearTiempo($fila['tiempo_total']);
+				if($fila['tiempo_llegada'] == 0 && $fila['tiempo_salida'] == 0)
+					{
+					echo '<div  class="seg_1 cubo">';
+				}else {
+					echo '<div  class="seg_2 cubo">';
+					}
+				echo "<div class='dorsal'>" .$dorsal." </div>";
+				echo "<div class='fuente1'><span class='negrita'> SALIDA: </span>".$t_sal."</div>";
+        echo "<div class='fuente1'><span class='negrita'>LLEGADA: </span>".$t_lle."</div>";
+        echo "<div class='fuente2'>TOTAL: <span class='rojo'>".$t_total."</span></div>";
+        
+        echo "</div>";
+    
+				//echo $dorsal."---".$t_sal."-----".$t_lle."------".$t_total."<br>";
+				}
+			}
+?>
+</div>	
+</body>
+</html>
+

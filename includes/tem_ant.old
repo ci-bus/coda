@@ -1,0 +1,153 @@
+<?php
+error_reporting(5);
+include("conexion.php");
+if(isset($_GET["temporada"])){
+	$temporada = $_GET["temporada"];
+if(is_numeric($temporada)){
+?>
+  
+<?php
+//$anoActual = date("Y");
+$query =  mysql_query("SELECT * FROM carreras WHERE (desactivada = '0' OR desactivada IS NULL) AND temporada = '".$temporada."'");
+					$num_total_registros = mysql_num_rows($query);
+					 if ($num_total_registros > 0){
+							$registros = 20;
+							$pageNum = 1;
+								if(isset($_GET['page'])){
+								//sleep(1);
+								$pageNum = $_GET['page'];
+								}
+							
+			$offset = ($pageNum - 1) * $registros;
+			$total_paginas = ceil($num_total_registros / $registros);
+			}
+$dbQuery = "SELECT idcarreras, descripcion, fecha_larga, organizador, fecha, idWeb, titulo, poblacion FROM carreras WHERE (desactivada = '0' OR desactivada IS NULL) AND temporada = '".$temporada."' ORDER BY fecha DESC LIMIT $offset, $registros";
+$resultado = mysql_query($dbQuery) or print "No se pudo acceder al contenido de las pruebas online.";
+?>
+<br>
+<div id="listados">
+<?php
+	if(!isset($_GET['lang']) || $_GET['lang']==0 || $_GET['lang']=='0')
+		echo "<p class='titulo'>EVENTOS ARCHIVADOS DE LA TEMPORADA $temporada</p>";
+	else
+		echo "<p class='titulo'>$temporada SEASSON ARCHIVED EVENTS</p>";	
+	
+	echo "<br><table border='0' width='100%' id='tab_tem'><thead>";
+	if(!isset($_GET['lang']) || $_GET['lang']==0 || $_GET['lang']=='0')
+		echo "<tr><th>Fecha</th><th>Poblaci&oacute;n</th><th width='40%'>Evento</th><th>Organizador</th></thead>";
+	else
+		echo "<tr><th>Date</th><th>Location</th><th width='40%'>Event</th><th>Organizer</th></thead>";
+    echo "<tbody>";
+if (mysql_num_rows($resultado) == 0)
+	if(!isset($_GET['lang']) || $_GET['lang']==0 || $_GET['lang']=='0')
+		echo "<tr><td colspan='6'>No hay pruebas online disponibles.</td></tr>";
+	else
+		echo "<tr><td colspan='6'>Trials not Avaliable yet.</td></tr>";
+else{
+//include("nombresTildes.php");//Para formatear los nombres, especialmente los de las pruebas creadas por el programa
+$par = 1;//Variable para saber si se trata de una fila par o impar
+$classcss="filaimpar";
+while($fila=mysql_fetch_array($resultado)){
+	$idCarrera = $fila["idcarreras"];
+	$descripcion = $fila["descripcion"];
+	$fecha_larga = $fila["fecha_larga"];
+	$organizador = $fila["organizador"];
+	$fecha = $fila["fecha"];
+	if($idCarrera!=0 || $idCarrera!='0'){// Si está creada desde el programa
+		$organizador = utf8_encode(strtoupper($organizador));
+	}
+	$idWeb = $fila["idWeb"];
+	$titulo = $fila["titulo"];
+	$poblacion = $fila["poblacion"];
+	//Se supone que está actica según la consulta SQL
+	//if($fila["desactivada"] == 0){//Si la prueba está activa
+	if($par%2==0){//La fila es par
+		$classcss="filapar";
+	}
+	else {
+		$classcss="filaimpar";
+	}	
+	if($idCarrera==0 || $idCarrera=='0' || $idCarrera==NULL || $idCarrera==''){//Prueba creada a través de la WEB
+		if(!isset($_GET['lang']) || $_GET['lang']==0 || $_GET['lang']=='0')
+			echo "<tr class='".$classcss."' onclick=\"location.href='prueba.php?pruebaweb=".$idWeb."&lang=0'\"><td style='font-weight:bold'>".$fecha_larga."</td><td>".$poblacion."</td><td><a href='prueba.php?pruebaweb=".$idWeb."&lang=0' style='font-weight:bold'>".$titulo."</a></td><td align='right'>".$organizador."</td></tr>";
+		else
+			echo "<tr class='".$classcss."' onclick=\"location.href='prueba.php?pruebaweb=".$idWeb."&lang=1'\"><td style='font-weight:bold'>".$fecha_larga."</td><td>".$poblacion."</td><td><a href='prueba.php?pruebaweb=".$idWeb."&lang=1' style='font-weight:bold'>".$titulo."</a></td><td align='right'>".$organizador."</td></tr>";
+	}
+	else {//Prueba creada a través del PROGRAMA
+		if(!isset($_GET['lang']) || $_GET['lang']==0 || $_GET['lang']=='0')
+			echo "<tr class='".$classcss."' onclick=\"location.href='prueba.php?pruebaprograma=".$idCarrera."&lang=0'\"><td style='font-weight:bold'>".$fecha_larga."</td><td>".$poblacion."</td><td><a href='prueba.php?pruebaprograma=".$idCarrera."&lang=0' style='font-weight:bold'>".$titulo."</a></td><td align='right'>".$organizador."</td></tr>";
+		else
+			echo "<tr class='".$classcss."' onclick=\"location.href='prueba.php?pruebaprograma=".$idCarrera."&lang=1'\"><td style='font-weight:bold'>".$fecha_larga."</td><td>".$poblacion."</td><td><a href='prueba.php?pruebaprograma=".$idCarrera."&lang=1' style='font-weight:bold'>".$titulo."</a></td><td align='right'>".$organizador."</td></tr>";
+	}
+	//}
+	$par++;
+}
+//echo "<tr><td class='cizqb'></td><td class='cb'></td><td class='cb'></td><td class='cb'></td><td class='cb'></td><td class='cderb'></td></tr>";
+}
+if ($total_paginas > 1) {
+											echo '<div class="pagination">';
+											echo '<ul>';
+												if ($pageNum != 1)
+													if(!isset($_GET['lang']) || $_GET['lang']==0 || $_GET['lang']=='0')
+														echo '<li><a class="paginate" data="'.($pageNum-1).'">Anterior</a></li>';
+													else
+														echo '<li><a class="paginate" data="'.($pageNum-1).'">Previous</a></li>';
+													for ($i=1;$i<=$total_paginas;$i++) {
+														if ($pageNum == $i)
+																echo '<li class="active"><a>'.$i.'</a></li>';
+														else
+																echo '<li><a class="paginate" data="'.$i.'">'.$i.'</a></li>';
+												}
+												if ($pageNum != $total_paginas)
+													if(!isset($_GET['lang']) || $_GET['lang']==0 || $_GET['lang']=='0')
+														echo '<li><a class="paginate" data="'.($pageNum+1).'">Siguiente</a></li>';
+													else
+														echo '<li><a class="paginate" data="'.($pageNum+1).'">Next</a></li>';
+										   echo '</ul>';
+										   echo '</div><font style="color:#fff;">.....</font>';
+										}
+?>       
+            </tbody>
+            </table>
+        </div></div>
+<?php
+}
+else
+	echo "<h2>No se detect&oacute; ninguna acci&oacute;n valida en la url.</h2>";
+}
+
+else {//Si no recibo nada por GET
+?>
+<br>
+
+<?php
+	if(!isset($_GET['lang']) || $_GET['lang']==0 || $_GET['lang']=='0')
+		echo "<p class='titulo'>TEMPORADAS DISPONIBLES</p>";
+	else
+		echo "<p class='titulo'>AVALIABLE SEASSONS</p>";
+	echo "<br>";
+	$i=0;
+	$anoActual = date("Y");
+	$dbQuery = "SELECT temporada FROM carreras WHERE temporada < '".$anoActual."' GROUP BY temporada ORDER BY temporada DESC";
+	$resultado = mysql_query($dbQuery) or print "No se pudo acceder al contenido de las pruebas en el archivo.";
+	if (mysql_num_rows($resultado) == 0)
+		echo "<h2>No hay temporadas anteriores en el archivo.</h2>";
+	else{
+	echo "<table width='100%'>";
+		while($fila=mysql_fetch_array($resultado)){
+			$temporada = $fila["temporada"];
+			if($i==2){ echo "</tr><tr>";$i=0;}
+			//echo "<a href='archivo.php?temporada=".$temporada."' class='linkG'>Temporada ".$temporada."</a><br>";
+				if(!isset($_GET['lang']) || $_GET['lang']==0 || $_GET['lang']=='0')
+					echo "<td><div class='boton2'><a href='archivo.php?temporada=".$temporada."&lang=0'>Temporada ".$temporada."</div></a></td>";
+				else
+					echo "<td><div class='boton2'><a href='archivo.php?temporada=".$temporada."&lang=1'>".$temporada." Seasson</div></a></td>";
+			$i++;
+		}
+	}
+}
+
+mysql_free_result($resultado);
+mysql_close($conexion);
+?>
+</table>
