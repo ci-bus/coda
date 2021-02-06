@@ -102,10 +102,9 @@ if (isset($_GET["id"])) {
 					</div>
 				</div>
 			</div>
-			<a href="tiempos_new.php?id=<?php echo $idCarrera; ?>" class="primary-btn text-uppercase selected">VOLVER</a>
-			<a href="autorizados_new.php?id=<?php echo $idCarrera; ?>" class="primary-btn text-uppercase">AUTORIZADOS</a>
-			<a href="abandonos_new.php?id=<?php echo $idCarrera; ?>" class="primary-btn text-uppercase">ABANDONOS</a>
-			<a href="penalizaciones_new.php?id=<?php echo $idCarrera; ?>" class="primary-btn text-uppercase">PENALIZACIONES</a>
+			<?php
+				include("menu_pruebas.php");
+			?>
 		</div>
 	</section>
 	<div class="section-top-border">

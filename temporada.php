@@ -99,7 +99,7 @@ $par2=0;
 include_once("includes/dateAfecha.php");//para hacer operaciones con fechas
 include("includes/nombresTildes.php");
 $hoy=date("Y-m-d");
-include("includes/CarreraObject.php");//Clase Carrera, para instanciar objetos de tipo Carrera des la información de la Base de Datos, tablas carreras y grupos.
+//include("includes/CarreraObject.php");//Clase Carrera, para instanciar objetos de tipo Carrera des la información de la Base de Datos, tablas carreras y grupos.
 $anoActual = date("Y");
 $noFilas = false;// Variable que indica si hay filas en las consultas a la Base de Datos
 $CarrerasyGrupos = array();// Array para guardar los objetos Carrera
@@ -125,10 +125,10 @@ if ($resultado->num_rows > 0)
 					$class="filapar";
 				else 
 					$class="filaimpar";
-			echo "<tr class='".$class."' onclick=\"location.href='prueba_new.php?id=".$idCarrera."&newBD=true'\">
+			echo "<tr class='".$class."' onclick=\"location.href='prueba_new.php?id=".$idCarrera."'\">
 			<td>".$fecha_larga."</td>
 			<td>".$poblacion."</td>
-			<td><a href='prueba_new.php?id=".$idCarrera."&newBD=true'>".strtoupper(nombresTildes($nombre))."</a></td>
+			<td><a href='prueba_new.php?id=".$idCarrera."'>".strtoupper(nombresTildes($nombre))."</a></td>
 			<td>".$organizador."</td></tr>";
 		$par2++;
 		}

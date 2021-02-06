@@ -2349,6 +2349,26 @@ body.mobile-nav-active #mobile-nav-toggle {
     position: relative;
 }
 
+.primary-btn2 {
+    background-color: #b68834;
+    line-height: 36px;
+    padding-left: 30px;
+    padding-right: 60px;
+    border-radius: 15px;
+    border: none;
+    color: #fff;
+    display: inline-block;
+    font-weight: 500;
+    position: relative;
+    -webkit-transition: all 0.3s ease 0s;
+    -moz-transition: all 0.3s ease 0s;
+    -o-transition: all 0.3s ease 0s;
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    text-transform: uppercase;
+    position: relative;
+}
+
 .primary-btn:focus {
     outline: none;
 }
@@ -2516,7 +2536,19 @@ body.mobile-nav-active #mobile-nav-toggle {
     box-shadow: 5px 5px 5px #000;
 }
 
-.primary-btn:hover {
+.primary-btn2 {
+    background: #fff;
+    border: 1px solid transparent;
+    color: #222;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 15px;
+    margin: 0 0 8px 0;
+    min-width: 40px;
+    box-shadow: 5px 5px 5px #000;
+}
+
+.primary-btn:hover .primary-btn2:hover {
     border: 1px solid #fff;
     background: transparent;
     color: #fff;
@@ -3116,7 +3148,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .nomargen {
-    margin: -8px auto;
+    margin: -5px auto;
 }
 
 .negrita {
@@ -3145,8 +3177,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .penalizaciones {
-    background-color: #b80000;
-    color: #fff;
+    color: #b80000;
 }
 
 #tab_tem th {

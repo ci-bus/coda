@@ -100,7 +100,7 @@ else
 ?>	
 
 			<!-- start banner Area -->
-			<section class="banner-area prueba_new" id="home" style="background:url('/<?php echo $cabecera;?>');background-size: cover;">	
+			<section class="banner-area prueba_new" id="home" style="background:url('<?php echo $cabecera;?>');background-size: cover;">	
 				<div class="container">
 					<div class="row fullscreen d-flex align-items-center justify-content-start">
 						<div class="banner-content col-lg-7">
@@ -112,8 +112,8 @@ else
 							
 							<?php
 							if($web==0){
-								echo "<a href='tablon_new.php?id=".$idCarrera."&newBD=true' class='primary-btn text-uppercase'>TABL&Oacute;N DE ANUNCIOS</a>";
-								echo "<a href='tiempos_new.php?id=".$idCarrera."&newBD=true' class='primary-btn text-uppercase'>VER TIEMPOS ONLINE</a>";
+								echo "<a href='tablon_new.php?id=".$idCarrera."' class='primary-btn text-uppercase'>TABL&Oacute;N DE ANUNCIOS</a>";
+								echo "<a href='tiempos_new.php?id=".$idCarrera."' class='primary-btn text-uppercase'>VER TIEMPOS ONLINE</a>";
 								}
 							else{
 								echo "<a href='".$ruta_tablon."' class='primary-btn text-uppercase'>TABL&Oacute;N DE ANUNCIOS</a>";

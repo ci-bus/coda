@@ -125,10 +125,11 @@ $enlace_actual = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 					<?php
 					echo "<td>COPAS:</td><td><select name='copas' onchange='surfto2(this.form)'>";
 					//echo "<td>COPAS:</td><td><select name='copas'>";
-					$FiltroCopa = "SELECT c.descripcion,c.id FROM abc_57os_ca_copa c 
-INNER JOIN abc_57os_ca_campeonato ca ON c.id_ca_campeonato = ca.id 
-WHERE ca.id_ca_carrera='$idCarrera'";
-					$copas = $mysqli->query($FiltroCopa);
+					$FiltroCopa = "SELECT c.descripcion,c.id FROM web_copas c 
+INNER JOIN web_campeonatos ca ON c.id = ca.id 
+WHERE ca.idcarrera='$idCarrera'";
+
+					$copas = $mysqli2->query($FiltroCopa);
 					if ($copa == '0') {
 						echo "<option selected='selected'>TODAS</option>";
 					} else {
@@ -146,22 +147,20 @@ WHERE ca.id_ca_carrera='$idCarrera'";
 					}
 
 					echo "<td>MANGAS:</td><td><select name='mangas' onchange='surfto(this.form)'>";
-					$sqlm = "SELECT abc_57os_ca_manga.id AS idman,abc_57os_ca_manga.descripcion AS tramo,
-abc_57os_ca_etapa.descripcion,abc_57os_ca_seccion.descripcion,abc_57os_ca_seccion.id AS idsec,
-abc_57os_ca_etapa.id AS ideta 
-FROM abc_57os_ca_etapa INNER JOIN abc_57os_ca_seccion ON abc_57os_ca_etapa.id=abc_57os_ca_seccion.id_ca_etapa 
-INNER JOIN abc_57os_ca_manga ON abc_57os_ca_manga.id_ca_seccion=abc_57os_ca_seccion.id WHERE abc_57os_ca_manga.tipo!=2 AND abc_57os_ca_etapa.id_ca_carrera = '$idCarrera'";
-					$resultadok = $mysqli->query($sqlm) or print "No se pudo acceder al contenido de los tiempos online.";
+					$sqlm = "SELECT wm.descripcion,wm.id FROM web_manga wm
+					INNER JOIN web_seccion ws ON ws.id = wm.id_ca_seccion 
+					INNER JOIN web_etapa we ON we.id = ws.id_ca_etapa
+					WHERE wm.tipo!=2 AND we.id_ca_carrera = '$idCarrera'";
+					//echo $sqlm;
+					$resultadok = $mysqli2->query($sqlm) or print "No se pudo acceder al contenido de los tiempos online.";
 					if ($resultadok->num_rows > 0) {
 						while ($fila = $resultadok->fetch_array()) {
-							$idManga2 = $fila['idman'];
-							$desc = $fila['tramo'];
-							$ideta = $fila['ideta'];
-							$idsec = $fila['idsec'];
+							$idManga2 = $fila['id'];
+							$desc = $fila['descripcion'];
 							if ($_GET['idmanga'] == $idManga2) {
 								echo '<option selected="selected">' . $desc . '</option>';
 							} else {
-								echo "<option value='manga_new.php?id=" . $idCarrera . "&idetapa=" . $ideta . "&idmanga=" . $idManga2 . "&idseccion=" . $idsec . "&newBD=true&campeonato=" . $_GET['campeonato'] . "&copa=" . $_GET['copa'] . "'>" . $desc . "</option>";
+								echo "<option value='manga_new.php?id=" . $idCarrera . "&idmanga=" . $idManga2 . "&copa=" . $_GET['copa'] . "'>" . $desc . "</option>";
 							}
 						}
 					}
@@ -171,7 +170,7 @@ INNER JOIN abc_57os_ca_manga ON abc_57os_ca_manga.id_ca_seccion=abc_57os_ca_secc
 					if ($tipo_prueba == 2)
 						include("mangas_recarga_subida.php");
 					else
-						include("mangas_recarga_new.php");
+						include("mangas_recarga_new.php");//SUMA MANGAS OFICIALES
 					?>
 	</div>
 	<?php
