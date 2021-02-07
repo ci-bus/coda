@@ -100,13 +100,16 @@ $id = $_GET['id'];
                           Tipo
                         </th>
                         <th class="text-center">
+                          N.Descargas
+                        </th>
+                        <th class="text-center">
                           
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       <?php
-						$sql=$mysqli2->query("SELECT tipo,nombre,ruta,orden,id FROM web_archivos WHERE idcarrera='$id' ORDER BY id, orden");
+						$sql=$mysqli2->query("SELECT descargas,tipo,nombre,ruta,orden,id FROM web_archivos WHERE idcarrera='$id' ORDER BY id, orden");
 							if($sql->num_rows==0)
 								echo "<tr><td colspan='4'>No hay nada en el tablon de anuncios</td></tr>";
 							else
@@ -117,9 +120,10 @@ $id = $_GET['id'];
 									$ruta = $fila['ruta'];	
 									$nombre = $fila['nombre'];	
 									$tipo = $fila['tipo'];	
-									$orden = $fila['orden'];
+                  $orden = $fila['orden'];
+                  $descargas = $fila['descargas'];
 									echo "<tr><td><a href='tablon_editar.php?id_tablon=".$id_tablon."&id=".$id."'>".$nombre."<br>&nbsp;&nbsp;&nbsp;&nbsp;ARCHIVO: ".$ruta."</a></td><td class='text-center'>".$orden."</td>
-									<td class='text-center'>".$tipo."</td><td><a href='tablon_ver.php?id_tablon=".$id_tablon."&id=".$id."&accion=borrar'>BORRAR</a></td></tr>";
+									<td class='text-center'>".$tipo."</td><td class='text-center'>".$descargas."</td><td><a href='tablon_ver.php?id_tablon=".$id_tablon."&id=".$id."&accion=borrar'>BORRAR</a></td></tr>";
 									}
 								}
 					  ?>
