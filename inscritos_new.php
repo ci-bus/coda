@@ -120,7 +120,7 @@ if (isset($_GET["id"])) {
 				<tr>
 					<th>N.</th>
 					<th>Concursante</th>
-					<th>Piloto/Copiloto</th>
+					<th>Equipo</th>
 					<th class="centro" colspan="2">Vehiculo</th>
 					<th class="centro">C.C<br>C.C.Turbo</th>
 					<th>Camp.</th>
@@ -171,7 +171,7 @@ if (isset($_GET["id"])) {
 						$idcompetidor = $fila['idinscrito'];
 						if ($h_salida == '')
 							$h_salida = "---";
-						echo "<tr class='" . $classcss . "'><td class='dor'>" . $dorsal . "</td><td>" . $competidor . "</td>";
+						echo "<tr class='" . $classcss . "'><td class='dor negrita'>" . $dorsal . "</td><td>" . $competidor . "</td>";
 						if ($copiloto == '' || $copiloto == '0')
 							echo "<td>" . $piloto . "</td>";
 						else {
@@ -179,105 +179,7 @@ if (isset($_GET["id"])) {
 							echo '<br><img class="banderas" src="' . $copi_nac1 . '"><img class="banderas" src="' . $copi_nac2 . '">' . $copiloto . '</td>';
 						}
 						echo "<td>".escudo($vehiculo)."</td><td class='centro'>" . $vehiculo . "<br>" . $modelo . "</td><td class='centro'>" . $cc . "<br>" . $cc_turbo . "</td><td></td><td></td><td></td><td></td><td></td></tr>";
-						/* DEJO POR SI HUBIERA Q MODIFICAR ORDENES DE LISTADOS DE MOMENTO NO HACE FALTA
-						$ordenar[] = array(
-							'dorsal' => $dorsal,
-							'idcompetidor' => $idcompetidor,
-							'competidor' => $competidor,
-							'cilin' => $cilin,
-							'cilin_turbo' => $cilin_turbo,
-							'agr' => $agr,
-							'cat' => $cat,
-							'piloto' => $piloto,
-							'copiloto' => $copiloto,
-							'pi_nac1' => $pi_nac1,
-							'pi_nac2' => $pi_nac2,
-							'copi_nac1' => $copi_nac1,
-							'copi_nac2' => $copi_nac2,
-							'con_nac1' => $con_nac1,
-							'con_nac2' => $con_nac2,
-							'vehiculo' => $vehiculo,
-							'modelo' => $modelo,
-							'h_salida' => $h_salida,
-							'grupo' => $grupo
-						);
-					}
-					foreach ($ordenar as $key => $row) {
-						$aux[$key] = $row['dorsal'];
-					}
-					array_multisort($aux, SORT_ASC, $ordenar);
-					$pos = 1;
-					foreach ($ordenar as $key => $row) {
-						$idcompetidor = $row['idcompetidor'];
-						if ($par % 2 == 0)
-							$classcss = "filapar";
-						else
-							$classcss = "filaimpar";
-						echo '<tr class="' . $classcss . '"><td  class="dor">' . $row['dorsal'] . '</td>';
-						if ($no_concusante == 0)
-							echo '<td><img class="banderas" src="http://codea.es/coda2019/' . $row['con_nac1'] . '"><img class="banderas" src="http://codea.es/coda2019/' . $row['con_nac2'] . '">' . $row['competidor'] . '</td>';
-						else
-							echo '<td></td>';
-						if ($row['copiloto'] != '') {
-							if ($copi2 != '' || $copi2 != 0)
-								echo '<td><img class="banderas" src="http://codea.es/coda2019/' . $row['pi_nac1'] . '"><img class="banderas" src="http://codea.es/coda2019/' . $row['pi_nac2'] . '">' . $row['piloto'] . '<br><img class="banderas" src="http://codea.es/coda2019/' . $row['copi_nac1'] . '"><img class="banderas" src="http://codea.es/coda2019/' . $row['copi_nac2'] . '">' . $row['copiloto'] . '<br><img class="banderas" src="http://codea.es/coda2019/' . $row['copi2_nac2'] . '"><img class="banderas" src="http://codea.es/coda2019/' . $row['copi2_nac2'] . '">' . $row['copi2'] . '</td>';
-							else
-								echo '<td><img class="banderas" src="http://codea.es/coda2019/' . $row['pi_nac1'] . '"><img class="banderas" src="http://codea.es/coda2019/' . $row['pi_nac2'] . '">' . $row['piloto'] . '<br><img class="banderas" src="http://codea.es/coda2019/' . $row['copi_nac1'] . '"><img class="banderas" src="http://codea.es/coda2019/' . $row['copi_nac2'] . '">' . $row['copiloto'] . '</td>';
-						} else
-							echo '<td><img class="banderas" src="http://codea.es/coda2019/' . $row['pi_nac1'] . '"><img class="banderas" src="http://codea.es/coda2019/' . $row['pi_nac2'] . '">' . $row['piloto'] . '</td>';
 
-						echo '<td>' . escudo($row['vehiculo']) . '</td><td>' . $row['vehiculo'] . '<br>' . $row['modelo'] . '</td><td class="centro">' . $row['cilin'] . '<br>' . $row['cilin_turbo'] . '</td>';
-						$con_campeonato = "SELECT mo.nombre AS region_campeonato,mo.slug AS slug FROM abc_57os_ca_campeonato_competidor caco
-				INNER JOIN abc_57os_ca_campeonato ca ON caco.id_ca_campeonato = ca.id
-				INNER JOIN abc_57os_ca_modalidad mo ON mo.id=ca.id_ca_modalidad
-				WHERE caco.id_ca_competidor = '$idcompetidor' GROUP BY mo.nombre";
-						$res_con_campeonato = mysql_query($con_campeonato);
-						echo "<td class='centro'>";
-						while ($rows = mysql_fetch_array($res_con_campeonato)) {
-							$slug = $rows['slug'];
-							$region = $rows['region_campeonato'];
-							$search  = array('Ã±', 'Ã­');
-							$replace = array('Ñ', 'Í');
-							$region = str_replace($search, $replace, $region);
-							echo "<p class='mini1 nomargen " . $slug . " negrita'>" . strtoupper($region) . "</p>";
-							//echo "<p class='mini1 nomargen espana negrita'>ESPAÑA</p>";
-							//echo "<p class='mini1 nomargen europa negrita'>EUROPA</p>";
-						}
-						echo "</td><td class='centro'>";
-						$res_con_campeonato = mysql_query($con_campeonato);
-						while ($rows = mysql_fetch_array($res_con_campeonato)) {
-							$slug = $rows['slug'];
-							$con_grupo = mysql_query("SELECT gr.$slug FROM abc_57os_ca_competidor com
-								INNER JOIN abc_57os_ca_vehiculo ve ON ve.id=com.id_ca_vehiculo
-								INNER JOIN abc_57os_ca_grupo gr ON gr.id=ve.id_ca_grupo WHERE com.id='$idcompetidor'");
-							$grupo = @mysql_result($con_grupo, 0, $slug);
-							echo "<p class='mini1 nomargen " . $slug . " negrita'>" . $grupo . "</p>";
-						}
-						echo "</td><td class='centro'>";
-						$res_con_campeonato = mysql_query($con_campeonato);
-						while ($rows = mysql_fetch_array($res_con_campeonato)) {
-							$slug = $rows['slug'];
-							$con_clase = mysql_query("SELECT cl.$slug FROM abc_57os_ca_competidor com
-								INNER JOIN abc_57os_ca_vehiculo ve ON ve.id=com.id_ca_vehiculo
-								INNER JOIN abc_57os_ca_clase cl ON cl.id=ve.id_ca_clase WHERE com.id='$idcompetidor'");
-							$clase = @mysql_result($con_clase, 0, $slug);
-							echo "<p class='mini1 nomargen " . $slug . " negrita'>" . $clase . "</p>";
-							//echo "<p class='mini1 nomargen andalucia negrita'>clase</p>";
-						}
-						echo "</td><td class='centro'>";
-						$res_con_campeonato = mysql_query($con_campeonato);
-						while ($rows = mysql_fetch_array($res_con_campeonato)) {
-							$slug = $rows['slug'];
-							echo "<p class='mini1 nomargen " . $slug . " negrita'>" . $row['cat'] . "</p>";
-						}
-						echo "</td><td>";
-						$res_con_campeonato = mysql_query($con_campeonato);
-						while ($rows = mysql_fetch_array($res_con_campeonato)) {
-							$slug = $rows['slug'];
-							echo "<p class='mini1 nomargen " . $slug . " negrita'>" . $row['agr'] . "</p>";
-						}
-						//echo "<td class='centro'>".$grupo."</td><td class='centro'>".$clase."</td><td class='centro'>".$cat."</td><td class='centro'>".$agr."</td>";
-						echo "</td></tr>";*/
 						$pos++;
 						$par++;
 					}
