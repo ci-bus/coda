@@ -1,7 +1,7 @@
 <?php
 	//include('../includes/conexion.php');
-	include('../includes/online.php');
-	include_once('../includes/scripts_ajax.php');
+	//include('../includes/online.php');
+	//include_once('../includes/scripts_ajax.php');
 	include("conexion.php");
 ?>
 	<!DOCTYPE html>
@@ -53,9 +53,14 @@
 			    <div class="container">
 			    	<div class="row align-items-center justify-content-between d-flex">
 				      <div id="logo">
-				        <a href="index.html"><img src="img/logo.png" alt="" title="" /></a>
+				        <a href="index.php"><img src="img/logo.png" alt="" title="" /></a>
 				      </div>
 				      <nav id="nav-menu-container">
+					  <div class="social">
+							<?php
+								include("social.php");
+							?>
+						</div>
 				        <ul class="nav-menu">
 				          <li><a href="index.php">Inicio</a></li>
 				          <li><a href="temporada.php?newBD=true">Temporada</a></li>
@@ -89,13 +94,12 @@
 								<?php
 	$par=0;
 	$anoActual = date("Y");
-	$dbQuery = "SELECT temporada FROM carreras WHERE temporada < '".$anoActual."' GROUP BY temporada ORDER BY temporada DESC";
-	$resultado = mysql_query($dbQuery) or print "No se pudo acceder al contenido de las pruebas en el archivo.";
-	if (mysql_num_rows($resultado) == 0)
+	$dbQuery = $mysqli2->query("SELECT temporada FROM web_pruebas WHERE temporada < '".$anoActual."' GROUP BY temporada ORDER BY temporada DESC");
+	if ($dbQuery == 0)
 		echo "<h2>No hay temporadas anteriores en el archivo.</h2>";
 	else{
 	//echo "<table width='100%'>";
-		while($fila=mysql_fetch_array($resultado))
+		while($fila = $dbQuery ->fetch_array())
 			{
 			if($par%2==0)
 				$classcss="filapar";
@@ -114,52 +118,9 @@ echo '<a href="anterior.php?anio='.$temporada.'"><tr class='.$classcss.'><td><a 
 
 			<!-- start footer Area -->		
 			<footer class="footer-area section-gap">
-				<div class="container">
-					<div class="row">
-						<div class="col-lg-5 col-md-6 col-sm-6">
-							<div class="single-footer-widget">
-								<h6>Acerca de C.O.D.A</h6>
-								<p>
-									Somos un Club deportivo constituido en 2009 con las diferentes licencias exigidas por la Real Federación Española de Automovilismo y los dispositivos de cronometraje para organizar pruebas de caracter oficial.
-								</p>
-								<p class="footer-text">
-									<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-								</p>								
-							</div>
-						</div>
-						<div class="col-lg-5  col-md-6 col-sm-6">
-							<div class="single-footer-widget" style="display:none">
-								<h6>Newsletter</h6>
-								<p>Mantente informado</p>
-								<div class="" id="mc_embed_signup">
-									<form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get" class="form-inline">
-										<input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '" required="" type="email">
-			                            	<button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
-			                            	<div style="position: absolute; left: -5000px;">
-												<input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="" type="text">
-											</div>
-
-										<div class="info pt-20"></div>
-									</form>
-								</div>
-							</div>
-						</div>						
-						<div class="col-lg-2 col-md-6 col-sm-6 social-widget">
-							<div class="single-footer-widget">
-								<h6>Siguenos</h6>
-								<p>En nuestras redes sociales</p>
-								<div class="footer-social d-flex align-items-center">
-									<a href="#"><i class="fa fa-facebook"></i></a>
-									<a href="#"><i class="fa fa-twitter"></i></a>
-									<a href="#"><i class="fa fa-dribbble"></i></a>
-									<a href="#"><i class="fa fa-behance"></i></a>
-								</div>
-							</div>
-						</div>							
-					</div>
-				</div>
+				<?php
+				include("footer.php");
+				?>
 			</footer>	
 			<!-- End footer Area -->	
 

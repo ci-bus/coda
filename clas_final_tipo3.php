@@ -104,21 +104,67 @@ while ($mifila = $campeonatos_carrera->fetch_array()) {
 	} //IF
 	echo "</table>";
 } //WHILE
+$aban = $mysqli2->query("SELECT wa.motivo,wi.concursante,wi.piloto,wi.copiloto,wi.nac_competidor,wi.nac_piloto,wi.nac_copiloto,wi.dorsal,
+		wi.vehiculo,wi.modelo
+					FROM web_abandonos wa
+					INNER JOIN web_inscritos wi ON wa.idinscrito = wi.idinscrito		
+					WHERE wi.excluido=1 AND wa.idcarrera='$idCarrera' ORDER BY wi.dorsal");
 ?>
 <br>
 <br>
-<p>ABANDONOS</p>
-<table border="0" width="100%" id="tab_tem">
-	<thead>
-		<tr>
-			<th>dorsal</th>
-			<th>Concursante</th>
-			<th>Equipo</th>
-			<th>Vehiculo</th>
-			<th>Control</th>
-			<th>Raz&oacute;n</th>
-		</tr>
-	</thead>
-	<tbody>
-	</tbody>
-</table>
+<p class='negrita centro fu1'>ABANDONOS</p>
+<table width="100%" border="0" id="tab_tem">
+			<thead>
+				<tr>
+					<th>dorsal</th>
+					<th>Concursante</th>
+					<th>Equipo</th>
+					<th class="centro" colspan="2">Vehiculo</th>
+					<th class="centro">MOTIVO</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+				if ($aban->num_rows > 0) {
+					while ($fila = $aban->fetch_array()) {
+						$dorsal = $fila['dorsal'];
+						$motivo = $fila['motivo'];
+						$concursante = $fila['concursante'];
+						$piloto = $fila['piloto'];
+						$copiloto = $fila['copiloto'];
+						$marca = $fila['vehiculo'];
+						$modelo = $fila['modelo'];
+
+						$con_nac = $fila['nac_competidor'];
+						$con_nacs = explode("/", $con_nac);
+						$con_nac1 = bandera($con_nacs[0]);
+						$con_nac2 = bandera($con_nacs[1]);
+
+						$pi_nac = $fila['nac_piloto'];
+						$pi_nacs = explode('/', $pi_nac);
+						$pi_nac1 = bandera($pi_nacs[0]);
+						$pi_nac2 = bandera($pi_nacs[1]);
+
+						$copi_nac = $fila['nac_copiloto'];
+						$copi_nacs = explode('/', $copi_nac);
+						$copi_nac1 = bandera($copi_nacs[0]);
+						$copi_nac2 = bandera($copi_nacs[1]);
+						if ($par % 2 == 0)
+							$classcss = "filapar";
+						else
+							$classcss = "filaimpar";
+						echo "<tr class='" . $classcss . "'><td class='dor negrita'>" . $dorsal . "</td><td class='con'>" . $concursante . "</td>";
+						if ($copiloto == '' || $copiloto == '0')
+							echo "<td>" . $piloto . "</td>";
+						else {
+							echo '<td><img class="banderas" src="' . $pi_nac1 . '"><img class="banderas" src="' . $pi_nac2 . '">' . $piloto;
+							echo '<br><img class="banderas" src="' . $copi_nac1 . '"><img class="banderas" src="' . $copi_nac2 . '">' . $copiloto . '</td>';
+						}
+							echo "<td>".escudo($vehiculo)."</td><td class='centro'>" . $marca . "<br>" . $modelo . "</td><td class='centro'>" . $motivo . "</td></tr>";
+						$par++;
+					}
+				} //IF
+				else
+					echo "<tr><td colspan='7'>No existen Abandonos en esta carrera</td></tr>";
+				?>
+		</table>
