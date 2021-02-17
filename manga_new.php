@@ -70,6 +70,45 @@ $enlace_actual = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	<link rel="stylesheet" href="css/magnific-popup.css">
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<link rel="stylesheet" href="css/main.css">
+	<script type="text/javascript" src=" https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>	
+		<script>
+   var seconds = 5; // el tiempo en que se refresca
+	var divid = "recarga"; 
+	// DATO!---> modificar esta url ya que hay diferentes modos de Carrera, ahora mismo SALVAMOS acumulados//////DATO PARA ACORDARNO Miguel A.//////////
+	var url = "mangas_recarga_new.php?idmanga=<?php echo $_GET['idmanga'];?>&id=<?php echo $_GET['id'];?>&copa=<?php echo $_GET['copa'];?>"; // el archivo que ira en el div
+
+	function refreshdiv(){
+		var xmlHttp;
+		try{
+			xmlHttp=new XMLHttpRequest(); // Firefox, Opera 8.0+, Safari
+		}
+		catch (e){
+			try{
+				xmlHttp=new ActiveXObject("Msxml2.XMLHTTP"); // Internet Explorer
+			}
+			catch (e){
+				try{
+					xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				catch (e){
+					alert("Tu explorador no soporta AJAX.");
+					return false;
+				}
+			}
+		}
+		var timestamp = parseInt(new Date().getTime().toString().substring(0, 10));
+		var nocacheurl = url+"&t="+timestamp;
+		xmlHttp.onreadystatechange=function(){
+			if(xmlHttp.readyState== 4 && xmlHttp.readyState != null){
+				document.getElementById(divid).innerHTML=xmlHttp.responseText;
+				setTimeout('refreshdiv()',seconds*1000);
+			}
+		}
+		xmlHttp.open("GET",nocacheurl,true);
+		xmlHttp.send(null);
+	}
+		refreshdiv();
+		</script>
 </head>
 
 <body>
@@ -168,10 +207,12 @@ WHERE ca.idcarrera='$idCarrera'";
 
 					echo "</select></td></form></table>";
 					echo "<hr><br>";
+					echo "<div id='recarga'>";
 					if ($tipo_prueba == 2)
 						include("mangas_recarga_subida.php");
 					else
 						include("mangas_recarga_new.php"); //SUMA MANGAS OFICIALES
+					echo "</div>";
 					?>
 	</div>
 	<?php

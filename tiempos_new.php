@@ -189,63 +189,6 @@ $sql = "SELECT descripcion,id FROM abc_57os_ca_etapa\n". "WHERE id_ca_carrera ='
 		</div>
 	</section>
 
-	<!--div class="section-top-border">
-<div class="Timeline"-->
-
-	<?php
-	/*
-			$res = ($_GET['Ancho'])/$num_mangas; //FALTA PASAR A PHP LA RESOLUCION DEL EQUIPO CLIENTE y QUITARLO CON CSS DE MOVILES
-			$n=1;
-			$m=0;
-					array_multisort($aux, SORT_ASC, $dias);
-
-					foreach ($dias as $key => $row) {
-						if($m==0)
-							$tamano=50; //PRIMERA MANGA
-						else
-							$tamano = $res;
-						echo "<svg height='5' width='".$tamano."'>";
-						echo "<line x1='0' y1='0' x2='".$tamano."' y2='0' style='stroke:#004165;stroke-width:5'/>";
-						echo "Lo sentimos, tu navegador no soporta SVG";
-						echo "</svg>";
-						$fecha = substr($row['fecha'],0,2);
-						if($row['estado']==2){
-							$clasetime = "event".$n." futureGray";
-							$clasetime2 = "event".$n."Bubble futureOpacity";
-							}
-						else{
-							$clasetime = "event".$n."Bubble";
-							$clasetime2 = "eventTime";
-							}
-						echo "<div class='event2'><div class='".$clasetime."'><div class='".$clasetime2."'>";
-						if($row['estado']==2)
-							echo "<div class='eventTime'>";
-						echo "<div class='DayDigit'>".$fecha."</div>";
-						if($row['estado']==2)
-							echo "<div class='Day'>".$row['dia']."<div class='MonthYear'>".$row['descripcion']."</div></div></div><div class='eventTitle'>".estado2($row['estado'])."</div></div></div>";
-						else
-							echo "<div class='Day'>".$row['dia']."<div class='MonthYear'>".$row['descripcion']."</div></div></div><div class='eventTitle'>".estado2($row['estado'])."</div></div>";
-						echo "<svg height='20' width='20'>";
-						echo "<circle cx='10' cy='11' r='5' fill='#004165' />";
-						echo "</svg><div class='time'>".$row['hora']."</div></div>";
-						if($row['estado']==1){
-							  echo "<svg height='5' width='50'>";
-							  echo "<line x1='0' y1='0' x2='5' y2='0' style='stroke:#004165;stroke-width:5'/>";
-							  echo "Lo sentimos, tu navegador no soporta SVG";
-							  echo "</svg>";
-							  echo "<div class='now'>EN CARRERA</div>";
-						}
-					//$tamano +=300;
-					if($n==1)
-						$n=2;
-					else
-						$n=1;
-					$m=1;
-					}	*/
-	?>
-	<!--/div>
-					</div-->
-
 	<div class="section-top-border">
 		<h3 class="mb-30">TRAMOS DISPONIBLES</h3>
 		<table width="100%" id="tab_tem">
@@ -279,61 +222,16 @@ $sql = "SELECT descripcion,id FROM abc_57os_ca_etapa\n". "WHERE id_ca_carrera ='
 									$estado = $fila3['estado'];
 									$long = $fila3['longitud'];
 									$inter = $mysqli2->query("SELECT id FROM web_manga_control_horario WHERE id_ca_manga='$idmanga'");
-									/*$porsalir=0;
-													$enpista=0;
-													$enmeta = 0;
-													$sql_pista = $mysqli->query("SELECT m.tipo AS tipo_manga,m.numero AS num_manga,com.dorsal,pi.nombre AS piloto_nombre,
-														veh.grupo AS grupo,veh.clase AS clase,veh.marca AS marca,veh.modelo As modelo
-														FROM abc_57os_ca_carrera car
-														INNER JOIN abc_57os_ca_competidor com ON car.id=com.id_ca_carrera
-														INNER JOIN abc_57os_ca_etapa e ON e.id_ca_carrera=car.id
-														INNER JOIN abc_57os_ca_seccion s ON s.id_ca_etapa=e.id
-														INNER JOIN abc_57os_ca_manga m ON m.id_ca_seccion=s.id
-														INNER JOIN abc_57os_ca_piloto pi ON pi.id=com.id_ca_piloto
-														INNER JOIN abc_57os_ca_vehiculo veh ON veh.id=com.id_ca_vehiculo
-														WHERE dorsal NOT IN (SELECT id_ca_competidor FROM abc_57os_ca_abandono WHERE id_ca_manga='$idmanga') 
-														AND m.id='$idmanga' AND com.autorizado='1' GROUP BY dorsal");//FALTA DESCARTAR LOS ABANDONADOS
-													/*
-													if($sql_pista->num_rows>0)
-															{
-															while($fila=$sql_pista->num_rows())
-																{
-																$dorsal = $fila['dorsal'];
-															$comp = $mysqli->query("SELECT ch.orden AS orden,t.tiempo FROM abc_57os_ca_tiempo t 
-															INNER JOIN abc_57os_ca_manga_control_horario ch ON ch.id=t.id_ca_manga_control_horario 
-															WHERE dorsal NOT IN (SELECT id_ca_competidor FROM abc_57os_ca_abandono WHERE id_ca_manga='$idmanga')
-															AND t.dorsal='$dorsal' AND t.id_ca_manga='$idmanga'");//COMPRUEBO Q TENGA 2  TIEMPOS salida y llegada
-																	if($comp->num_rows==1)//0 PÔR SALIR
-																		{
-																		$enpista++;
-																		}
-																	else if($comp->num_rows==0)//0 PÔR SALIR
-																		{
-																		$porsalir++;
-																		}
-																	else{
-																		while($rows = $comp->fetch_array())
-																			{
-																			$orden = $rows['orden'];
-																			if($orden==10)
-																				$enmeta++;
-																			}
-																		}
-																	
-																}
-															}
-													$pen = $mysqli->query("SELECT a.motivo FROM abc_57os_ca_abandono a	WHERE a.id_ca_manga='$idmanga'");
-													$abandonos = $pen->num_rows;*/
 									if ($inter->num_rows > 2) {
 										echo '<tr class="manga ' . $classcss . '"><td class="man_pd">
-															<p><a href="manga_new.php?id=' . $idCarrera . '&idetapa=' . $idetapa . '&idmanga=' . $idmanga . '&idseccion=' . $idseccion . '&newBD=true">' . $descripcion . '</a></p>';
+															<p><a href="manga_new.php?id=' . $idCarrera . '&idmanga=' . $idmanga . '">' . $descripcion . '</a></p>';
 										echo '<p class="margen_p_coches"><span class="span_coches">' . $porsalir . '<img src="img/coche2.png" width="30px" class="margen_coches"></span><span class="span_coches">' . $enpista . '<img src="img/coche3.png" width="30px" class="margen_coches"></span><span class="span_coches">' . $enmeta . '<img src="img/coche1.png" width="30px" class="margen_coches"></span><span class="span_coches">' . $abandonos . '<img src="img/coche4.png" width="30px" class="margen_coches"></span></p>';
-										echo '</td><td class="cursiva"><a href="inter_new.php?id=' . $idCarrera . '&idetapa=' . $idetapa . '&idmanga=' . $idmanga . '&idseccion=' . $idseccion . '&newBD=true">TIEMPOS INTERMEDIOS</a></td>
+										echo '</td><td class="cursiva"><a href="inter_new.php?id=' . $idCarrera . '&idmanga=' . $idmanga . '">TIEMPOS INTERMEDIOS</a></td>
 															<td>' . $hora . ' H</td><td>' . ($long / 1000) . ' Kms</td><td><img src="img/' . estado($estado) . '" width="15px"></td></tr>';
 										$par++;
 									} else {
 										echo '<tr class="manga ' . $classcss . '"><td class="man_pd">
-															<p><a href="manga_new.php?id=' . $idCarrera . '&idetapa=' . $idetapa . '&idmanga=' . $idmanga . '&idseccion=' . $idseccion . '&campeonato=0&newBD=true&copa=0">' . $descripcion . '</a></p>';
+															<p><a href="manga_new.php?id=' . $idCarrera . '&idmanga=' . $idmanga . '&copa=0">' . $descripcion . '</a></p>';
 										echo '<p class="margen_p_coches"><span class="span_coches">' . $porsalir . '<img src="img/coche2.png" width="30px" class="margen_coches"></span><span class="span_coches">' . $enpista . '<img src="img/coche3.png" width="30px" class="margen_coches"></span><span class="span_coches">' . $enmeta . '<img src="img/coche1.png" width="30px" class="margen_coches"></span><span class="span_coches">' . $abandonos . '<img src="img/coche4.png" width="30px" class="margen_coches"></span></p>';
 										echo '</td><td></td>
 															<td>' . $hora . ' H</td><td>' . ($long / 1000) . ' Kms</td><td><img src="img/' . estado($estado) . '" width="15px"></td></tr>';
