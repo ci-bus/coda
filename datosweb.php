@@ -171,7 +171,8 @@ if ($campeonatos->num_rows > 0) {
                 echo "<br>Se ha insertado el campeonato: <strong>" . $nombre_campeonato . "</strong> ID <strong>" . $id_campeonato . "</strong>";
             }
         } else {
-            die("ERROR: No se ha podido insertar un campeonato SQL: " . $SQL);
+            //die("ERROR: No se ha podido insertar un campeonato SQL: " . $SQL);
+            echo "CAMPEONATO YA EXISTE";
         }
 
         // -------------------------------- //
@@ -198,7 +199,8 @@ if ($campeonatos->num_rows > 0) {
                     echo "<br>Se ha insertado la copa: <strong>" . $descripcion_copa . "</strong> ID <strong>" . $id_copa . "</strong>";
                 }
             } else {
-                die("ERROR: No se ha podido insertar una copa SQL: " . $SQL);
+                //die("ERROR: No se ha podido insertar una copa SQL: " . $SQL);
+                echo "YA EXISTE ESTA COPA";
             }
 
             // ----------------------------------- //
@@ -217,7 +219,8 @@ if ($campeonatos->num_rows > 0) {
                 if ($mysqli2->query($SQL)) {
                     $competidores_insertados++;
                 } else {
-                    die("ERROR: No se ha podido insertar un competidor SQL: " . $SQL);
+                    //die("ERROR: No se ha podido insertar un competidor SQL: " . $SQL);
+                    echo "YA EXISTE ESTE COMPETIDOR";
                 }
             }
             if ($mostrar_mensajes) {
@@ -296,10 +299,13 @@ if ($campeonatos->num_rows > 0) {
                     while ($penalizacion = $penalizaciones->fetch_array()) {
                         $penal += $penalizacion['tiempo'];
                     }
-                    
-                    $mysqli2->query("DELETE FROM web_tiempos WHERE id_ca_manga=" . $manga['id'] . " AND id_ca_competidor=" . $competidor['id']);
+                    //FALTABA SUMAR SUS PENALIZACIONES EN MILISEGUNDOS
+                    $t_t += segundos_a_milisegundos($penal);
+                    //HE MOFIDICADO QUE BORRE DIRECTAMENTE EL idisncrito
+                    $mysqli2->query("DELETE FROM web_tiempos WHERE idmanga=" . $manga['id'] . " AND idinscrito=" . $competidor['id'] ." AND idcampeonato = ".$idcampeonato);
+                    // $idtiempos esta repe asi que como es valor Auto Increment lo dejo en blanco
                     $SQL = "INSERT INTO `web_tiempos` (`idtiempos`, `idmanga`, `h_s`, `h_l`, `idcarrera`, `t_t`, `penalizacion`, `idinscrito`, `num_manga`, `tipo_manga`, `idcampeonato`) "
-                    ." VALUES ('$idtiempos', '$idmanga', '$h_s', '$h_l', '$idcarrera', '$t_t', '$penal', '".$competidor['id']."', '$num_manga', '$tipo_manga', '$idcampeonato')";
+                    ." VALUES ('', '$idmanga', '$h_s', '$h_l', '$idcarrera', '$t_t', '$penal', '".$competidor['id']."', '$num_manga', '$tipo_manga', '$idcampeonato')";
                     echo $SQL."<br>";
                     $mysqli2->query($SQL);
                 }

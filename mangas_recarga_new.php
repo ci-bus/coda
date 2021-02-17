@@ -10,15 +10,16 @@ if (isset($_GET["copa"]))
 	$copa = $_GET["copa"];
 else
 	$copa = '0';
-	//EN REALIDAD CON LA BD NUEVA SOLO NECESITO LA MANGA
-if (isset($_GET["idmanga"]) && isset($_GET["id"]) ) {
+//EN REALIDAD CON LA BD NUEVA SOLO NECESITO LA MANGA
+if (isset($_GET["idmanga"]) && isset($_GET["id"])) {
 	$idManga = $_GET["idmanga"];
 	$idCarrera = $_GET["id"];
 	//$idseccion = $_GET["idseccion"];
 	//$idetapa = $_GET["idetapa"];
 	//$DB_PREFIJO = "abc_57os_";
-	$saber_manga = $mysqli2->query("SELECT numero FROM web_manga WHERE id='$idManga'")->fetch_array();
+	$saber_manga = $mysqli2->query("SELECT numero,decimales FROM web_manga WHERE id='$idManga'")->fetch_array();
 	$num_manga = $saber_manga['numero'];
+	$decimales = $saber_manga['decimales'];
 }
 include("includes/funciones.php"); //ME CAGO EN SU PUTA MADRE QUE NO FUNCIONAA!!!!! REVISAR
 include("includes/funcionesTiempos.php");
@@ -32,7 +33,7 @@ while ($mifila = $campeonatos_carrera->fetch_array()) {
 	echo "<div id='div_contenedor'>";
 	echo "<table id='tabla_contenedor'>";
 	echo "<tr><td><p>TIEMPOS</p>";
-	echo "<table id='tabla_tiempos'><tbody><th class='centro'>P.</th><th class='centro'>D.</th><th>CONCURSANTE</th><th class='centro'><img src='img/tactil.png' class='icono'>EQUIPO</th><th colspan='2'>VEHICULO</th><th class='centro'><p>PRIMERO</p><p>TIEMPO</p><p>ANTERIOR</p></th></tbody>";
+	echo "<table id='tabla_tiempos'><tbody><th class='centro'>P.</th><th class='centro'>N.</th><th class='centro'><img src='img/tactil.png' class='icono'>EQUIPO</th><th colspan='2' class='centro'>VEHICULO</th><th class='centro'><p>PRIMERO</p><p>TIEMPO</p><p>ANTERIOR</p></th></tbody>";
 	if ($copa == '0') {
 		$sql = "SELECT inscritos.piloto,inscritos.copiloto,tiempos.t_t,tiempos.penalizacion,inscritos.vehiculo,inscritos.concursante,inscritos.dorsal,inscritos.modelo,inscritos.grupo,
 		inscritos.clase,inscritos.agrupacion,inscritos.categoria,inscritos.nac_piloto,inscritos.nac_copiloto,inscritos.nac_competidor
@@ -49,6 +50,10 @@ while ($mifila = $campeonatos_carrera->fetch_array()) {
 	if ($resultado->num_rows > 0) {
 		$pos = 1;
 		$par = 0;
+		unset($pos_grupo);
+		unset($pos_categoria);
+		unset($pos_clase);
+		unset($pos_agr);
 		while ($row = $resultado->fetch_array()) {
 			$piloto = $row['piloto'];
 			$pi_nac = $row['nac_piloto'];
@@ -71,16 +76,26 @@ while ($mifila = $campeonatos_carrera->fetch_array()) {
 			$modelo = $row['modelo'];
 			$grupo = $row['grupo'];
 			$clase = $row['clase'];
-			$agrupacion = $row['agrupacion'];
-			$categoria = $row['categoria'];
-			$vehiculo = $marca . "<br>" . $modelo . "<br><p>" . $grupo . "/" . $clase . "/" . $categoria . "/" . $agrupacion . "</p>";
+			$agr = $row['agrupacion'];
+			$cat = $row['categoria'];
+			////////////POSICIONES GRUPOS CLASES AGR Y CATEGORIAS //////////////////////////
+			$pos_grupo[$grupo] = $pos_grupo[$grupo] ? $pos_grupo[$grupo] + 1 : 1;
+			$pos_en_su_grupo = "<span class='negrita'>(" . $pos_grupo[$grupo] . ")</span>";
+			$pos_clase[$clase] = $pos_clase[$clase] ? $pos_clase[$clase] + 1 : 1;
+			$pos_en_su_clase = "<span class='negrita'>(" . $pos_clase[$clase] . ")</span>";
+			$pos_categoria[$cat] = $pos_categoria[$cat] ? $pos_categoria[$cat] + 1 : 1;
+			$pos_en_su_categoria = "<span class='negrita'>(" . $pos_categoria[$cat] . ")</span>";
+			$pos_agr[$agr] = $pos_agr[$agr] ? $pos_agr[$agr] + 1 : 1;
+			$pos_en_su_agr = "<span class='negrita'>(" . $pos_agr[$agr] . ")</span>";
+			/////////////////////////////////////////////////////////////////////////////////
+			$vehiculo = "<p class='veh'>" . $marca . " " . $modelo . "</p><p class='gru'>" . $grupo . $pos_en_su_grupo . "/" . $clase . $pos_en_su_clase . "<br>" . $cat . $pos_en_su_categoria . "/" . $agr . $pos_en_su_agrupacion . "</p>";
 			$concursante = $row['concursante'];
-			$con_nac = $row['nac_competidor'];
+			/*$con_nac = $row['nac_competidor'];
 			$con_nac = explode("/", $con_nac);
 			$con_nac1 = bandera($con_nac[0]);
 			$con_nac2 = bandera($con_nac[1]);
-			$concursante = "<img class='banderas' src='" . $pi_nac1 . "'><img class='banderas' src='" . $pi_nac2 . "'>" . $concursante;
-			$t_t = $row['t_t'];
+			$concursante = "<img class='banderas' src='" . $pi_nac1 . "'><img class='banderas' src='" . $pi_nac2 . "'>" . $concursante;*/
+			$t_t = decimales($row['t_t'], $decimales);
 			if ($pos == 1) {
 				$mejor_tiempo = $t_t;
 				$tiempo_anterior = $t_t;
@@ -88,7 +103,7 @@ while ($mifila = $campeonatos_carrera->fetch_array()) {
 			$dif_primero = milisegundos_a_tiempo($t_t - $mejor_tiempo);
 			$dif_anterior = milisegundos_a_tiempo($t_t - $tiempo_anterior);
 			$t_t = milisegundos_a_tiempo($t_t);
-			$penalizacion = milisegundos_a_tiempo($row['penalizacion']);
+			$penalizacion = $row['penalizacion'];
 			if ($par % 2 == 0)
 				$classcss = "filapar";
 			else
@@ -98,34 +113,31 @@ while ($mifila = $campeonatos_carrera->fetch_array()) {
 				if ($penalizacion == 0 || $penalizacion == '')
 					$tiempos = "<p class='negrita nomargen'>" . $t_t . "</p>";
 				else
-					$tiempos = "<p class='negrita nomargen'>" . $t_t . "</p><p class='penalizaciones nomargen'>".$penalizacion."</p>";
-			}
-			else{
+					$tiempos = "<p class='negrita nomargen'>" . $t_t . "</p><p class='penalizaciones nomargen'>" . milisegundos_a_tiempo(segundos_a_milisegundos($row['penalizacion'])) . "</p>";
+			} else {
 				if ($penalizacion == 0 || $penalizacion == '')
-					$tiempos = "<p class='anterior cursiva nomargen'>" . $dif_anterior . "</p><p class='negrita nomargen'>" . $t_t . "</p><p class='cursiva nomargen'>" . $dif_primero . "</p>";
+					$tiempos = "<p class='anterior cursiva nomargen'>" . $dif_primero . "</p><p class='negrita nomargen'>" . $t_t . "</p><p class='cursiva nomargen'>" . $dif_anterior . "</p>";
 				else
-					$tiempos = "<p class='anterior cursiva nomargen'>" . $dif_anterior . "</p><p class='negrita nomargen'>" . $t_t . "</p><p class='cursiva nomargen'>" . $dif_primero . "</p><p class='penalizaciones nomargen'>".$penalizacion."</p>";
+					$tiempos = "<p class='anterior cursiva nomargen'>" . $dif_primero . "</p><p class='negrita nomargen'>" . $t_t . "</p><p class='cursiva nomargen'>" . $dif_anterior . "</p><p class='penalizaciones nomargen'>" . milisegundos_a_tiempo(segundos_a_milisegundos($row['penalizacion'])) . "</p>";
 			}
-			echo "<tr class='" . $classcss . "'><td class='centro'>" . $pos . "</td><td class='dor'>" . $dorsal . "</td><td>" . $concursante . "</td><td>" . $equipo . "</td><td>" . escudo($vehiculo) . "</td><td>" . $vehiculo . "</td><td class='tie centro'>".$tiempos."</td></tr>";
+			echo "<tr class='" . $classcss . "'><td class='centro'>" . $pos . "</td><td class='dor' title='" . $concursante . "'>" . $dorsal . "<td class='con'>" . $equipo . "</td><td>" . escudo($vehiculo) . "</td><td class='centro'>" . $vehiculo . "</td><td class='tie centro'>" . $tiempos . "</td></tr>";
 			$par++;
 			$pos++;
-			$tiempo_anterior = $t_t;
+			$tiempo_anterior = decimales($row['t_t'], $decimales);
 		} //WHILE
 	} //IF
 	echo "</table>";
-	if($num_manga==1)
-		echo "</td></tr></table></div>"; //NO MOSTRAMOS ACUMULADOS
-	else{
-		echo "</td><td><p>ACUMULADOS</p>";//ACUMULADOS
-		echo "<table id='tabla_tiempos'><tbody><th class='centro'>P.</th><th class='centro'>D.</th><th>CONCURSANTE</th><th class='centro'><img src='img/tactil.png' class='icono'>EQUIPO</th><th colspan='2'>VEHICULO</th><th class='centro'><p>PRIMERO</p><p>TIEMPO</p><p>ANTERIOR</p></th></tbody>";
+
+	echo "</td><td><p>ACUMULADOS</p>"; //ACUMULADOS
+	echo "<table id='tabla_tiempos'><tbody><th class='centro'>P.</th><th class='centro'>N.</th><th class='centro'>EQUIPO</th><th colspan='2' class='centro'>VEHICULO</th><th class='centro'><p>PRIMERO</p><p>TIEMPO</p><p>ANTERIOR</p></th></tbody>";
 	if ($copa == '0') {
 		$sql = "SELECT inscritos.piloto,inscritos.copiloto,SUM(tiempos.t_t) AS t_t,SUM(tiempos.penalizacion) AS penalizacion,inscritos.vehiculo,inscritos.concursante,inscritos.dorsal,inscritos.modelo,inscritos.grupo,
-		inscritos.clase,inscritos.agrupacion,inscritos.categoria,inscritos.nac_piloto,inscritos.nac_copiloto,inscritos.nac_competidor
+		inscritos.clase,inscritos.agrupacion,inscritos.categoria,inscritos.nac_piloto,inscritos.nac_copiloto,inscritos.nac_competidor,tiempos.idinscrito
 		FROM web_inscritos inscritos
 	INNER JOIN web_tiempos tiempos ON tiempos.idinscrito = inscritos.idinscrito
 	WHERE inscritos.autorizado=1 AND tiempos.idcampeonato='$id_campeonato' AND tiempos.tipo_manga=1 AND tiempos.num_manga <= '$num_manga'
 	GROUP BY inscritos.dorsal
-	ORDER BY tiempos.t_t ASC";
+	ORDER BY t_t ASC";
 		//echo $sql;
 		$resultado = $mysqli2->query($sql) or print "No se pudo acceder al contenido de los tiempos online CONSULTA1.";
 	} else {
@@ -134,70 +146,89 @@ while ($mifila = $campeonatos_carrera->fetch_array()) {
 	if ($resultado->num_rows > 0) {
 		$pos = 1;
 		$par = 0;
+		unset($pos_grupo);
+		unset($pos_categoria);
+		unset($pos_clase);
+		unset($pos_agr);
 		while ($row = $resultado->fetch_array()) {
-			$piloto = $row['piloto'];
-			$pi_nac = $row['nac_piloto'];
-			$pi_nacs = explode('/', $pi_nac);
-			$pi_nac1 = bandera($pi_nacs[0]);
-			$pi_nac2 = bandera($pi_nacs[1]);
+			// SABER SI EL PILOTO HA COMPETIDO EN TODAS LAS MNAGAS ANTERIORES
+			$idinscrito = $row['idinscrito'];
+			$saber_competidas = $mysqli2->query("SELECT idtiempos FROM web_tiempos WHERE idinscrito='$idinscrito' AND num_manga<='$num_manga' AND idcampeonato='$id_campeonato'");
+			$saber_cuantas_competido = $saber_competidas->num_rows;
+			if ($num_manga == $saber_cuantas_competido) {
+				//////////////////////////////////////////////////////////////
+				$piloto = $row['piloto'];
+				$pi_nac = $row['nac_piloto'];
+				$pi_nacs = explode('/', $pi_nac);
+				$pi_nac1 = bandera($pi_nacs[0]);
+				$pi_nac2 = bandera($pi_nacs[1]);
 
-			$copiloto = $row['copiloto'];
-			$copi_nac = $row['nac_copiloto'];
-			$copi_nacs = explode('/', $copi_nac);
-			$copi_nac1 = bandera($copi_nacs[0]);
-			$copi_nac2 = bandera($copi_nacs[1]);
-			if ($copiloto == '')
-				$equipo = $piloto;
-			else
-				$equipo = "<img class='banderas' src='" . $pi_nac1 . "'><img class='banderas' src='" . $pi_nac2 . "'>" . $piloto . "<br><img class='banderas' src='" . $copi_nac1 . "'><img class='banderas' src='" . $copi_nac2 . "'>" . $copiloto;
-			//AQUI HACER EL EQUIPO
-			$dorsal = $row['dorsal'];
-			$marca = $row['vehiculo'];
-			$modelo = $row['modelo'];
-			$grupo = $row['grupo'];
-			$clase = $row['clase'];
-			$agrupacion = $row['agrupacion'];
-			$categoria = $row['categoria'];
-			$vehiculo = $marca . "<br>" . $modelo . "<br><p>" . $grupo . "/" . $clase . "/" . $categoria . "/" . $agrupacion . "</p>";
-			$concursante = $row['concursante'];
-			$con_nac = $row['nac_competidor'];
-			$con_nac = explode("/", $con_nac);
-			$con_nac1 = bandera($con_nac[0]);
-			$con_nac2 = bandera($con_nac[1]);
-			$concursante = "<img class='banderas' src='" . $pi_nac1 . "'><img class='banderas' src='" . $pi_nac2 . "'>" . $concursante;
-			$t_t = $row['t_t'];
-			if ($pos == 1) {
-				$mejor_tiempo = $t_t;
-				$tiempo_anterior = $t_t;
-			}
-			$dif_primero = milisegundos_a_tiempo($t_t - $mejor_tiempo);
-			$dif_anterior = milisegundos_a_tiempo($t_t - $tiempo_anterior);
-			$t_t = milisegundos_a_tiempo($t_t);
-			$penalizacion = milisegundos_a_tiempo($row['penalizacion']);
-			if ($par % 2 == 0)
-				$classcss = "filapar";
-			else
-				$classcss = "filaimpar";
-			/*PREPARO LOS TIEMPOS PARA LA FILA*/
-			if ($pos == 1) {
-				if ($penalizacion == 0 || $penalizacion == '')
-					$tiempos = "<p class='negrita nomargen'>" . $t_t . "</p>";
+				$copiloto = $row['copiloto'];
+				$copi_nac = $row['nac_copiloto'];
+				$copi_nacs = explode('/', $copi_nac);
+				$copi_nac1 = bandera($copi_nacs[0]);
+				$copi_nac2 = bandera($copi_nacs[1]);
+				if ($copiloto == '')
+					$equipo = $piloto;
 				else
-					$tiempos = "<p class='negrita nomargen'>" . $t_t . "</p><p class='penalizaciones nomargen'>".$penalizacion."</p>";
-			}
-			else{
-				if ($penalizacion == 0 || $penalizacion == '')
-					$tiempos = "<p class='anterior cursiva nomargen'>" . $dif_anterior . "</p><p class='negrita nomargen'>" . $t_t . "</p><p class='cursiva nomargen'>" . $dif_primero . "</p>";
+					$equipo = "<img class='banderas' src='" . $pi_nac1 . "'><img class='banderas' src='" . $pi_nac2 . "'>" . $piloto . "<br><img class='banderas' src='" . $copi_nac1 . "'><img class='banderas' src='" . $copi_nac2 . "'>" . $copiloto;
+				//AQUI HACER EL EQUIPO
+				$dorsal = $row['dorsal'];
+				$marca = $row['vehiculo'];
+				$modelo = $row['modelo'];
+				$grupo = $row['grupo'];
+				$clase = $row['clase'];
+				$agr = $row['agrupacion'];
+				$cat = $row['categoria'];
+				////////////POSICIONES GRUPOS CLASES AGR Y CATEGORIAS //////////////////////////
+				$pos_grupo[$grupo] = $pos_grupo[$grupo] ? $pos_grupo[$grupo] + 1 : 1;
+				$pos_en_su_grupo = "<span class='negrita'>(" . $pos_grupo[$grupo] . ")</span>";
+				$pos_clase[$clase] = $pos_clase[$clase] ? $pos_clase[$clase] + 1 : 1;
+				$pos_en_su_clase = "<span class='negrita'>(" . $pos_clase[$clase] . ")</span>";
+				$pos_categoria[$cat] = $pos_categoria[$cat] ? $pos_categoria[$cat] + 1 : 1;
+				$pos_en_su_categoria = "<span class='negrita'>(" . $pos_categoria[$cat] . ")</span>";
+				$pos_agr[$agr] = $pos_agr[$agr] ? $pos_agr[$agr] + 1 : 1;
+				$pos_en_su_agr = "<span class='negrita'>(" . $pos_agr[$agr] . ")</span>";
+				/////////////////////////////////////////////////////////////////////////////////
+				$vehiculo = "<p class='veh'>" . $marca . " " . $modelo . "</p><p class='gru'>" . $grupo . $pos_en_su_grupo . "/" . $clase . $pos_en_su_clase . "<br>" . $cat . $pos_en_su_categoria . "/" . $agr . $pos_en_su_agrupacion . "</p>";
+				$concursante = $row['concursante'];
+				/*$con_nac = $row['nac_competidor'];
+				$con_nac = explode("/", $con_nac);
+				$con_nac1 = bandera($con_nac[0]);
+				$con_nac2 = bandera($con_nac[1]);
+				$concursante = "<img class='banderas' src='" . $pi_nac1 . "'><img class='banderas' src='" . $pi_nac2 . "'>" . $concursante;*/
+				$t_t = decimales($row['t_t'], $decimales);
+				if ($pos == 1) {
+					$mejor_tiempo = $t_t;
+					$tiempo_anterior = $t_t;
+				}
+				$dif_primero = milisegundos_a_tiempo($t_t - $mejor_tiempo);
+				$dif_anterior = milisegundos_a_tiempo($t_t - $tiempo_anterior);
+				$t_t = milisegundos_a_tiempo($t_t);
+				$penalizacion = milisegundos_a_tiempo(segundos_a_milisegundos($row['penalizacion']));
+				if ($par % 2 == 0)
+					$classcss = "filapar";
 				else
-					$tiempos = "<p class='anterior cursiva nomargen'>" . $dif_anterior . "</p><p class='negrita nomargen'>" . $t_t . "</p><p class='cursiva nomargen'>" . $dif_primero . "</p><p class='penalizaciones nomargen'>".$penalizacion."</p>";
+					$classcss = "filaimpar";
+				/*PREPARO LOS TIEMPOS PARA LA FILA*/
+				if ($pos == 1) {
+					if ($penalizacion == 0 || $penalizacion == '')
+						$tiempos = "<p class='negrita nomargen'>" . $t_t . "</p>";
+					else
+						$tiempos = "<p class='negrita nomargen'>" . $t_t . "</p><p class='penalizaciones nomargen'>" . $penalizacion . "</p>";
+				} else {
+					if ($penalizacion == 0 || $penalizacion == '')
+						$tiempos = "<p class='anterior cursiva nomargen'>" . $dif_primero . "</p><p class='negrita nomargen'>" . $t_t . "</p><p class='cursiva nomargen'>" . $dif_anterior . "</p>";
+					else
+						$tiempos = "<p class='anterior cursiva nomargen'>" . $dif_primero . "</p><p class='negrita nomargen'>" . $t_t . "</p><p class='cursiva nomargen'>" . $dif_anterior . "</p><p class='penalizaciones nomargen'>" . $penalizacion . "</p>";
+				}
+				echo "<tr class='" . $classcss . "'><td class='centro'>" . $pos . "</td><td class='dor' title='" . $concursante . "'>" . $dorsal . "</td><td class='con'>" . $equipo . "</td><td>" . escudo($vehiculo) . "</td><td class='centro'>" . $vehiculo . "</td><td class='tie centro'>" . $tiempos . "</td></tr>";
+				$tiempo_anterior = decimales($row['t_t'], $decimales);
+				$par++;
+				$pos++;
 			}
-			echo "<tr class='" . $classcss . "'><td class='centro'>" . $pos . "</td><td class='dor'>" . $dorsal . "</td><td>" . $concursante . "</td><td>" . $equipo . "</td><td>" . escudo($vehiculo) . "</td><td>" . $vehiculo . "</td><td class='tie centro'>".$tiempos."</td></tr>";
-			$par++;
-			$pos++;
-			$tiempo_anterior = $t_t;
 		} //WHILE
-	} //IF
-	echo "</table>";
+		echo "</table>";
 		echo "</td></tr></table></div>";
 	}
 	//$nom = str_replace('ESPAÃ‘A', 'ESPAÑA', $nom); //QUITO LA MIERDA de ''AÄ que no se xq sale imagino que algo de UTF8 en codificacion de BD

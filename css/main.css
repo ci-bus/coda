@@ -3117,7 +3117,6 @@ body.mobile-nav-active #mobile-nav-toggle {
     .fbook {
         height: 338px;
         width: 350px;
-        //margin: 0 0 0 23px;
     }
     .insta {
         width: 327px;
@@ -3148,7 +3147,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .nomargen {
-    margin: -5px auto;
+    margin: -2px auto;
 }
 
 .negrita {
@@ -3269,14 +3268,15 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .dor {
-    font-size: 14px;
+    font-size: 25px;
     text-shadow: 1px 1px 0px antiquewhite;
     font-style: italic;
     text-align: center;
+    font-weight: bold;
 }
 
 .con {
-    font-size: 11px;
+    font-size: 14px;
 }
 
 .com {
@@ -3284,7 +3284,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .veh {
-    font-size: 8px;
+    font-size: 12px;
     font-weight: 500
 }
 
@@ -3506,13 +3506,15 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #div_contenedor {
-    min-width: 800px;
     overflow-x: scroll;
 }
 
 @media (max-width: 767px) {
     .icono {
         display: block;
+    }
+    .con {
+        font-size: 11px;
     }
 }
 

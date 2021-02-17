@@ -32,10 +32,11 @@ if (isset($_GET["id"])) {
 		}
 	}
 }
-$modo_tiempo = $mysqli2->query("SELECT tiempo_tipo FROM web_campeonatos WHERE idcarrera = '$idCarrera'");
+$modo_tiempo = $mysqli2->query("SELECT tipo_tiempo FROM web_campeonatos WHERE idcarrera = '$idCarrera'");
 if ($modo_tiempo->num_rows > 0)
 	$row = $modo_tiempo->fetch_array();
-$tipo_prueba = $row['tiempo_tipo'];
+$tipo_prueba = $row['tipo_tiempo'];
+echo "TIPO" .$tipo_prueba;
 $enlace_actual = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 ?>
 <!DOCTYPE html>
@@ -115,7 +116,7 @@ $enlace_actual = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 				</div>
 			</div>
 			<a href="tiempos_new.php?id=<?php echo $idCarrera; ?>&newBD=true" class="primary-btn text-uppercase selected">VOLVER</a>
-			<a href="clas_final_newb.php?id=<?php echo $idCarrera; ?>&newBD=true&campeonato=0&copa=0&grupo=0&clase=0" class="primary-btn text-uppercase selected">CLASIFICACI&Oacute;N FINAL</a>
+			<a href="clas_final_new.php?id=<?php echo $idCarrera; ?>&copa=0" class="primary-btn text-uppercase selected">CLASIFICACI&Oacute;N FINAL</a>
 		</div>
 	</section>
 	<div class="section-top-border">
@@ -133,7 +134,7 @@ WHERE ca.idcarrera='$idCarrera'";
 					if ($copa == '0') {
 						echo "<option selected='selected'>TODAS</option>";
 					} else {
-						echo "<option value='manga_new.php?id=" . $idCarrera . "&idetapa=" . $idetapa . "&idmanga=" . $idManga . "&idseccion=" . $idseccion . "&newBD=true&campeonato=0&copa=0'>TODAS LAS COPAS</option>";
+						echo "<option value='manga_new.php?id=" . $idCarrera . "&idmanga=" . $idManga . "&copa=0'>TODAS LAS COPAS</option>";
 					}
 					while ($row = $copas->fetch_array()) {
 						$filtroCopa = $row["id"];
@@ -143,7 +144,7 @@ WHERE ca.idcarrera='$idCarrera'";
 							echo "<option selected='selected'>" . $filtroDesc . "</option>";
 							$nom_copa = $filtroDesc;
 						} else
-							echo "<option value='manga_new.php?id=" . $idCarrera . "&idetapa=" . $idetapa . "&idmanga=" . $idManga . "&idseccion=" . $idseccion . "&newBD=true&campeonato=0&copa=" . $filtroCopa . "'>" . $filtroDesc . "</option>";
+							echo "<option value='manga_new.php?id=" . $idCarrera . "&idmanga=" . $idManga . "&copa=" . $filtroCopa . "'>" . $filtroDesc . "</option>";
 					}
 
 					echo "<td>MANGAS:</td><td><select name='mangas' onchange='surfto(this.form)'>";

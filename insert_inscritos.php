@@ -24,7 +24,88 @@ $nuevos = 0;
 $actualizados = 0;
 
 $idCarrera = $_GET["id"];
-
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+///////////CREAR SECCIONES / ETAPAS  Y MANGAS   ////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+$sql_etapa = $mysqli->query("SELECT descripcion,id,orden FROM abc_57os_ca_etapa WHERE id_ca_carrera='$idCarrera'");
+if ($sql_etapa->num_rows > 0) {
+    while ($row = $sql_etapa->fetch_array()) {
+        $des_etapa = $row['descripcion'];
+        $id_etapa = $row['id'];
+        $orden_etapa = $row['orden'];
+        echo "<br>" . $id_etapa . "Etapa: " . $des_etapa;
+        $comprobar_etapa = $mysqli->query("SELECT id FROM web_etapa WHERE id = '$id_etapa'");
+        if ($comprobar_etapa->num_rows > 0) {
+            //ACTUALIZAMOS
+        } else {
+            $crear_etapas = $mysqli2->query("INSERT INTO web_etapa (id,id_usuario,id_ca_carrera,descripcion,orden) VALUES
+            ('$id_etapa','2','$idCarrera','$des_etapa','$orden_etapa')");
+        }
+        $sql_seccion = $mysqli->query("SELECT id, descripcion,orden FROM abc_57os_ca_seccion WHERE id_ca_etapa = '$id_etapa'");
+        if ($sql_seccion->num_rows > 0) {
+            while ($row2 = $sql_seccion->fetch_array()) {
+                $des_seccion = $row2['descripcion'];
+                $id_seccion = $row2['id'];
+                $orden_seccion = $row2['orden'];
+                echo "<br>" . $id_seccion . " SECCION: " . $des_seccion;
+                $comprobar_seccion = $mysqli2->query("SELECT id FROM web_seccion WHERE id = '$id_seccion'");
+                if ($comprobar_seccion->num_rows > 0) {
+                    //ACTUALIZAMOS REGISTRO
+                } else {
+                    $crear_seccion = $mysqli2->query("INSERT INTO web_seccion (id,id_usuario,id_ca_etapa,descripcion,orden) VALUES
+                    ('$id_seccion','2','$id_etapa','$des_seccion','$orden_seccion')");
+                }
+                $sql_mangas = $mysqli->query("SELECT id,descripcion,numero,longitud,tipo,hora_salida,estado,decimales FROM abc_57os_ca_manga WHERE id_ca_seccion = '$id_seccion'");
+                if ($sql_mangas->num_rows > 0) {
+                    while ($row3 = $sql_mangas->fetch_array()) {
+                        $des_manga = $row3['descripcion'];
+                        $id_manga = $row3['id'];
+                        $numero = $row3['numero'];
+                        $hora = $row3['hora_salida'];
+                        $estado = $row3['estado'];
+                        $decimales = $row3['decimales'];
+                        $longitud = $row3['longitud'];
+                        //COMPROBAR SI EXISTE
+                        $comprobar_manga = $mysqli2->query("SELECT id FROM web_manga WHERE id = '$id_manga'");
+                        if ($comprobar_manga->num_rows > 0) {
+                            //EXISTE LA ACTUALIZAMOS
+                        } else {
+                            //NO EXISTE REGISTRO, LO CREAMOS
+                            $crear_mangas = $mysqli2->query("INSERT INTO web_manga (id,id_usuario,id_ca_seccion,descripcion,numero,longitud,tipo,hora_salida,estado,decimales)
+                            VALUES('$id_manga','2','$id_seccion','$des_manga','$numero','$longitud','$tipo','$hora','$estado','$decimales')");
+                        }
+                        echo "<br>" . $id_manga . " MANGA: " . $des_manga;
+                    }
+                } else
+                    echo "NO EXISTEN MANGAS CREADAS";
+            }
+        } else
+            echo "NO EXISTEN SECCIONES";
+    }
+} else
+    echo "NO EXISTEN ETAPAS";
+///////////////////////////////////////////////////////////
+/////INSCRIBIR A CADA PARTICIPANTE EN CADA CAMPEONATO////////
+///////////////////////////////////////////////////////////
+echo "<br>";
+$consulta_campeonatos = $mysqli->query("SELECT cacom.id_ca_campeonato AS idcampeonato,cacom.id_ca_competidor AS idcompetidor,cam.nombre AS nombre FROM abc_57os_ca_campeonato cam 
+INNER JOIN abc_57os_ca_campeonato_competidor cacom
+ON cacom.id_ca_campeonato = cam.id
+WHERE cam.id_ca_carrera = '$idCarrera'");
+if ($consulta_campeonatos->num_rows > 0) {
+    while ($row = $consulta_campeonatos->fetch_array()) {
+        $nombre = $row['nombre'];
+        $idcompetidor = $row['idcompetidor'];
+        $idcampeonato = $row['idcampeonato'];
+        echo "IDCAMP: ".$idcampeonato." IDCOMP: ".$idcompetidor." - ".$nombre;
+        $inscribir_campeonatos = $mysqli2->query("INSERT INTO web_campeonatos_inscritos (id,idinscrito,idcampeonato,idcarrera) VALUES ('','$idcompetidor','$idcampeonato','$idCarrera')");
+    }
+} else
+    echo "<p>No existen campeonatos</p>";
+echo "<br>";
+/***********************SIGUE PROCESANDO.......... ********************/
 $sql = "SELECT com.dorsal AS dorsal,com.id AS idcompetidor,pi.nombre AS piloto,com.id_ca_copiloto_segundo AS copi2,
 				ve.marca AS marca,ve.modelo AS modelo,ve.clase AS clase,ve.grupo AS grupo,pi.nacionalidad AS pi_nac,com.hora_salida AS hora_salida,
 				ve.cilindrada AS cilindrada,ve.cilindrada_turbo AS cilindrada_turbo,ve.categoria AS cat,ve.agrupacion AS agr,com.srally AS sr
@@ -251,7 +332,7 @@ $resultado = $mysqli->query($sql) or print "No se pudo acceder al contenido de l
                 if ($comp->num_rows == 0) {
                     $insertar = "INSERT INTO web_inscritos (idcarrera,idinscrito,concursante,piloto,copiloto,copiloto2,nac_piloto,nac_copiloto,nac_copiloto2,
 				vehiculo,modelo,grupo,clase,agrupacion,categoria,dorsal,cc,cc_turbo,h_s,autorizado,excluido,sr) VALUES ('$idCarrera','$idcompetidor','$competidor','$piloto','$copiloto',
-				'','$nac_pi','$nac_copi','','$vehiculo','$modelo','$grupo','$clase','$agr','$cat','$dorsal','$cilin','$cilin_turbo','$h_s','0','0','$sr')";
+				'','$nac_pi','$nac_copi','','$vehiculo','$modelo','$grupo','$clase','$agr','$cat','$dorsal','$cilin','$cilin_turbo','$h_s','1','0','$sr')";
                     $insert = $mysqli2->query($insertar) or print("error");
                     $nuevos++;
                 } else {

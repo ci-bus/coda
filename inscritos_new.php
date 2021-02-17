@@ -109,7 +109,7 @@ if (isset($_GET["id"])) {
 	</section>
 	<div class="section-top-border">
 		<?php
-		$sql = "SELECT dorsal,idinscrito,concursante,piloto,copiloto,nac_competidor,nac_piloto,nac_copiloto,vehiculo,modelo,cc,cc_turbo
+		$sql = "SELECT dorsal,idinscrito,concursante,piloto,copiloto,nac_competidor,nac_piloto,nac_copiloto,vehiculo,modelo,cc,cc_turbo,grupo,clase,categoria,agrupacion
 				FROM web_inscritos 
 				WHERE idcarrera='$idCarrera' AND excluido=0 ORDER BY dorsal ASC";
 
@@ -122,11 +122,11 @@ if (isset($_GET["id"])) {
 					<th>Concursante</th>
 					<th>Equipo</th>
 					<th class="centro" colspan="2">Vehiculo</th>
-					<th class="centro">C.C<br>C.C.Turbo</th>
+					<th class="centro">C.C</th>
 					<th>Camp.</th>
+					<th class="centro">Cat</th>
 					<th class="centro">Grupo</th>
 					<th class="centro">Clase</th>
-					<th class="centro">Cat</th>
 					<th class="centro">Agru.</th>
 				</tr>
 			</thead>
@@ -140,12 +140,20 @@ if (isset($_GET["id"])) {
 							$classcss = "filapar";
 						else
 							$classcss = "filaimpar";
+						$idinscrito = $fila['idinscrito'];
+						$campeonato='';
+						$saber_campeonatos = $mysqli2->query("SELECT cam.nombre AS nombre FROM web_campeonatos cam 
+						INNER JOIN web_campeonatos_inscritos ci ON ci.idcampeonato=cam.id
+						WHERE ci.idinscrito='$idinscrito'");
+						while($row=$saber_campeonatos->fetch_array()){
+							$campeonato.=$row['nombre']."<br>";
+						}
 						$dorsal = $fila['dorsal'];
 						$competidor = $fila['concursante'];
-						$cc = $fila['cc'];
+						//$cc = $fila['cc'];
 						$cc_turbo = $fila['cc_turbo'];
-						$agr = $fila['agr'];
-						$cat = $fila['cat'];
+						$agr = $fila['agrupacion'];
+						$cat = $fila['categoria'];
 						$piloto = $fila['piloto'];
 						$copiloto = $fila['copiloto'];
 						$vehiculo = $fila['vehiculo'];
@@ -173,12 +181,12 @@ if (isset($_GET["id"])) {
 							$h_salida = "---";
 						echo "<tr class='" . $classcss . "'><td class='dor negrita'>" . $dorsal . "</td><td>" . $competidor . "</td>";
 						if ($copiloto == '' || $copiloto == '0')
-							echo "<td>" . $piloto . "</td>";
+							echo "<td class='con'>" . $piloto . "</td>";
 						else {
-							echo '<td><img class="banderas" src="' . $pi_nac1 . '"><img class="banderas" src="' . $pi_nac2 . '">' . $piloto;
+							echo '<td class="con"><img class="banderas" src="' . $pi_nac1 . '"><img class="banderas" src="' . $pi_nac2 . '">' . $piloto;
 							echo '<br><img class="banderas" src="' . $copi_nac1 . '"><img class="banderas" src="' . $copi_nac2 . '">' . $copiloto . '</td>';
 						}
-						echo "<td>".escudo($vehiculo)."</td><td class='centro'>" . $vehiculo . "<br>" . $modelo . "</td><td class='centro'>" . $cc . "<br>" . $cc_turbo . "</td><td></td><td></td><td></td><td></td><td></td></tr>";
+						echo "<td>".escudo($vehiculo)."</td><td class='centro'>" . $vehiculo . "<br>" . $modelo . "</td><td class='centro'>" . $cc_turbo . "</td><td>".$campeonato."</td><td>".$cat."</td><td>".$grupo."</td><td>".$clase."</td><td>".$agr."</td></tr>";
 
 						$pos++;
 						$par++;
