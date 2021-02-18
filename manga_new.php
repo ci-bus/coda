@@ -78,7 +78,6 @@ $enlace_actual = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             llamada_ajax("datosweb_coger_ultima_id.php?", (res) => {
                 if (res !== ultima_id) {
                     ultima_id = res;
-                    console.log(res, ultima_id);
                     llamada_ajax(url, (res) => {
                         document.getElementById(capa_contenido).innerHTML = res;
                     });
@@ -207,7 +206,6 @@ $enlace_actual = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     <script src="js/vendor/jquery-2.2.4.min.js"></script>
     <script src="js/vendor/bootstrap.min.js"></script>
     <!--script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script-->
-    <script src="js/main.js"></script>
     <script type="text/javascript">
         function surfto(form) {
             var myindex = form.mangas.selectedIndex;
