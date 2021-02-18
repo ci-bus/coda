@@ -36,7 +36,6 @@ $modo_tiempo = $mysqli2->query("SELECT tipo_tiempo FROM web_campeonatos WHERE id
 if ($modo_tiempo->num_rows > 0)
     $row = $modo_tiempo->fetch_array();
 $tipo_prueba = $row['tipo_tiempo'];
-echo "TIPO" . $tipo_prueba;
 $enlace_actual = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 ?>
 <!DOCTYPE html>
@@ -64,10 +63,7 @@ $enlace_actual = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 			CSS
 			============================================= -->
     <link rel="stylesheet" href="css/linearicons.css">
-    <link rel="stylesheet" href="css/owl.carousel.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/nice-select.css">
-    <link rel="stylesheet" href="css/magnific-popup.css">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/main.css">
     <script type="text/javascript" src="js/ajax.js"></script>
@@ -77,11 +73,12 @@ $enlace_actual = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         var url = "mangas_recarga_new.php?idmanga=<?php echo $_GET['idmanga']; ?>&id=<?php echo $_GET['id']; ?>&copa=<?php echo $_GET['copa']; ?>";
         var segundos_refresco = 5;
         var capa_contenido = "recarga";
-        var ultima_id = "0";
+        var ultima_id = "";
         (refrescar = () => {
-            llamada_ajax(url, (res) => {
+            llamada_ajax("datosweb_coger_ultima_id.php?", (res) => {
                 if (res !== ultima_id) {
                     ultima_id = res;
+                    console.log(res, ultima_id);
                     llamada_ajax(url, (res) => {
                         document.getElementById(capa_contenido).innerHTML = res;
                     });
@@ -208,19 +205,8 @@ $enlace_actual = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
 
     <script src="js/vendor/jquery-2.2.4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="js/vendor/bootstrap.min.js"></script>
     <!--script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script-->
-    <script src="js/easing.min.js"></script>
-    <script src="js/hoverIntent.js"></script>
-    <script src="js/superfish.min.js"></script>
-    <script src="js/jquery.ajaxchimp.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/jquery.sticky.js"></script>
-    <script src="js/jquery.nice-select.min.js"></script>
-    <script src="js/parallax.min.js"></script>
-    <script src="js/mail-script.js"></script>
     <script src="js/main.js"></script>
     <script type="text/javascript">
         function surfto(form) {
