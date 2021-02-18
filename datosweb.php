@@ -85,15 +85,15 @@ if (!file_exists("datosweb_ejecutando")) {
             die(' ERROR: No se ha podido conectar a la base de datos del sistema');
         }
 
-        if ($mostrar_mensajes) {
-            echo "<br>Comprobando última id...";
-        }
-
 
 
         //-----------------------------------------------//
         // Si no hay tiempos nuevos paramos la ejecución //
         //-----------------------------------------------//
+
+        if ($mostrar_mensajes) {
+            echo "<br>Comprobando última id...";
+        }
 
         // Ultimo id procesado
         $ultima_id_procesada = file_get_contents("datosweb_ultima_id");
@@ -102,8 +102,14 @@ if (!file_exists("datosweb_ejecutando")) {
         // Si los ids son iguales detenemos la ejecución
         if (trim($ultima_id_procesada."") == trim($ultima_id_base_de_datos."")) {
             unlink("datosweb_ejecutando");
+            if ($mostrar_mensajes) {
+                echo "<br>No hay registros nuevos";
+            }
             die();
         } else {
+            if ($mostrar_mensajes) {
+                echo "<br>Se han encontrado tiempos sin procesar<br>";
+            }
             // Guarda la última id
             file_put_contents("datosweb_ultima_id", $ultima_id_base_de_datos);
         }
