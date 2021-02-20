@@ -110,8 +110,6 @@ if (!file_exists("datosweb_ejecutando")) {
             if ($mostrar_mensajes) {
                 echo "<br>Se han encontrado tiempos sin procesar<br>";
             }
-            // Guarda la última id
-            file_put_contents("datosweb_ultima_id", $ultima_id_base_de_datos);
         }
 
 
@@ -353,6 +351,9 @@ if (!file_exists("datosweb_ejecutando")) {
                 }
             }
         } //Fin while campeonatos
+
+        // Guarda la última id
+        file_put_contents("datosweb_ultima_id", $ultima_id_base_de_datos);
 
         // Elimina el archivo que marca si se está ejecutando
         unlink("datosweb_ejecutando");
