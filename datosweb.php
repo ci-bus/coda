@@ -4,8 +4,8 @@
 $mostrar_mensajes = $_GET['mostrar_mensajes'] !== "false";
 
 // Comprueba si no está ya en ejecución
-if (!file_exists("datosweb_ejecutando")) {
-    file_put_contents("datosweb_ejecutando", " ");
+if (!file_exists("./datosweb_ejecutando")) {
+    file_put_contents("./datosweb_ejecutando", " ");
 
     // Funciones de tiempo
     function tiempo_a_milisegundos($tiempo)
@@ -96,12 +96,12 @@ if (!file_exists("datosweb_ejecutando")) {
         }
 
         // Ultimo id procesado
-        $ultima_id_procesada = file_get_contents("datosweb_ultima_id");
+        $ultima_id_procesada = file_get_contents("./datosweb_ultima_id");
         // Ultimo id en la base de datos
         $ultima_id_base_de_datos = $mysqli->query("SELECT id FROM abc_57os_ca_tiempo ORDER BY id DESC LIMIT 1")->fetch_array()['id'];
         // Si los ids son iguales detenemos la ejecución
         if (trim($ultima_id_procesada."") == trim($ultima_id_base_de_datos."")) {
-            unlink("datosweb_ejecutando");
+            unlink("./datosweb_ejecutando");
             if ($mostrar_mensajes) {
                 echo "<br>No hay registros nuevos";
             }
@@ -201,71 +201,6 @@ if (!file_exists("datosweb_ejecutando")) {
                     echo "<br>Número de mangas oficiales: <strong>" . $numero_mangas_oficiales . "</strong>";
                 }
 
-                // Actualiza el campeonato
-                $mysqli2->query("DELETE FROM web_campeonatos WHERE id='$id_campeonato'");
-                $SQL = "INSERT INTO web_campeonatos (id, idcarrera, nombre, idmodalidad, tipo_tiempo, mangas_oficiales) VALUES ('$id_campeonato', '$id_carrera', '$nombre_campeonato', '$modalidad', '$modo_tiempo', '$numero_mangas_oficiales')";
-                if ($mysqli2->query($SQL)) {
-                    if ($mostrar_mensajes) {
-                        echo "<br>Se ha insertado el campeonato: <strong>" . $nombre_campeonato . "</strong> ID <strong>" . $id_campeonato . "</strong>";
-                    }
-                } else {
-                    //die("ERROR: No se ha podido insertar un campeonato SQL: " . $SQL);
-                    echo "CAMPEONATO YA EXISTE";
-                }
-
-                // -------------------------------- //
-                // Cogemos las copas del campeonato //
-                // -------------------------------- //
-                $copas = $mysqli->query("SELECT id, descripcion FROM abc_57os_ca_copa WHERE id_ca_campeonato = '$id_campeonato'");
-
-                if ($mostrar_mensajes) {
-                    echo "<h3>Copas encontrados <strong>" . $copas->num_rows . "</strong></h3>";
-                }
-
-                // Recorre las copas
-                while ($copa = $copas->fetch_array()) {
-                    $id_copa = $copa['id'];
-                    $descripcion_copa = $copa['descripcion'];
-                    // Fix arregla caracteres
-                    $descripcion_copa = str_ireplace(array('Ã‘', 'Ã±'), array('Ñ', 'ñ'), $descripcion_copa);
-
-                    // Actualiza la copa del campeonato
-                    $mysqli2->query("DELETE FROM web_copas WHERE id_ca_campeonato='$id_campeonato'");
-                    $SQL = "INSERT INTO web_copas (id, descripcion, idcampeonato, idcarrera) VALUES ('$id_copa', '$descripcion_copa', '$id_campeonato', '$id_carrera')";
-                    if ($mysqli2->query($SQL)) {
-                        if ($mostrar_mensajes) {
-                            echo "<br>Se ha insertado la copa: <strong>" . $descripcion_copa . "</strong> ID <strong>" . $id_copa . "</strong>";
-                        }
-                    } else {
-                        //die("ERROR: No se ha podido insertar una copa SQL: " . $SQL);
-                        echo "YA EXISTE ESTA COPA";
-                    }
-
-                    // ----------------------------------- //
-                    // Cogemos los competidores de la copa //
-                    // ----------------------------------- //
-                    $competidores = $mysqli->query("SELECT id_ca_competidor FROM abc_57os_ca_copa_competidor WHERE id_ca_copa='$id_copa'");
-
-                    // Elimina los competidores de la copa para actualizarlos
-                    $mysqli2->query("DELETE FROM web_copas_inscritos WHERE idcopa='$id_copa'");
-
-                    // Recorre los competidores
-                    $competidores_insertados = 0;
-                    while ($competidor = $competidores->fetch_array()) {
-                        $id_competidor = $competidor['id_ca_competidor'];
-                        $SQL = "INSERT INTO web_copas_inscritos (id, idcopa, idcompetidor) VALUES ('','$id_copa','$id_competidor')";
-                        if ($mysqli2->query($SQL)) {
-                            $competidores_insertados++;
-                        } else {
-                            //die("ERROR: No se ha podido insertar un competidor SQL: " . $SQL);
-                            echo "YA EXISTE ESTE COMPETIDOR";
-                        }
-                    }
-                    if ($mostrar_mensajes) {
-                        echo "<br>Se ha insertado <strong>" . $competidores_insertados . "</strong> competidores de la copa";
-                    }
-                }
-
                 // --------------------------------------- //
                 // Cogemos los competidores del campeonato //
                 // --------------------------------------- //
@@ -278,13 +213,16 @@ if (!file_exists("datosweb_ejecutando")) {
                 // --------------------------------- //
                 // Cogemos las mangas del campeonato //
                 // --------------------------------- //
-                $mangasQuery = $mysqli->query("SELECT id_ca_manga AS id, tipo, numero FROM abc_57os_ca_campeonato_manga "
+                $mangasQuery = $mysqli->query("SELECT id_ca_manga AS id, tipo, numero, estado FROM abc_57os_ca_campeonato_manga "
                     . "INNER JOIN abc_57os_ca_manga ON abc_57os_ca_manga.id = abc_57os_ca_campeonato_manga.id_ca_manga "
                     . "WHERE estado=1 AND id_ca_campeonato=" . $id_campeonato);
                 $mangas = array();
                 while ($manga = $mangasQuery->fetch_array()) {
                     $id_manga = $manga['id'];
+                    $estado_manga = $manga['estado'];
                     $mangas[] = $manga;
+                    // Actualiza el estado de la manga
+                    $mysqli2->query("UPDATE `web_manga` SET `estado` = '$estado_manga' WHERE `web_manga`.`id` = '$id_manga'");
                 }
 
                 // Recorre los competidores
@@ -353,18 +291,18 @@ if (!file_exists("datosweb_ejecutando")) {
         } //Fin while campeonatos
 
         // Guarda la última id
-        file_put_contents("datosweb_ultima_id", $ultima_id_base_de_datos);
+        file_put_contents("./datosweb_ultima_id", $ultima_id_base_de_datos);
 
         // Elimina el archivo que marca si se está ejecutando
-        unlink("datosweb_ejecutando");
+        unlink("./datosweb_ejecutando");
 
     } catch (Exception $e) {
 
         // Se borra el archivo que marca si se está ejecutando
-        unlink("datosweb_ejecutando");
+        unlink("./datosweb_ejecutando");
 
         // Se guarda el error
-        file_put_contents("datosweb_error", $e->getMessage());
+        file_put_contents("./datosweb_error", $e->getMessage());
     }
 
 }
