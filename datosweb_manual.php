@@ -54,12 +54,7 @@ function segundos_a_milisegundos($segundos)
     return $segundos;
 }
 
-// mostrar mensajes de procesamiento para verificar el funcionamiento del script
-$mostrar_mensajes = true;
-
-if ($mostrar_mensajes) {
-    echo "Conectando a la base de datos local...";
-}
+echo "Conectando a la base de datos local...";
 
 // Conexion a la base de datos del sistema
 $IPservidor = "sistema2020.codea.es";
@@ -70,16 +65,12 @@ $DB_PREFIJO = "abc_57os_";
 $mysqli = new mysqli($IPservidor, $usuario, $clave, $nombreBD);
 if ($mysqli) {
     $mysqli->set_charset("utf8");
-    if ($mostrar_mensajes) {
-        echo " Conectado!";
-    }
+    echo " Conectado!";
 } else {
     die(' ERROR: No se ha podido conectar a la base de datos local');
 }
 
-if ($mostrar_mensajes) {
-    echo "<br>Conectando a la base de la web...";
-}
+echo "<br>Conectando a la base de la web...";
 
 // Conexion a la base de datos de la web
 $IPservidor = "localhost:3306";
@@ -89,18 +80,14 @@ $clave2 = "Kp!vt750";
 $mysqli2 = new mysqli($IPservidor, $usuario2, $clave2, $nombreBD2);
 if ($mysqli2) {
     $mysqli2->set_charset("utf8");
-    if ($mostrar_mensajes) {
-        echo " Conectado!";
-    }
+    echo " Conectado!";
 } else {
     die(' ERROR: No se ha podido conectar a la base de la web');
 }
 
 $id_carrera = $_GET['id'];
 
-if ($mostrar_mensajes) {
-    echo "<br>carrera ID: <strong>" . $id_carrera . "</strong>";
-}
+echo "<br>carrera ID: <strong>" . $id_carrera . "</strong>";
 
 // Guarda la ultima id de tiempos
 $nuevos = 0;
@@ -116,9 +103,7 @@ $campeonatos = $mysqli->query("SELECT * FROM abc_57os_ca_campeonato WHERE id_ca_
 // Si existen campeonatos
 if ($campeonatos->num_rows > 0) {
 
-    if ($mostrar_mensajes) {
-        echo "<h3>Campeonatos encontrados <strong>" . $campeonatos->num_rows . "</strong></h3>";
-    }
+    echo "<h3>Campeonatos encontrados <strong>" . $campeonatos->num_rows . "</strong></h3>";
 
     // Recorre los campeonatos
     while ($campeonato = $campeonatos->fetch_array()) {
@@ -131,28 +116,26 @@ if ($campeonatos->num_rows > 0) {
         // Fix arregla caracteres
         $nombre_campeonato = str_ireplace(array('Ã‘', 'Ã±'), array('Ñ', 'ñ'), $nombre_campeonato);
 
-        if ($mostrar_mensajes) {
-            echo "<br>Campeonato <strong>" . $nombre_campeonato . "</strong> ID <strong>" . $id_campeonato . "</strong>";
-            echo "<br>Modo tiempo <strong>";
-            switch ($modo_tiempo) {
-                case 0:
-                    echo "Acumulado";
-                    break;
-                case 1:
-                    echo "Mejor manga";
-                    break;
-                case 2:
-                    echo "Dos mejores mangas";
-                    break;
-                case 3:
-                    echo "Tres mejores mangas";
-                    break;
-                default:
-                    echo "Desconocido";
-                    break;
-            }
-            echo "</strong>";
+        echo "<br>Campeonato <strong>" . $nombre_campeonato . "</strong> ID <strong>" . $id_campeonato . "</strong>";
+        echo "<br>Modo tiempo <strong>";
+        switch ($modo_tiempo) {
+            case 0:
+                echo "Acumulado";
+                break;
+            case 1:
+                echo "Mejor manga";
+                break;
+            case 2:
+                echo "Dos mejores mangas";
+                break;
+            case 3:
+                echo "Tres mejores mangas";
+                break;
+            default:
+                echo "Desconocido";
+                break;
         }
+        echo "</strong>";
 
         // Cuenta el número de mangas oficiales
         $mangas_oficiales = $mysqli->query("SELECT count(manga.id) FROM abc_57os_ca_manga manga 
@@ -160,17 +143,13 @@ if ($campeonatos->num_rows > 0) {
 					WHERE campeonato_manga.id_ca_campeonato='$id_campeonato' AND manga.tipo='1'")->fetch_array();
         $numero_mangas_oficiales = $mangas_oficiales[0];
 
-        if ($mostrar_mensajes) {
-            echo "<br>Número de mangas oficiales: <strong>" . $numero_mangas_oficiales . "</strong>";
-        }
+        echo "<br>Número de mangas oficiales: <strong>" . $numero_mangas_oficiales . "</strong>";
 
         // Actualiza el campeonato
         $mysqli2->query("DELETE FROM web_campeonatos WHERE id='$id_campeonato'");
         $SQL = "INSERT INTO web_campeonatos (id, idcarrera, nombre, idmodalidad, tipo_tiempo, mangas_oficiales) VALUES ('$id_campeonato', '$id_carrera', '$nombre_campeonato', '$modalidad', '$modo_tiempo', '$numero_mangas_oficiales')";
         if ($mysqli2->query($SQL)) {
-            if ($mostrar_mensajes) {
-                echo "<br><br> - Se ha insertado el campeonato: <strong>" . $nombre_campeonato . "</strong> ID <strong>" . $id_campeonato . "</strong>";
-            }
+            echo "<br><br> - Se ha insertado el campeonato: <strong>" . $nombre_campeonato . "</strong> ID <strong>" . $id_campeonato . "</strong>";
         } else {
             echo "ALERTA: No se ha podido borrar un campeonato SQL: " . $SQL;
         }
@@ -180,9 +159,7 @@ if ($campeonatos->num_rows > 0) {
         // -------------------------------- //
         $copas = $mysqli->query("SELECT id, descripcion FROM abc_57os_ca_copa WHERE id_ca_campeonato = '$id_campeonato'");
 
-        if ($mostrar_mensajes) {
-            echo "<h3>Copas encontrados <strong>" . $copas->num_rows . "</strong></h3>";
-        }
+        echo "<h3>Copas encontrados <strong>" . $copas->num_rows . "</strong></h3>";
 
         // Recorre las copas
         while ($copa = $copas->fetch_array()) {
@@ -195,9 +172,7 @@ if ($campeonatos->num_rows > 0) {
             $mysqli2->query("DELETE FROM web_copas WHERE id='$id_copa'");
             $SQL = "INSERT INTO web_copas (id, descripcion, idcampeonato, idcarrera) VALUES ('$id_copa', '$descripcion_copa', '$id_campeonato', '$id_carrera')";
             if ($mysqli2->query($SQL)) {
-                if ($mostrar_mensajes) {
-                    echo "<br>Se ha insertado la copa: <strong>" . $descripcion_copa . "</strong> ID <strong>" . $id_copa . "</strong>";
-                }
+                echo "<br>Se ha insertado la copa: <strong>" . $descripcion_copa . "</strong> ID <strong>" . $id_copa . "</strong>";
             } else {
                 echo "ALERTA: No se ha podido borrar una copa SQL: " . $SQL;
             }
@@ -221,15 +196,13 @@ if ($campeonatos->num_rows > 0) {
                     echo "ALERTA: No se ha podido insertar un competidor SQL: " . $SQL;
                 }
             }
-            if ($mostrar_mensajes) {
-                echo "<br>Se ha insertado <strong>" . $competidores_insertados . "</strong> competidores de la copa";
-            }
+            echo "<br>Se ha insertado <strong>" . $competidores_insertados . "</strong> competidores de la copa";
         }
 
         // --------------------------------------- //
         // Cogemos los competidores del campeonato //
         // --------------------------------------- //
-        $competidoresQuery = $mysqli->query("SELECT id_ca_competidor AS id FROM " . $DB_PREFIJO . "ca_campeonato_competidor WHERE id_ca_campeonato=" . $id_campeonato);
+        $competidoresQuery = $mysqli->query("SELECT id_ca_competidor AS id, dorsal FROM " . $DB_PREFIJO . "ca_campeonato_competidor WHERE id_ca_campeonato=" . $id_campeonato);
         $competidores = array();
         while ($competidor = $competidoresQuery->fetch_array()) {
             $competidores[] = $competidor;
@@ -302,6 +275,9 @@ if ($campeonatos->num_rows > 0) {
                     while ($penalizacion = $penalizaciones->fetch_array()) {
                         $penal += $penalizacion['tiempo'];
                     }
+                    if ($penal > 0) {
+                        echo "<hr>Penalización de $penal segundos para el dorsal ".$competidor['dorsal']."<hr>";
+                    }
                     //FALTABA SUMAR SUS PENALIZACIONES EN MILISEGUNDOS
                     $t_t += segundos_a_milisegundos($penal);
                     //HE MOFIDICADO QUE BORRE DIRECTAMENTE EL idisncrito
@@ -309,7 +285,7 @@ if ($campeonatos->num_rows > 0) {
                     // $idtiempos esta repe asi que como es valor Auto Increment lo dejo en blanco
                     $SQL = "INSERT INTO `web_tiempos` (`idtiempos`, `idmanga`, `h_s`, `h_l`, `idcarrera`, `t_t`, `penalizacion`, `idinscrito`, `num_manga`, `tipo_manga`, `idcampeonato`) "
                     ." VALUES ('', '$idmanga', '$h_s', '$h_l', '$idcarrera', '$t_t', '$penal', '".$competidor['id']."', '$num_manga', '$tipo_manga', '$idcampeonato')";
-                    echo $SQL."<br>";
+                    echo "<br>Insertado tiempo $t_t para el dorsal ".$competidor['dorsal']."<br>";
                     $mysqli2->query($SQL);
                 }
             }
@@ -329,5 +305,6 @@ if ($campeonatos->num_rows > 0) {
         $id_ca_manga = $abandono['id_ca_manga'];
         $motivo = $abandono['motivo'];
         $mysqli2->query("INSERT INTO `web_abandonos` (`id`, `idinscrito`, `idmanga`, `idcarrera`, `motivo`) VALUES (NULL, '$id_ca_competidor', '$id_ca_manga', '$id_carrera', '$motivo')");
+        echo "<br>Abandono del competidor $id_ca_competidor por $motivo<br>";
     }
 } //Fin while campeonatos
