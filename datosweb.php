@@ -1,3 +1,4 @@
+<script type="text/javascript">setTimeout(function () { location.reload(); }, 3000);</script>
 <?php
 
 // mostrar mensajes de procesamiento para verificar el funcionamiento del script
@@ -87,9 +88,9 @@ if (!file_exists("./datosweb_ejecutando")) {
 
 
 
-        //-----------------------------------------------//
-        // Si no hay tiempos nuevos paramos la ejecución //
-        //-----------------------------------------------//
+        //-------------------------------------------------//
+        // Comprobamos si hay tiempos nuevos para ejecutar //
+        //-------------------------------------------------//
 
         if ($mostrar_mensajes) {
             echo "<br>Comprobando última id...";
@@ -98,7 +99,9 @@ if (!file_exists("./datosweb_ejecutando")) {
         // Ultimo id procesado
         $ultima_id_procesada = file_get_contents("./datosweb_ultima_id");
         // Ultimo id en la base de datos
-        $ultima_id_base_de_datos = $mysqli->query("SELECT id FROM abc_57os_ca_tiempo ORDER BY id DESC LIMIT 1")->fetch_array()['id'];
+        $ultimo_tiempo = $mysqli->query("SELECT id, id_ca_carrera FROM abc_57os_ca_tiempo ORDER BY id DESC LIMIT 1")->fetch_array();
+        $ultima_id_base_de_datos = $ultimo_tiempo['id'];
+        $id_carrera = $ultimo_tiempo['id_ca_carrera'];
         // Si los ids son iguales detenemos la ejecución
         if (trim($ultima_id_procesada."") == trim($ultima_id_base_de_datos."")) {
             unlink("./datosweb_ejecutando");
@@ -133,7 +136,6 @@ if (!file_exists("./datosweb_ejecutando")) {
             die(' ERROR: No se ha podido conectar a la base de la web');
         }
 
-        $id_carrera = $_GET['id'];
 
         if ($mostrar_mensajes) {
             echo "<br>carrera ID: <strong>" . $id_carrera . "</strong>";
@@ -306,4 +308,3 @@ if (!file_exists("./datosweb_ejecutando")) {
     }
 
 }
-
