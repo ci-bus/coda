@@ -66,6 +66,7 @@ $IPservidor = "sistema2020.codea.es";
 $nombreBD = "codea_sistema";
 $usuario = "codea_sistema_user";
 $clave = "n^;eRM8+MWZu";
+$DB_PREFIJO = "abc_57os_";
 $mysqli = new mysqli($IPservidor, $usuario, $clave, $nombreBD);
 if ($mysqli) {
     $mysqli->set_charset("utf8");
@@ -168,11 +169,10 @@ if ($campeonatos->num_rows > 0) {
         $SQL = "INSERT INTO web_campeonatos (id, idcarrera, nombre, idmodalidad, tipo_tiempo, mangas_oficiales) VALUES ('$id_campeonato', '$id_carrera', '$nombre_campeonato', '$modalidad', '$modo_tiempo', '$numero_mangas_oficiales')";
         if ($mysqli2->query($SQL)) {
             if ($mostrar_mensajes) {
-                echo "<br>Se ha insertado el campeonato: <strong>" . $nombre_campeonato . "</strong> ID <strong>" . $id_campeonato . "</strong>";
+                echo "<br><br> - Se ha insertado el campeonato: <strong>" . $nombre_campeonato . "</strong> ID <strong>" . $id_campeonato . "</strong>";
             }
         } else {
-            //die("ERROR: No se ha podido insertar un campeonato SQL: " . $SQL);
-            echo "CAMPEONATO YA EXISTE";
+            echo "ALERTA: No se ha podido borrar un campeonato SQL: " . $SQL;
         }
 
         // -------------------------------- //
@@ -192,15 +192,14 @@ if ($campeonatos->num_rows > 0) {
             $descripcion_copa = str_ireplace(array('Ã‘', 'Ã±'), array('Ñ', 'ñ'), $descripcion_copa);
 
             // Actualiza la copa del campeonato
-            $mysqli2->query("DELETE FROM web_copas WHERE id_ca_campeonato='$id_campeonato'");
+            $mysqli2->query("DELETE FROM web_copas WHERE id='$id_copa'");
             $SQL = "INSERT INTO web_copas (id, descripcion, idcampeonato, idcarrera) VALUES ('$id_copa', '$descripcion_copa', '$id_campeonato', '$id_carrera')";
             if ($mysqli2->query($SQL)) {
                 if ($mostrar_mensajes) {
                     echo "<br>Se ha insertado la copa: <strong>" . $descripcion_copa . "</strong> ID <strong>" . $id_copa . "</strong>";
                 }
             } else {
-                //die("ERROR: No se ha podido insertar una copa SQL: " . $SQL);
-                echo "YA EXISTE ESTA COPA";
+                echo "ALERTA: No se ha podido borrar una copa SQL: " . $SQL;
             }
 
             // ----------------------------------- //
@@ -219,8 +218,7 @@ if ($campeonatos->num_rows > 0) {
                 if ($mysqli2->query($SQL)) {
                     $competidores_insertados++;
                 } else {
-                    //die("ERROR: No se ha podido insertar un competidor SQL: " . $SQL);
-                    echo "YA EXISTE ESTE COMPETIDOR";
+                    echo "ALERTA: No se ha podido insertar un competidor SQL: " . $SQL;
                 }
             }
             if ($mostrar_mensajes) {
@@ -231,18 +229,20 @@ if ($campeonatos->num_rows > 0) {
         // --------------------------------------- //
         // Cogemos los competidores del campeonato //
         // --------------------------------------- //
-        $competidoresQuery = $mysqli->query("SELECT id_ca_competidor AS id FROM abc_57os_ca_campeonato_competidor WHERE id_ca_campeonato=" . $id_campeonato);
+        $competidoresQuery = $mysqli->query("SELECT id_ca_competidor AS id FROM " . $DB_PREFIJO . "ca_campeonato_competidor WHERE id_ca_campeonato=" . $id_campeonato);
         $competidores = array();
         while ($competidor = $competidoresQuery->fetch_array()) {
             $competidores[] = $competidor;
         }
 
+        echo "<br><strong>".count($competidores)."</strong> competidores en el campeonato<br>";
+
         // --------------------------------- //
         // Cogemos las mangas del campeonato //
         // --------------------------------- //
-        $mangasQuery = $mysqli->query("SELECT id_ca_manga AS id, tipo, numero, estado FROM abc_57os_ca_campeonato_manga "
-            . "INNER JOIN abc_57os_ca_manga ON abc_57os_ca_manga.id = abc_57os_ca_campeonato_manga.id_ca_manga "
-            . "WHERE estado=1 AND id_ca_campeonato=" . $id_campeonato);
+        $mangasQuery = $mysqli->query("SELECT id_ca_manga AS id, tipo, numero, estado FROM " . $DB_PREFIJO . "ca_campeonato_manga "
+            . "INNER JOIN " . $DB_PREFIJO . "ca_manga ON " . $DB_PREFIJO . "ca_manga.id = " . $DB_PREFIJO . "ca_campeonato_manga.id_ca_manga "
+            . "WHERE id_ca_campeonato=" . $id_campeonato);
         $mangas = array();
         while ($manga = $mangasQuery->fetch_array()) {
             $id_manga = $manga['id'];
@@ -250,6 +250,7 @@ if ($campeonatos->num_rows > 0) {
             $mangas[] = $manga;
             // Actualiza el estado de la manga
             $mysqli2->query("UPDATE `web_manga` SET `estado` = '$estado_manga' WHERE `web_manga`.`id` = '$id_manga'");
+            echo "Actualizado estado de la manga $id_manga a $estado_manga<br>";
         }
 
         // Recorre los competidores
@@ -259,7 +260,6 @@ if ($campeonatos->num_rows > 0) {
                 //-----------------------------------------//
                 // Cogemos los tiempos de salida y llegada //
                 //-----------------------------------------//
-                $DB_PREFIJO = 'abc_57os_';
                 $SQL = "SELECT " . $DB_PREFIJO . "ca_tiempo.*, " . $DB_PREFIJO . "ca_manga_control_horario.descripcion as control_horario "
                     . "FROM " . $DB_PREFIJO . "ca_tiempo "
                     . " INNER JOIN " . $DB_PREFIJO . "ca_manga_control_horario ON " . $DB_PREFIJO . "ca_tiempo.id_ca_manga_control_horario = " . $DB_PREFIJO . "ca_manga_control_horario.id "
