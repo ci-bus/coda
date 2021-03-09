@@ -92,19 +92,19 @@ $_SESSION['inicio']=0;
                     </thead>
                     <tbody>
                       <?php
-						$sql=mysql_query("SELECT m.descripcion AS manga,m.id AS idmanga FROM abc_57os_ca_manga m
-						INNER JOIN abc_57os_ca_seccion s ON s.id = m.id_ca_seccion
-						INNER JOIN abc_57os_ca_etapa e ON e.id = s.id_ca_etapa
+						$sql=$mysqli2->query("SELECT m.descripcion AS manga,m.id AS idmanga FROM web_manga m
+						INNER JOIN web_seccion s ON s.id = m.id_ca_seccion
+						INNER JOIN web_etapa e ON e.id = s.id_ca_etapa
 						WHERE e.id_ca_carrera = '$id'");
-							if(mysql_num_rows($sql)==0)
+							if($sql->num_rows==0)
 								echo "<tr><td colspan='4'>No hay Mangas creadas</td></tr>";
 							else
 								{
-								while($fila=mysql_fetch_array($sql))
+								while($fila=$sql->fetch_array())
 									{
 									$idmanga = $fila['idmanga'];
 									$manga = $fila['manga'];	
-									echo "<tr><td><a href='../../paneles/panel_publico.php?idmanga=".$idmanga."&total=54' target='_blank'>".$manga."</a></td><td><a href='../../paneles/panel_publico_a.php?idmanga=".$idmanga."' target='_blank'>PANEL ACUMULADOS</a></td></tr>";
+									echo "<tr><td><a href='../../paneles/panel_publico.php?idmanga=".$idmanga."&total=30&id=".$id."' target='_blank'>".$manga."</a></td><td><a href='../../paneles/panel_publico_a.php?idmanga=".$idmanga."' target='_blank'>PANEL ACUMULADOS</a></td></tr>";
 									}
 								}
 					  ?>

@@ -94,7 +94,7 @@
 								<?php
 	$par=0;
 	$anoActual = date("Y");
-	$dbQuery = $mysqli2->query("SELECT temporada FROM web_pruebas WHERE temporada < '".$anoActual."' GROUP BY temporada ORDER BY temporada DESC");
+	$dbQuery = $mysqli2->query("SELECT temporada FROM web_pruebas_archivo WHERE temporada < '".$anoActual."' GROUP BY temporada ORDER BY temporada DESC");
 	if ($dbQuery == 0)
 		echo "<h2>No hay temporadas anteriores en el archivo.</h2>";
 	else{

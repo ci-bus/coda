@@ -3505,6 +3505,15 @@ body.mobile-nav-active #mobile-nav-toggle {
     background: #161616;
 }
 
+#tabla_tiempos_ancha {
+    width: 100%;
+}
+
+#tabla_tiempos_ancha th {
+    color: #EEE;
+    background: #161616;
+}
+
 #div_contenedor {
     overflow-x: scroll;
 }
@@ -3516,6 +3525,14 @@ body.mobile-nav-active #mobile-nav-toggle {
     .con {
         font-size: 11px;
     }
+    #tabla_tiempos {
+        width: 100%;
+        min-width: 450px;
+    }
+    #tabla_tiempos_ancha {
+        width: 100%;
+        min-width: 800px;
+    }
 }
 
 @media (min-width: 768px) {
@@ -3525,6 +3542,49 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .icono {
-    width: 25px;
-    position: absolute;
+    width: 12px;
+    position: relative;
+    float: right;
+    margin: 1px 29px 0 0px;
 }
+
+.fu1 {
+    font-size: 17px;
+    letter-spacing: 4px;
+}
+
+.mitooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+    /* If you want dots under the hoverable text */
+}
+
+
+/* Tooltip text */
+
+.mitooltip .mitooltiptext {
+    visibility: hidden;
+    min-width: 300px;
+    background-color: black;
+    color: #fff;
+    text-align: left;
+    padding: 5px 0;
+    border-radius: 6px;
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+
+/* Show the tooltip text when you mouse over the tooltip container */
+
+.mitooltip:hover .mitooltiptext {
+    visibility: visible;
+}
+
+
+/*
+p.fu1:first-letter {
+    font-size: 25px;
+}*/
