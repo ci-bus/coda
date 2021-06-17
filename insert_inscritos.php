@@ -70,13 +70,26 @@ if ($sql_etapa->num_rows > 0) {
                         //COMPROBAR SI EXISTE
                         $comprobar_manga = $mysqli2->query("SELECT id FROM web_manga WHERE id = '$id_manga'");
                         if ($comprobar_manga->num_rows > 0) {
-                            //EXISTE LA ACTUALIZAMOS
+                            //EXISTE LA ACTUALIZAMOS AUNQUE DE MOMENTO LO VOY A BORRAR que para el caso es lo mismo
+                            //$borrar_mangas = $mysqli2->query("DELETE FROM web_mangas WHERE id='$id_manga'");
                         } else {
                             //NO EXISTE REGISTRO, LO CREAMOS
                             $crear_mangas = $mysqli2->query("INSERT INTO web_manga (id,id_usuario,id_ca_seccion,descripcion,numero,longitud,tipo,hora_salida,estado,decimales)
                             VALUES('$id_manga','2','$id_seccion','$des_manga','$numero','$longitud','$tipo','$hora','$estado','$decimales')");
                         }
                         echo "<br>" . $id_manga . " MANGA: " . $des_manga;
+                        //COMPROBAR SI EXISTEN INTERMEDIOS///////
+                        $saber_inter = $mysqli->query("SELECT descripcion,orden FROM abc_57os_ca_manga_control_horario WHERE id_ca_manga = '$id_manga' AND orden!=5 AND orden!=10");
+                        $afectados_inter = $saber_inter->num_rows;
+                        if($afectados_inter>0){
+                            while($row4 = $saber_inter->fetch_array()){
+                                $orden_inter = $row4['orden'];
+                                $descripcion_inter = $row4['descripcion'];
+                                echo "<br>INTERMEDIO!!!!! -> : ".$descripcion_inter;
+                                $insertar_intermedio = $mysqli2->query("INSERT INTO web_manga_control_horario(id,id_usuario,descripcion,orden,id_ca_manga) VALUES('','1','$descripcion_inter','$orden_inter','$id_manga')");
+                            }
+                            echo "<hr>";
+                        }
                     }
                 } else
                     echo "NO EXISTEN MANGAS CREADAS";
@@ -95,6 +108,8 @@ INNER JOIN abc_57os_ca_campeonato_competidor cacom
 ON cacom.id_ca_campeonato = cam.id
 WHERE cam.id_ca_carrera = '$idCarrera'");
 if ($consulta_campeonatos->num_rows > 0) {
+    //EVITAR QUE DUPLIQUE LOS INSCRITOS A LOS CAMPEONATOS
+    $borrar_inscritos_para_no_cagarla = $mysqli2->query("DELETE FROM web_campeonatos_inscritos WHERE idcarrera='$idCarrera'");
     while ($row = $consulta_campeonatos->fetch_array()) {
         $nombre = $row['nombre'];
         $idcompetidor = $row['idcompetidor'];

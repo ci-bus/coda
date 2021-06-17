@@ -222,7 +222,7 @@ $sql = "SELECT descripcion,id FROM abc_57os_ca_etapa\n". "WHERE id_ca_carrera ='
 									$estado = $fila3['estado'];
 									$long = $fila3['longitud'];
 									$inter = $mysqli2->query("SELECT id FROM web_manga_control_horario WHERE id_ca_manga='$idmanga'");
-									if ($inter->num_rows > 2) {
+									if ($inter->num_rows > 0) {
 										echo '<tr class="manga ' . $classcss . '"><td class="man_pd">
 															<p><a href="manga_new.php?id=' . $idCarrera . '&idmanga=' . $idmanga . '">' . $descripcion . '</a></p>';
 										echo '<p class="margen_p_coches"><span class="span_coches">' . $porsalir . '<img src="img/coche2.png" width="30px" class="margen_coches"></span><span class="span_coches">' . $enpista . '<img src="img/coche3.png" width="30px" class="margen_coches"></span><span class="span_coches">' . $enmeta . '<img src="img/coche1.png" width="30px" class="margen_coches"></span><span class="span_coches">' . $abandonos . '<img src="img/coche4.png" width="30px" class="margen_coches"></span></p>';
@@ -248,6 +248,17 @@ $sql = "SELECT descripcion,id FROM abc_57os_ca_etapa\n". "WHERE id_ca_carrera ='
 		</table>
 		<br>
 		<br>
+		<?php
+		if ($idCarrera=='52'){
+		echo '<div class="section-top-border">';
+			echo '<h4 class="mb-30">TIEMPOS REGULARIDAD</h4>';
+			echo '<div class="progress-table-wrap">';
+				echo '<div class="progress-table">';
+					echo "<div class='table-row'><a href='http://html5.anube.es/?rally=rally2847&token=' target='_blank'>REGULARIDAD SPORT</a><div class='serial'></div><div class='country'></div></div>";
+					echo "<div class='table-row'><a href='http://html5.anube.es/?rally=rally2846&token=' target='_blank'>REGULARIDAD CLASICA</a><div class='serial'></div><div class='country'></div></div>";
+				echo "</div></div></div></section>";
+		}
+				?>
 		<div class="section-top-border">
 			<h4 class="mb-30">&Uacute;LTIMA HORA:</h4>
 			<div class="progress-table-wrap">

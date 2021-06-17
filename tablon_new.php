@@ -110,8 +110,8 @@
 						</div>
 					</div>
 				</div>
-				<a href="prueba_new.php?id=<?php echo $idCarrera; ?>&newBD=true" class="primary-btn text-uppercase">VOLVER</a>
-				<a href="acceso_new.php?id=<?php echo $idCarrera; ?>&newBD=true" class="primary-btn text-uppercase">ACCEDER</a>
+				<a href="prueba_new.php?id=<?php echo $idCarrera; ?>" class="primary-btn text-uppercase">VOLVER</a>
+				<a href="acceso_new.php?id=<?php echo $idCarrera; ?>" class="primary-btn text-uppercase">ACCEDER</a>
 			</div>
 		</section>
 		<div class="section-top-border">
@@ -120,7 +120,7 @@
 					<td class="eta_pd">DOCUMENTACI&Oacute;N PREVIA:</td>
 				</tr>
 				<?php
-				$info = $mysqli2->query("SELECT id,nombre,ruta FROM web_archivos
+				$info = $mysqli2->query("SELECT id,nombre,ruta,enlace FROM web_archivos
 						WHERE idcarrera='$idCarrera' AND tipo='previa' ORDER BY orden ASC");
 				if ($info->num_rows > 0) {
 					$par = 0;
@@ -133,7 +133,11 @@
 						$id_archivo = $fila['id'];
 						$titulo = $fila['nombre'];
 						$archivo = $fila['ruta'];
-						echo "<tr class='manga " . $classcss . "'><td class='man_pd'><a onClick='contador(" . $id_archivo . ")' href='pruebas/2021/50/" . $archivo . "' target='_blank'>" . $titulo . "</a></td></tr>";
+						$enlace = $fila['enlace'];
+						if ($enlace == 0)
+							echo "<tr class='manga " . $classcss . "'><td class='man_pd'><a onClick='contador(" . $id_archivo . ")' href='pruebas/2021/" . $idCarrera . "/" . $archivo . "' target='_blank'>" . $titulo . "</a></td></tr>";
+						else
+							echo "<tr class='manga " . $classcss . "'><td class='man_pd'><a onClick='contador(" . $id_archivo . ")' href='" . $archivo . "' target='_blank'>" . $titulo . "</a></td></tr>";
 						$par++;
 					}
 				} else
@@ -148,7 +152,7 @@
 					<td class="eta_pd">DOCUMENTACI&Oacute;N DE CARRERA:</td>
 				</tr>
 				<?php
-				$info = $mysqli2->query("SELECT id,nombre,ruta FROM web_archivos
+				$info = $mysqli2->query("SELECT id,nombre,ruta,enlace FROM web_archivos
 						WHERE idcarrera='$idCarrera' AND tipo='carrera' ORDER BY orden ASC");
 				if ($info->num_rows > 0) {
 					$par = 0;
@@ -161,7 +165,11 @@
 						$id_archivo = $fila['id'];
 						$titulo = $fila['nombre'];
 						$archivo = $fila['ruta'];
-						echo "<tr class='manga " . $classcss . "'><td class='man_pd'><a onClick='contador(" . $id_archivo . ")' href='pruebas/2021/50/" . $archivo . "' target='_blank'>" . $titulo . "</a></td></tr>";
+						$enlace = $fila['enlace'];
+						if ($enlace == 0)
+							echo "<tr class='manga " . $classcss . "'><td class='man_pd'><a onClick='contador(" . $id_archivo . ")' href='pruebas/2021/" . $idCarrera . "/" . $archivo . "' target='_blank'>" . $titulo . "</a></td></tr>";
+						else
+							echo "<tr class='manga " . $classcss . "'><td class='man_pd'><a onClick='contador(" . $id_archivo . ")' href='" . $archivo . "' target='_blank'>" . $titulo . "</a></td></tr>";
 						$par++;
 					}
 				} else
@@ -189,7 +197,7 @@
 						$id_archivo = $fila['id'];
 						$titulo = $fila['nombre'];
 						$archivo = $fila['ruta'];
-						echo "<tr class='manga " . $classcss . "'><td class='man_pd'><a onClick='contador(" . $id_archivo . ")' href='pruebas/2021/50/" . $archivo . "' target='_blank'>" . $titulo . "</a></td></tr>";
+						echo "<tr class='manga " . $classcss . "'><td class='man_pd'><a onClick='contador(" . $id_archivo . ")' href='pruebas/2021/" . $idCarrera . "/" . $archivo . "' target='_blank'>" . $titulo . "</a></td></tr>";
 						$par++;
 					}
 				} else
@@ -204,7 +212,7 @@
 					<td class="eta_pd">DOCUMENTACI&Oacute;N DIRECCI&Oacute;N DE CARRERA:</td>
 				</tr>
 				<?php
-				$info = $mysqli2->query("SELECT id,nombre,ruta FROM web_archivos
+				$info = $mysqli2->query("SELECT id,nombre,ruta,enlace FROM web_archivos
 						WHERE idcarrera='$idCarrera' AND tipo='direccion' ORDER BY orden ASC");
 				if ($info->num_rows > 0) {
 					$par = 0;
@@ -217,7 +225,7 @@
 						$id_archivo = $fila['id'];
 						$titulo = $fila['nombre'];
 						$archivo = $fila['ruta'];
-						echo "<tr class='manga " . $classcss . "'><td class='man_pd'><a onClick='contador(" . $id_archivo . ")' href='pruebas/2021/50/" . $archivo . "' target='_blank'>" . $titulo . "</a></td></tr>";
+						echo "<tr class='manga " . $classcss . "'><td class='man_pd'><a onClick='contador(" . $id_archivo . ")' href='pruebas/2021/" . $idCarrera . "/" . $archivo . "' target='_blank'>" . $titulo . "</a></td></tr>";
 						$par++;
 					}
 				} else

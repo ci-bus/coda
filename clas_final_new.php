@@ -5,12 +5,13 @@ if (isset($_GET["id"])) {
 	include("conexion.php");
 	//include("escudos.php");
 	include("includes/funciones.php");
-	$dbQuery = "SELECT titulo,fecha_larga FROM web_pruebas WHERE idcarrera = '$idCarrera'";
+	$dbQuery = "SELECT titulo,fecha_larga,modo_tiempos FROM web_pruebas WHERE idcarrera = '$idCarrera'";
 	$resultado = $mysqli2->query($dbQuery) or print "No se pudo acceder al contenido.";
 	if ($resultado->num_rows > 0) {
 		while ($row = $resultado->fetch_array()) {
 			$titulo = $row['titulo'];
 			$fecha = $row['fecha_larga'];
+			$modo_tiempos = $row['modo_tiempos'];
 		}
 	}
 }
@@ -132,19 +133,19 @@ $tipo_prueba = $row['tipo_tiempo'];
 					}
 					echo "</form></table>";
 					echo "<hr><br>";
-					echo "<p>CLASIFICACI&Oacute;N FINAL: </p>";
-					switch ($tipo_prueba) {
+					echo "<p>CLASIFICACI&Oacute;N FINAL: (".$modo_tiempos.") </p>";
+					switch ($modo_tiempos) {
 						case 0: //SUMA TODAS MANGAS OFICIALES
 							include("clas_final_tipo3.php");
 							break;
 						case 1:
-							include("clas_final_tipo1.php");
+							include("clas_final_tipo3.php");
 							break;
 						case 2: // SUMA 2 MEJORES MANGAS OFICIALES
 							include("clas_final_tipo2.php");
 							break;
 						case 3:
-							include("clas_final_tipo3.php");
+							include("clas_final_tipo2.php");
 							break;
 						case 4:
 							include("clas_final_tipo4.php");
