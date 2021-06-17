@@ -14,10 +14,14 @@ if (isset($_GET["id"])) {
 		}
 	}
 }
-$modo_tiempo = $mysqli2->query("SELECT tiempo_tipo FROM web_campeonatos WHERE idcarrera = '$idCarrera'");
+if (isset($_GET["copa"]))
+	$copa = $_GET["copa"];
+else
+	$copa = '0';
+$modo_tiempo = $mysqli2->query("SELECT tipo_tiempo FROM web_campeonatos WHERE idcarrera = '$idCarrera'");
 if ($modo_tiempo->num_rows > 0)
 	$row = $modo_tiempo->fetch_array();
-$tipo_prueba = $row['tiempo_tipo'];
+$tipo_prueba = $row['tipo_tiempo'];
 ?>
 <!DOCTYPE html>
 <html lang="zxx" class="no-js">
@@ -99,7 +103,7 @@ $tipo_prueba = $row['tiempo_tipo'];
 					</div>
 				</div>
 			</div>
-			<a href="tiempos_new.php?id=<?php echo $idCarrera; ?>&" class="primary-btn text-uppercase selected">VOLVER</a>
+			<a href="tiempos_new.php?id=<?php echo $idCarrera; ?>" class="primary-btn text-uppercase selected">VOLVER</a>
 		</div>
 	</section>
 	<div class="section-top-border">
@@ -107,10 +111,8 @@ $tipo_prueba = $row['tiempo_tipo'];
 			<form>
 				<tr>
 					<?php
-					echo "<td>COPAS:</td><td><select name='copas' onchange='surfto2(this.form)'>";
-					$FiltroCopa = "SELECT c.descripcion,c.id FROM web_copas c 
-INNER JOIN web_campeonatos ca ON c.id = ca.id 
-WHERE ca.idcarrera='$idCarrera'";
+					echo "<td>COPAS:</td><td><select name='copas' onchange='surfto(this.form)'>";
+					$FiltroCopa = "SELECT descripcion,id FROM web_copas WHERE idcarrera='$idCarrera'";
 
 					$copas = $mysqli2->query($FiltroCopa);
 					if ($copa == '0') {
@@ -130,15 +132,15 @@ WHERE ca.idcarrera='$idCarrera'";
 					}
 					echo "</form></table>";
 					echo "<hr><br>";
-					echo "<p>CLASIFICACI&Oacute;N FINAL:" . $tipo_prueba . "</p>";
+					echo "<p>CLASIFICACI&Oacute;N FINAL: </p>";
 					switch ($tipo_prueba) {
-						case 0:
+						case 0: //SUMA TODAS MANGAS OFICIALES
 							include("clas_final_tipo3.php");
 							break;
 						case 1:
 							include("clas_final_tipo1.php");
 							break;
-						case 2:
+						case 2: // SUMA 2 MEJORES MANGAS OFICIALES
 							include("clas_final_tipo2.php");
 							break;
 						case 3:
