@@ -121,6 +121,9 @@
 			elseif(stristr($cadena, 'sher') == TRUE ){
 				return "<img src='img/escudos/sherco.png' width='35px' class='esc1'>";
 			}
+			elseif(stristr($cadena, 'lancia') == TRUE ){
+				return "<img src='img/escudos/lancia.png' width='35px' class='esc1'>";
+			}
 			elseif(stristr($cadena, 'beta') == TRUE ){
 				return "<img src='img/escudos/beta.png' width='35px' class='esc1'>";
 			}
@@ -132,6 +135,9 @@
 			}
 			elseif(stristr($cadena, 'mazda') == TRUE ){
 				return "<img src='img/escudos/mazda.png' width='35px' class='esc1'>";
+			}
+			elseif(stristr($cadena, 'ginetta') == TRUE ){
+				return "<img src='img/escudos/ginetta.png' width='35px' class='esc1'>";
 			}
 			else{
 				return "<img src='img/escudos/coche.png' width='30px'>";

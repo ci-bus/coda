@@ -5,6 +5,7 @@ if (isset($_GET["id"])) {
 	include("conexion.php");
 	include("escudos.php");
 	include("includes/funciones.php");
+	include("includes/funcionesTiempos.php");
 	$dbQuery = "SELECT titulo,fecha_larga FROM web_pruebas WHERE idcarrera = '$idCarrera'";
 	$resultado = $mysqli2->query($dbQuery) or print "No se pudo acceder al contenido.";
 	if ($resultado->num_rows > 0) {
@@ -97,69 +98,93 @@ if (isset($_GET["id"])) {
 	</section>
 	<div class="section-top-border">
 		<?php
-		$pen = $mysqli2->query("SELECT inscritos.piloto,inscritos.copiloto,tiempos.t_t,tiempos.penalizacion,inscritos.vehiculo,inscritos.concursante,inscritos.dorsal,inscritos.modelo,inscritos.grupo,
+		/*$pen = $mysqli2->query("SELECT inscritos.piloto,inscritos.copiloto,tiempos.t_t,SUM(tiempos.penalizacion) AS penalizacion,inscritos.vehiculo,inscritos.concursante,
+		inscritos.dorsal AS dorsal,inscritos.modelo,inscritos.grupo,
 		inscritos.clase,inscritos.agrupacion,inscritos.categoria,inscritos.nac_piloto,inscritos.nac_copiloto,inscritos.nac_competidor
 		FROM web_inscritos inscritos
 	INNER JOIN web_tiempos tiempos ON tiempos.idinscrito = inscritos.idinscrito
-	WHERE tiempos.idcarrera='$idCarrera' AND tiempos.penalizacion>0");
+	WHERE tiempos.idcarrera='$idCarrera' AND tiempos.penalizacion!=0
+	GROUP BY dorsal");*/
+	$pen = $mysqli->query("SELECT penalizacion.motivo,penalizacion.tiempo,penalizacion.control,piloto.nombre AS piloto,copiloto.nombre AS copiloto,
+	concursante.nombre AS concursante, competidor.dorsal,vehiculo.marca AS vehiculo
+	FROM abc_57os_ca_penalizacion penalizacion
+	INNER JOIN abc_57os_ca_competidor competidor ON competidor.id=penalizacion.id_ca_competidor
+	INNER JOIN abc_57os_ca_piloto piloto ON piloto.id = competidor.id_ca_piloto
+	INNER JOIN abc_57os_ca_copiloto copiloto ON copiloto.id = competidor.id_ca_copiloto
+	INNER JOIN abc_57os_ca_concursante concursante ON concursante.id = competidor.id_ca_concursante
+	INNER JOIN abc_57os_ca_vehiculo vehiculo ON vehiculo.id = competidor.id_Ca_vehiculo
+	WHERE penalizacion.id_ca_carrera='$idCarrera'
+	ORDER BY competidor.dorsal ASC");
 		?>
-		<table width="100%" border="0" id="tab_tem">
-			<thead>
-				<tr>
-					<th>dorsal</th>
-					<th>Concursante</th>
-					<th>Equipo</th>
-					<th colspan="2">Vehiculo</th>
-					<th>MOTIVO</th>
-					<th>TIEMPO</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php
-				if ($pen->num_rows > 0) {
-					while ($fila = $pen->fetch_array()) {
-						$dorsal = $fila['dorsal'];
-						$motivo = $fila['motivo'];
-						$concursante = $fila['concursante'];
-						$piloto = $fila['piloto'];
-						$copiloto = $fila['copiloto'];
-						$marca = $fila['vehiculo'];
-						$modelo = $fila['modelo'];
+		<div id="div_contenedor">
+			<table id="tabla_tiempos_ancha">
+				<thead>
+					<tr>
+						<th>N.</th>
+						<th>Concursante<img src='img/tactil.png' class='icono' name='tactil'></th>
+						<th>Equipo</th>
+						<th colspan="2" class="centro">
+							<p>Vehiculo</p>
+							<p class="mini1 nomargen">Grupo/clase</p>
+							<p class="mini1 nomargen">Cat./Agr.</p>
+						</th>
+						<th>MOTIVO</th>
+						<th>TIEMPO</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+					if ($pen->num_rows > 0) {
+						while ($fila = $pen->fetch_array()) {
+							$dorsal = $fila['dorsal'];
+							$motivo = $fila['motivo'];
+							$concursante = $fila['concursante'];
+							$piloto = $fila['piloto'];
+							$copiloto = $fila['copiloto'];
+							$marca = $fila['vehiculo'];
+							$modelo = $fila['modelo'];
+							$tiempo = milisegundos_a_tiempo(segundos_a_milisegundos($fila['tiempo']));
+							$grupo = $fila['grupo'];
+							$clase = $fila['clase'];
+							$agr = $fila['agrupacion'];
+							$cat = $fila['categoria'];
+							$clases = $grupo . "/" . $clase . "<br>" . $cat . "/" . $agr;
 
-						$con_nac = $fila['nac_competidor'];
-						$con_nacs = explode("/", $con_nac);
-						$con_nac1 = bandera($con_nacs[0]);
-						$con_nac2 = bandera($con_nacs[1]);
+							$con_nac = $fila['nac_competidor'];
+							$con_nacs = explode("/", $con_nac);
+							$con_nac1 = bandera($con_nacs[0]);
+							$con_nac2 = bandera($con_nacs[1]);
 
-						$pi_nac = $fila['nac_piloto'];
-						$pi_nacs = explode('/', $pi_nac);
-						$pi_nac1 = bandera($pi_nacs[0]);
-						$pi_nac2 = bandera($pi_nacs[1]);
+							$pi_nac = $fila['nac_piloto'];
+							$pi_nacs = explode('/', $pi_nac);
+							$pi_nac1 = bandera($pi_nacs[0]);
+							$pi_nac2 = bandera($pi_nacs[1]);
 
-						$copi_nac = $fila['nac_copiloto'];
-						$copi_nacs = explode('/', $copi_nac);
-						$copi_nac1 = bandera($copi_nacs[0]);
-						$copi_nac2 = bandera($copi_nacs[1]);
-						if ($par % 2 == 0)
-							$classcss = "filapar";
-						else
-							$classcss = "filaimpar";
-						echo "<tr class='" . $classcss . "'><td class='dor negrita'>" . $dorsal . "</td><td class='con'>" . $concursante . "</td>";
-						if ($copiloto == '' || $copiloto == '0')
-							echo "<td>" . $piloto . "</td>";
-						else {
-							echo '<td><img class="banderas" src="' . $pi_nac1 . '"><img class="banderas" src="' . $pi_nac2 . '">' . $piloto;
-							echo '<br><img class="banderas" src="' . $copi_nac1 . '"><img class="banderas" src="' . $copi_nac2 . '">' . $copiloto . '</td>';
+							$copi_nac = $fila['nac_copiloto'];
+							$copi_nacs = explode('/', $copi_nac);
+							$copi_nac1 = bandera($copi_nacs[0]);
+							$copi_nac2 = bandera($copi_nacs[1]);
+							if ($par % 2 == 0)
+								$classcss = "filapar";
+							else
+								$classcss = "filaimpar";
+							echo "<tr class='" . $classcss . "'><td class='dor negrita'>" . $dorsal . "</td><td>" . $concursante . "</td>";
+							if ($copiloto == '' || $copiloto == '0')
+								echo "<td>" . $piloto . "</td>";
+							else {
+								echo '<td class="con"><img class="banderas" src="' . $pi_nac1 . '"><img class="banderas" src="' . $pi_nac2 . '">' . $piloto;
+								echo '<br><img class="banderas" src="' . $copi_nac1 . '"><img class="banderas" src="' . $copi_nac2 . '">' . $copiloto . '</td>';
+							}
+							echo "<td>" . escudo($marca) . "</td><td class='centro veh'>" . $marca . " " . $modelo . "<br>" . $clases . "</td>";
+							echo "<td class='centro'>" . $motivo . "</td><td class='penalizaciones veh'>" . $tiempo . "</td></tr>";
+							$par++;
 						}
-						echo "<td>" . escudo($vehiculo) . "</td><td class='centro'>" . $marca . "<br>" . $modelo . "</td>";
-						echo "<td class='centro'>" . $motivo . "</td><td>" . $tiempo . "</td></tr>";
-						$par++;
-					}
-				} //IF
-				else
-					echo "<tr><td colspan='7'>No existen Penalizaciones en esta carrera</td></tr>";
-				?>
-		</table>
+					} //IF
+					else
+						echo "<tr><td colspan='7'>No existen Penalizaciones en esta carrera</td></tr>";
+					?>
+			</table>
+		</div>
 	</div>
 	<footer class="footer-area section-gap">
 		<?php

@@ -99,17 +99,17 @@ include("../../conexion.php");
                     </thead>
                     <tbody>
                       <?php
-						$sql=mysql_query("SELECT wd.id_direccion,wd.id_prueba,wd.inicio,wd.fin,wd.pass,c.nombre FROM web_direccion wd
-						INNER JOIN abc_57os_ca_carrera c ON c.id=wd.id_prueba");
-							if(mysql_num_rows($sql)==0)
-								echo "<tr><td colspan='4'>No hay eventos en el home</td></tr>";
+						$sql=$mysqli2->query("SELECT wd.id,wd.idcarrera,wd.pass,wd.inicio,wd.fin,c.titulo FROM web_direccion wd
+						INNER JOIN web_pruebas c ON c.idcarrera=wd.idcarrera");
+							if($sql->num_rows==0)
+								echo "<tr><td colspan='4'>No ninguna Direccion de Carrera Creada</td></tr>";
 							else
 								{
-								while($fila=mysql_fetch_array($sql))
+								while($fila=$sql->fetch_array())
 									{
-									$id_direccion = $fila['id_direccion'];	
+									$id_direccion = $fila['id'];	
 									$prueba = $fila['id_prueba'];	
-									$nombre = $fila['nombre'];	
+									$nombre = $fila['titulo'];	
 									$inicio = $fila['inicio'];	
 									$fin = $fila['fin'];								
 									$pass = $fila['pass'];

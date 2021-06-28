@@ -52,6 +52,9 @@ if (isset($_GET["id"])) {
 	<link rel="stylesheet" href="css/magnific-popup.css">
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<link rel="stylesheet" href="css/main.css">
+	<script>
+		//setTimeout(function(){ document.tactil.style.display = 'none'; }, 2000);
+	</script>
 </head>
 
 <body>
@@ -103,7 +106,7 @@ if (isset($_GET["id"])) {
 				</div>
 			</div>
 			<?php
-				include("menu_pruebas.php");
+			include("menu_pruebas.php");
 			?>
 		</div>
 	</section>
@@ -111,97 +114,100 @@ if (isset($_GET["id"])) {
 		<?php
 		$sql = "SELECT dorsal,idinscrito,concursante,piloto,copiloto,nac_competidor,nac_piloto,nac_copiloto,vehiculo,modelo,cc,cc_turbo,grupo,clase,categoria,agrupacion
 				FROM web_inscritos 
-				WHERE idcarrera='$idCarrera' AND excluido=0 ORDER BY dorsal ASC";
+				WHERE idcarrera='$idCarrera' AND excluido=0 ORDER BY dorsal +0 ASC";
 
 		$resultado = $mysqli2->query($sql) or print "No se pudo acceder al contenido de los tiempos online.";
 		?>
-		<table width="100%" border="0" id="tab_tem">
-			<thead>
-				<tr>
-					<th>N.</th>
-					<th>Concursante</th>
-					<th>Equipo</th>
-					<th class="centro" colspan="2">Vehiculo</th>
-					<th class="centro">C.C</th>
-					<th>Camp.</th>
-					<th class="centro">Cat</th>
-					<th class="centro">Grupo</th>
-					<th class="centro">Clase</th>
-					<th class="centro">Agru.</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php
-				if ($resultado->num_rows > 0) {
-					$pos = 1;
-					$par = 0;
-					while ($fila = $resultado->fetch_array()) {
-						if ($par % 2 == 0)
-							$classcss = "filapar";
-						else
-							$classcss = "filaimpar";
-						$idinscrito = $fila['idinscrito'];
-						$campeonato='';
-						$saber_campeonatos = $mysqli2->query("SELECT cam.nombre AS nombre FROM web_campeonatos cam 
+		<div id="div_contenedor">
+			<table id="tabla_tiempos_ancha">
+				<thead>
+					<tr>
+						<th>N.</th>
+						<th>Concursante<img src='img/tactil.png' class='icono' name='tactil'></th>
+						<th>Equipo</th>
+						<th colspan="2" class="centro">Vehiculo</th>
+						<!--th>Camp.</th-->
+						<th class="centro">Cat</th>
+						<th class="centro">Grupo</th>
+						<th class="centro">C.C</th>
+						<th class="centro">Clase</th>
+						<th class="centro">Agru.</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+					if ($resultado->num_rows > 0) {
+						$pos = 1;
+						$par = 0;
+						while ($fila = $resultado->fetch_array()) {
+							if ($par % 2 == 0)
+								$classcss = "filapar";
+							else
+								$classcss = "filaimpar";
+							$idinscrito = $fila['idinscrito'];
+							$campeonato = '';
+							$saber_campeonatos = $mysqli2->query("SELECT cam.nombre AS nombre FROM web_campeonatos cam 
 						INNER JOIN web_campeonatos_inscritos ci ON ci.idcampeonato=cam.id
 						WHERE ci.idinscrito='$idinscrito'");
-						while($row=$saber_campeonatos->fetch_array()){
-							$campeonato.=$row['nombre']."<br>";
+							while ($row = $saber_campeonatos->fetch_array()) {
+								$campeonato .= $row['nombre'] . "<br>";
+							}
+							$dorsal = $fila['dorsal'];
+							$competidor = $fila['concursante'];
+							//$cc = $fila['cc'];
+							$cc_turbo = $fila['cc_turbo'];
+							$agr = $fila['agrupacion'];
+							$cat = $fila['categoria'];
+							$piloto = $fila['piloto'];
+							$copiloto = $fila['copiloto'];
+							$vehiculo = $fila['vehiculo'];
+							$modelo = $fila['modelo'];
+							$grupo = $fila['grupo'];
+							$clase = $fila['clase'];
+							$con_nac = $fila['nac_competidor'];
+
+							$con_nac = explode("/", $con_nac);
+							$con_nac1 = bandera($con_nac[0]);
+							$con_nac2 = bandera($con_nac[1]);
+
+							$pi_nac = $fila['nac_piloto'];
+							$pi_nacs = explode('/', $pi_nac);
+							$pi_nac1 = bandera($pi_nacs[0]);
+							$pi_nac2 = bandera($pi_nacs[1]);
+
+							$copi_nac = $fila['nac_copiloto'];
+							$copi_nacs = explode('/', $copi_nac);
+							$copi_nac1 = bandera($copi_nacs[0]);
+							$copi_nac2 = bandera($copi_nacs[1]);
+
+							$h_salida = $fila['hora_salida'];
+							$idcompetidor = $fila['idinscrito'];
+							if ($h_salida == '')
+								$h_salida = "---";
+							echo "<tr class='" . $classcss . "'><td class='dor negrita'>" . $dorsal . "</td><td><img class='banderas' src='" . $con_nac1 . "'><img class='banderas' src='" . $con_nac2 . "'>" . $competidor . "</td>";
+							if ($copiloto == '' || $copiloto == '0')
+								echo "<td class='con'>" . $piloto . "</td>";
+							else {
+								echo '<td class="con"><img class="banderas" src="' . $pi_nac1 . '"><img class="banderas" src="' . $pi_nac2 . '">' . $piloto;
+								echo '<br><img class="banderas" src="' . $copi_nac1 . '"><img class="banderas" src="' . $copi_nac2 . '">' . $copiloto . '</td>';
+							}
+							echo "<td>" . escudo($vehiculo) . "</td><td class='centro'>" . $vehiculo . "<br>" . $modelo . "</td><td>" . $cat . "</td><td class='centro'>" . $grupo . "</td><td class='centro'>" . $cc_turbo . "</td><td class='centro'>" . $clase . "</td><td>" . $agr . "</td></tr>";
+
+							$pos++;
+							$par++;
 						}
-						$dorsal = $fila['dorsal'];
-						$competidor = $fila['concursante'];
-						//$cc = $fila['cc'];
-						$cc_turbo = $fila['cc_turbo'];
-						$agr = $fila['agrupacion'];
-						$cat = $fila['categoria'];
-						$piloto = $fila['piloto'];
-						$copiloto = $fila['copiloto'];
-						$vehiculo = $fila['vehiculo'];
-						$modelo = $fila['modelo'];
-						$grupo = $fila['grupo'];
-						$clase = $fila['clase'];
-						$con_nac = $fila['con_nac'];
-						$con_nac = explode("/", $con_nac);
-						$con_nac1 = bandera($con_nac[0]);
-						$con_nac2 = bandera($con_nac[1]);
-
-						$pi_nac = $fila['nac_piloto'];
-						$pi_nacs = explode('/', $pi_nac);
-						$pi_nac1 = bandera($pi_nacs[0]);
-						$pi_nac2 = bandera($pi_nacs[1]);
-
-						$copi_nac = $fila['nac_copiloto'];
-						$copi_nacs = explode('/', $copi_nac);
-						$copi_nac1 = bandera($copi_nacs[0]);
-						$copi_nac2 = bandera($copi_nacs[1]);
-						
-						$h_salida = $fila['hora_salida'];
-						$idcompetidor = $fila['idinscrito'];
-						if ($h_salida == '')
-							$h_salida = "---";
-						echo "<tr class='" . $classcss . "'><td class='dor negrita'>" . $dorsal . "</td><td>" . $competidor . "</td>";
-						if ($copiloto == '' || $copiloto == '0')
-							echo "<td class='con'>" . $piloto . "</td>";
-						else {
-							echo '<td class="con"><img class="banderas" src="' . $pi_nac1 . '"><img class="banderas" src="' . $pi_nac2 . '">' . $piloto;
-							echo '<br><img class="banderas" src="' . $copi_nac1 . '"><img class="banderas" src="' . $copi_nac2 . '">' . $copiloto . '</td>';
-						}
-						echo "<td>".escudo($vehiculo)."</td><td class='centro'>" . $vehiculo . "<br>" . $modelo . "</td><td class='centro'>" . $cc_turbo . "</td><td>".$campeonato."</td><td>".$cat."</td><td>".$grupo."</td><td>".$clase."</td><td>".$agr."</td></tr>";
-
-						$pos++;
-						$par++;
-					}
-				} else
-					echo "No existe lista de inscritos...";
+					} else
+						echo "No existe lista de inscritos...";
 
 
-				?>
-		</table>
+					?>
+			</table>
+		</div>
 	</div>
 	<footer class="footer-area section-gap">
-	<?php
-			include("footer.php");
-			?>
+		<?php
+		include("footer.php");
+		?>
 	</footer>
 	<!-- End footer Area -->
 

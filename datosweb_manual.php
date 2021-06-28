@@ -202,11 +202,17 @@ if ($campeonatos->num_rows > 0) {
         // --------------------------------------- //
         // Cogemos los competidores del campeonato //
         // --------------------------------------- //
-        $competidoresQuery = $mysqli->query("SELECT id_ca_competidor AS id, dorsal FROM " . $DB_PREFIJO . "ca_campeonato_competidor WHERE id_ca_campeonato=" . $id_campeonato);
+        $competidoresQuery = $mysqli->query("SELECT id_ca_competidor AS id FROM " . $DB_PREFIJO . "ca_campeonato_competidor WHERE id_ca_campeonato=" . $id_campeonato);
         $competidores = array();
-        while ($competidor = $competidoresQuery->fetch_array()) {
-            $competidores[] = $competidor;
+        if ($competidoresQuery) {
+            while ($competidor = $competidoresQuery->fetch_array()) {
+                $competidores[] = $competidor;
+            }
+        } else {
+            echo "<hr>ERROR EN SQL: SELECT id_ca_competidor AS id FROM " . $DB_PREFIJO . "ca_campeonato_competidor WHERE id_ca_campeonato=" . $id_campeonato . "<hr>";
+            die($mysqli->error);
         }
+        
 
         echo "<br><strong>".count($competidores)."</strong> competidores en el campeonato<br>";
 
@@ -217,14 +223,22 @@ if ($campeonatos->num_rows > 0) {
             . "INNER JOIN " . $DB_PREFIJO . "ca_manga ON " . $DB_PREFIJO . "ca_manga.id = " . $DB_PREFIJO . "ca_campeonato_manga.id_ca_manga "
             . "WHERE id_ca_campeonato=" . $id_campeonato);
         $mangas = array();
-        while ($manga = $mangasQuery->fetch_array()) {
-            $id_manga = $manga['id'];
-            $estado_manga = $manga['estado'];
-            $mangas[] = $manga;
-            // Actualiza el estado de la manga
-            $mysqli2->query("UPDATE `web_manga` SET `estado` = '$estado_manga' WHERE `web_manga`.`id` = '$id_manga'");
-            echo "Actualizado estado de la manga $id_manga a $estado_manga<br>";
+        if ($mangasQuery) {
+            while ($manga = $mangasQuery->fetch_array()) {
+                $id_manga = $manga['id'];
+                $estado_manga = $manga['estado'];
+                $mangas[] = $manga;
+                // Actualiza el estado de la manga
+                $mysqli2->query("UPDATE `web_manga` SET `estado` = '$estado_manga' WHERE `web_manga`.`id` = '$id_manga'");
+                echo "<br>Actualizado estado de la manga $id_manga a $estado_manga<br>";
+            }
+        } else {
+            echo "<hr>ERROR EN SQL: SELECT id_ca_manga AS id, tipo, numero, estado FROM " . $DB_PREFIJO . "ca_campeonato_manga "
+            . "INNER JOIN " . $DB_PREFIJO . "ca_manga ON " . $DB_PREFIJO . "ca_manga.id = " . $DB_PREFIJO . "ca_campeonato_manga.id_ca_manga "
+            . "WHERE id_ca_campeonato=" . $id_campeonato . "<hr>";
+            die($mysqli->error);
         }
+        
 
         // Recorre los competidores
         foreach ($competidores as $competidor) {
@@ -276,7 +290,7 @@ if ($campeonatos->num_rows > 0) {
                         $penal += $penalizacion['tiempo'];
                     }
                     if ($penal > 0) {
-                        echo "<hr>Penalización de $penal segundos para el dorsal ".$competidor['dorsal']."<hr>";
+                        echo "<hr>Penalización de $penal segundos para el dorsal ".$competidor['id']."<hr>";
                     }
                     //FALTABA SUMAR SUS PENALIZACIONES EN MILISEGUNDOS
                     $t_t += segundos_a_milisegundos($penal);
@@ -285,7 +299,7 @@ if ($campeonatos->num_rows > 0) {
                     // $idtiempos esta repe asi que como es valor Auto Increment lo dejo en blanco
                     $SQL = "INSERT INTO `web_tiempos` (`idtiempos`, `idmanga`, `h_s`, `h_l`, `idcarrera`, `t_t`, `penalizacion`, `idinscrito`, `num_manga`, `tipo_manga`, `idcampeonato`) "
                     ." VALUES ('', '$idmanga', '$h_s', '$h_l', '$idcarrera', '$t_t', '$penal', '".$competidor['id']."', '$num_manga', '$tipo_manga', '$idcampeonato')";
-                    echo "<br>Insertado tiempo $t_t para el dorsal ".$competidor['dorsal']."<br>";
+                    echo "<br>Insertado tiempo $t_t para el dorsal ".$competidor['id']."<br>";
                     $mysqli2->query($SQL);
                 }
             }

@@ -1,4 +1,11 @@
 <?php
+function decimales($t_t,$decimales){
+	if($decimales==1){
+		$t_t = substr($t_t,0,-2);
+		$t_t .= "00";
+	}
+	return $t_t;
+}
 	function cortarFrase($frase, $maxPalabras = 1, $noTerminales = ["de"]) {
 	  $palabras = explode(" ", $frase);
 	  $numPalabras = count($palabras);
@@ -57,4 +64,3 @@
 		$segundos = $segundos*1000;
 		return $segundos;
 	}
-?>

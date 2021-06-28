@@ -28,8 +28,8 @@
 		$id = $_GET['id'];
 		$archivo = $_GET['archivo'];
 		unlink("slider/$archivo");
-$sql = mysql_query("DELETE FROM web_imagenes WHERE id='$id' AND tipo=1");
-echo '<META HTTP-EQUIV=Refresh CONTENT="0; URL=slider.php?activo=slider&newBD=true">';
+$sql = $mysqli2->query("DELETE FROM web_imagenes WHERE id='$id' AND tipo=1");
+echo '<META HTTP-EQUIV=Refresh CONTENT="0; URL=slider.php?activo=slider">';
 	?>
     </div>
     <div class="main-panel">

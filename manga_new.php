@@ -1,10 +1,10 @@
 <?php
 $DB_PREFIJO = "abc_57os_";
-if (isset($_GET["idmanga"]) && isset($_GET["id"]) && isset($_GET["idseccion"]) && isset($_GET['idetapa'])) {
+if (isset($_GET["idmanga"]) && isset($_GET["id"])) {
     $idManga = $_GET["idmanga"];
     $idCarrera = $_GET["id"];
-    $idseccion = $_GET["idseccion"];
-    $idetapa = $_GET["idetapa"];
+    //$idseccion = $_GET["idseccion"];
+    //$idetapa = $_GET["idetapa"];
 }
 if (isset($_GET["campeonato"])) {
     $campeonato = $_GET["campeonato"];
@@ -23,15 +23,33 @@ if (isset($_GET["id"])) {
     //include("escudos.php");
     //include("includes/funciones.php");
     $DB_PREFIJO = "abc_57os_";
-    $dbQuery = "SELECT titulo,fecha_larga FROM web_pruebas WHERE idcarrera = '$idCarrera'";
+    $dbQuery = "SELECT titulo,fecha_larga,modo_tiempos FROM web_pruebas WHERE idcarrera = '$idCarrera'";
     $resultado = $mysqli2->query($dbQuery) or print "No se pudo acceder al contenido.";
     if ($resultado->num_rows > 0) {
         while ($row = $resultado->fetch_array()) {
             $titulo = $row['titulo'];
             $fecha = $row['fecha_larga'];
+            $modo_tiempos = $row['modo_tiempos'];
         }
     }
 }
+//////////////////////////////////ESTO ES NUEVO, PARA SELECCIONAR EL MODO DE MOSTRAR TIEMPOS/////////////////////////////////////
+switch ($modo_tiempos) {
+    case 0:
+        $miurl = "mangas_recarga_new.php";
+        break;
+    case 1:
+        $miurl = "mangas_recarga_new.php";
+        break;
+    case 2:
+        $miurl = "mangas_recarga_new.php";
+        break;
+    case 3:
+        $miurl = "mangas_recarga2_new.php";
+        break;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*ESTE MODO TIEMPOS LO QUITARE XQ YA CAPTURO EN LA PRUEBA NO EN CAMPEONATO Y QUITAR LA RECARGA DE 460 EN REFreSH*/
 $modo_tiempo = $mysqli2->query("SELECT tipo_tiempo FROM web_campeonatos WHERE idcarrera = '$idCarrera'");
 if ($modo_tiempo->num_rows > 0)
     $row = $modo_tiempo->fetch_array();
@@ -70,7 +88,7 @@ $enlace_actual = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     <script>
         // Refresco automático
         // TODO Cambiar URL según el tipo de carrera y calsificación
-        var url = "mangas_recarga_new.php?idmanga=<?php echo $_GET['idmanga']; ?>&id=<?php echo $_GET['id']; ?>&copa=<?php echo $_GET['copa']; ?>";
+        var url = "<?php echo $miurl; ?>?idmanga=<?php echo $_GET['idmanga']; ?>&id=<?php echo $_GET['id']; ?>&copa=<?php echo $copa; ?>";
         var segundos_refresco = 5;
         var capa_contenido = "recarga";
         var ultima_id = "";
@@ -140,13 +158,11 @@ $enlace_actual = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             <form>
                 <tr>
                     <?php
-                        // TODO Descomentar cuando se vaya a arreglar
-                        /*
+                    // TODO Descomentar cuando se vaya a arreglar
+                    
                         echo "<td>COPAS:</td><td><select name='copas' onchange='surfto2(this.form)'>";
                         //echo "<td>COPAS:</td><td><select name='copas'>";
-                        $FiltroCopa = "SELECT c.descripcion,c.id FROM web_copas c 
-    INNER JOIN web_campeonatos ca ON c.id = ca.id 
-    WHERE ca.idcarrera='$idCarrera'";
+                        $FiltroCopa = "SELECT descripcion,id FROM web_copas WHERE idcarrera='$idCarrera'";
 
                         $copas = $mysqli2->query($FiltroCopa);
                         if ($copa == '0') {
@@ -184,13 +200,17 @@ $enlace_actual = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
                             }
                         }
                         echo "</select></td>";
-                        */
+                        
                     ?>
                 </tr>
             </form>
         </table>
         <hr><br>
-        <div id='recarga'></div>
+        <div id='recarga'>
+            <div id="preloader">
+            <img src="img/cargando.gif" class="preloader">
+            </div>
+        </div>
     </div>
     <?php
     include("visitas.php");

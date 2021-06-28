@@ -65,7 +65,7 @@ include("conexion.php");
 sleep(1);
 $pass = $_POST['pass'];
 $id = $_POST['id'];
-$sql = mysql_query("SELECT pass FROM abc_57os_ca_secretario WHERE id_Ca_Carrera='$id' AND pass='$pass'");
+$sql = $mysqli2->query("SELECT pass FROM web_secretario WHERE idcarrera='$id' AND pass='$pass'");
 /*comprobar en BD la contraseña y redirigir a secretarios, crear session para evitar accesos etc*/
 ?>	
 
@@ -88,16 +88,16 @@ $sql = mysql_query("SELECT pass FROM abc_57os_ca_secretario WHERE id_Ca_Carrera=
 			<div class="section-top-border">
 						<p style="margin:0 0 0 40%;"><img src="img/cargando.gif" height="200px"></p>
 						<?php
-							if(mysql_num_rows($sql)>0)
+							if($sql->num_rows>0)
 								{
 								echo "Usuario Existente..... REDIRIGIENDO A ZONA SEGURA";
 								session_start();
 								$_SESSION['pass']= $pass;
-								echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL=edi_tablon_new.php?id='.$id.'&new_BD=true">';
+								echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL=edi_tablon_new.php?id='.$id.'">';
 								}
 							else{
 								echo "Usuario INVALIDO..... REDIRIGIENDO....";
-								echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL=acceso_new.php?id='.$id.'new_BD=true">';
+								echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL=acceso_new.php?id='.$id.'">';
 								}
 
 						?>

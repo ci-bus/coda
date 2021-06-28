@@ -111,7 +111,7 @@
                   <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
-                        <label>Archivo Imagen</label>
+                        <label>Archivo Imagen (800x300px o escalados)</label>
                         <input type="file" class="form-control" name="archivo">
                       </div>
                     </div>

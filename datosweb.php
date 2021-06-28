@@ -212,9 +212,9 @@ if (!file_exists("./datosweb_ejecutando")) {
                     $competidores[] = $competidor;
                 }
 
-                // --------------------------------- //
-                // Cogemos las mangas del campeonato //
-                // --------------------------------- //
+                // ------------------------------------------ //
+                // Cogemos las mangas del campeonato en curso //
+                // ------------------------------------------ //
                 $mangasQuery = $mysqli->query("SELECT id_ca_manga AS id, tipo, numero, estado FROM abc_57os_ca_campeonato_manga "
                     . "INNER JOIN abc_57os_ca_manga ON abc_57os_ca_manga.id = abc_57os_ca_campeonato_manga.id_ca_manga "
                     . "WHERE estado=1 AND id_ca_campeonato=" . $id_campeonato);
@@ -226,6 +226,9 @@ if (!file_exists("./datosweb_ejecutando")) {
                     // Actualiza el estado de la manga
                     $mysqli2->query("UPDATE `web_manga` SET `estado` = '$estado_manga' WHERE `web_manga`.`id` = '$id_manga'");
                 }
+
+                // Pilotos en pista
+                $pilotos_en_pista = 0;
 
                 // Recorre los competidores
                 foreach ($competidores as $competidor) {
@@ -286,9 +289,14 @@ if (!file_exists("./datosweb_ejecutando")) {
                             ." VALUES ('', '$idmanga', '$h_s', '$h_l', '$idcarrera', '$t_t', '$penal', '".$competidor['id']."', '$num_manga', '$tipo_manga', '$idcampeonato')";
                             echo $SQL."<br>";
                             $mysqli2->query($SQL);
+                        } else if ($tiempo_salida) {
+                            $pilotos_en_pista ++;
                         }
                     }
                 }
+
+                // Inserta pilotos en pista
+                $mysqli2->query("UPDATE web_pruebas SET pilotos_en_pista=".$pilotos_en_pista." WHERE idcarrera=".$id_carrera);
             }
         } //Fin while campeonatos
 

@@ -113,8 +113,13 @@
 
 						<?php
 						if ($web == 0) {
-							echo "<a href='tablon_new.php?id=" . $idCarrera . "' class='primary-btn text-uppercase'>TABL&Oacute;N DE ANUNCIOS</a>";
-							echo "<a href='tiempos_new.php?id=" . $idCarrera . "' class='primary-btn text-uppercase'>VER TIEMPOS ONLINE</a>";
+							if ($ruta_tablon == '') {
+								echo "<a href='tablon_new.php?id=" . $idCarrera . "' class='primary-btn text-uppercase'>TABL&Oacute;N DE ANUNCIOS</a>";
+								echo "<a href='tiempos_new.php?id=" . $idCarrera . "' class='primary-btn text-uppercase'>VER TIEMPOS ONLINE</a>";
+							} else {
+								echo "<a href='" . $ruta_tablon . "' target='_blank' class='primary-btn text-uppercase'>TABL&Oacute;N DE ANUNCIOS</a>";
+								echo "<a href='tiempos_new.php?id=" . $idCarrera . "' class='primary-btn text-uppercase'>VER TIEMPOS ONLINE</a>";
+							}
 						} else {
 							echo "<a href='" . $ruta_tablon . "' class='primary-btn text-uppercase'>TABL&Oacute;N DE ANUNCIOS</a>";
 							echo "<a href='#' class='primary-btn text-uppercase'>TIEMPOS AJENOS A CODEA</a>";
@@ -171,9 +176,9 @@
 							$img = $row['img'];
 							$orientacion = $row['orientacion'];
 							if ($orientacion == 0)
-								echo "<li><img src='pruebas/2021/50/sponsors/" . $img . "' class='sponsors'></li>";
+								echo "<li><img src='pruebas/2021/".$idCarrera."/sponsors/" . $img . "' class='sponsors'></li>";
 							else
-								echo "<li><img src='pruebas/2021/50/sponsors/" . $img . "' class='sponsors2'></li>";
+								echo "<li><img src='pruebas/2021/".$idCarrera."/sponsors/" . $img . "' class='sponsors2'></li>";
 						}
 						echo "</ul></div>";
 					}

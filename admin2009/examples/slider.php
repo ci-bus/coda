@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <?php
+session_start();
+include("valida1.php");
 include("../../conexion.php");
-	?>
+?>
 <html lang="en">
 
 <head>
@@ -10,7 +12,7 @@ include("../../conexion.php");
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <title>
-     DashBoard C.D CODA::.....
+    DashBoard C.D CODA::.....
   </title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
@@ -26,116 +28,114 @@ include("../../conexion.php");
 <body class="">
   <div class="wrapper">
     <?php
-		include("menu.php");
-	?>
-    </div>
-    <div class="main-panel">
-      <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
-        <div class="container-fluid">
-          <div class="navbar-wrapper">
-            <div class="navbar-toggle d-inline">
-              <button type="button" class="navbar-toggler">
-                <span class="navbar-toggler-bar bar1"></span>
-                <span class="navbar-toggler-bar bar2"></span>
-                <span class="navbar-toggler-bar bar3"></span>
-              </button>
-            </div>
-            <a class="navbar-brand" href="javascript:void(0)">SLIDER HOME</a>
+    include("menu.php");
+    ?>
+  </div>
+  <div class="main-panel">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
+      <div class="container-fluid">
+        <div class="navbar-wrapper">
+          <div class="navbar-toggle d-inline">
+            <button type="button" class="navbar-toggler">
+              <span class="navbar-toggler-bar bar1"></span>
+              <span class="navbar-toggler-bar bar2"></span>
+              <span class="navbar-toggler-bar bar3"></span>
+            </button>
           </div>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navigation">
-                        <?php
-			include("usuario.php");
-			?>
-          </div>
+          <a class="navbar-brand" href="javascript:void(0)">SLIDER HOME</a>
         </div>
-      </nav>
-      <div class="modal modal-search fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="SEARCH">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <i class="tim-icons icon-simple-remove"></i>
-              </button>
-            </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-bar navbar-kebab"></span>
+          <span class="navbar-toggler-bar navbar-kebab"></span>
+          <span class="navbar-toggler-bar navbar-kebab"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navigation">
+          <?php
+          include("usuario.php");
+          ?>
+        </div>
+      </div>
+    </nav>
+    <div class="modal modal-search fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModal" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="SEARCH">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <i class="tim-icons icon-simple-remove"></i>
+            </button>
           </div>
         </div>
       </div>
-      <!-- End Navbar -->
-      <div class="content">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card ">
-              <div class="card-header">
-                <h4 class="card-title"><a href="slider_nuevo.php?activo=slider&newDB=true">NUEVO</a></h4>
-                <h4 class="card-title"> Eventos en HOME:</h4>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table tablesorter " id="">
-                    <thead class=" text-primary">
-                      <tr>
-                        <th>
-                          Prueba
-                        </th>
-                        <th>
-                          enlace
-                        </th>
-						<th>
-                          archivo
-                        </th>
-                        <th>
-                          fecha
-                        </th>
-                        <th class="text-center">
-                          Imagen
-                        </th>
-						<th>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php
-						$sql= $mysqli2->query("SELECT * FROM web_imagenes WHERE tipo=1");
-							if($sql->num_rows==0)
-								echo "<tr><td colspan='4'>No hay Sliders disponibles</td></tr>";
-							else
-								{
-								while($fila=$sql->fetch_array())
-									{
-									$archivo = $fila['nombre'];	
-									$enlace = $fila['enlace'];	
-									$inicio = $fila['inicio'];	
-									$fin = $fila['fin'];
-									$id = $fila['id'];									
-									$comentario = $fila['comentario'];
-									echo "<tr><td>".$comentario."</td><td>".$enlace."</td><td><a href='slider_editar.php?id=".$id."&activo=slider'>".$archivo."</a></td>
-									<td>".$inicio."-".$fin."</td>
-									<td class='text-center'><img src='../../slider/".$archivo."' width='80px'></td>
-									<td><a href='slider_borrar.php?id=".$id."&archivo=".$archivo."&newBD=true' class='confir'>BORRAR</a></td></tr>";
-									}
-								}
-					  ?>
-                    </tbody>
-                  </table>
-                </div>
+    </div>
+    <!-- End Navbar -->
+    <div class="content">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card ">
+            <div class="card-header">
+              <h4 class="card-title"><a href="slider_nuevo.php?activo=slider&newDB=true">NUEVO</a></h4>
+              <h4 class="card-title"> Eventos en HOME:</h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table tablesorter " id="">
+                  <thead class=" text-primary">
+                    <tr>
+                      <th>
+                        Prueba
+                      </th>
+                      <th>
+                        enlace
+                      </th>
+                      <th>
+                        archivo
+                      </th>
+                      <th>
+                        fecha
+                      </th>
+                      <th class="text-center">
+                        Imagen
+                      </th>
+                      <th>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+                    $sql = $mysqli2->query("SELECT * FROM web_imagenes WHERE tipo=1");
+                    if ($sql->num_rows == 0)
+                      echo "<tr><td colspan='4'>No hay Sliders disponibles</td></tr>";
+                    else {
+                      while ($fila = $sql->fetch_array()) {
+                        $archivo = $fila['nombre'];
+                        $enlace = $fila['enlace'];
+                        $inicio = $fila['inicio'];
+                        $fin = $fila['fin'];
+                        $id = $fila['id'];
+                        $comentario = $fila['comentario'];
+                        echo "<tr><td>" . $comentario . "</td><td>" . $enlace . "</td><td><a href='slider_editar.php?id=" . $id . "&activo=slider'>" . $archivo . "</a></td>
+									<td>" . $inicio . "-" . $fin . "</td>
+									<td class='text-center'><img src='../../slider/" . $archivo . "' width='80px'></td>
+									<td><a href='slider_borrar.php?id=" . $id . "&archivo=" . $archivo . "&newBD=true' class='confir'>BORRAR</a></td></tr>";
+                      }
+                    }
+                    ?>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <footer class="footer">
-       <?php
-		include("pie.php");
-	   ?>
-      </footer>
     </div>
+    <footer class="footer">
+      <?php
+      include("pie.php");
+      ?>
+    </footer>
+  </div>
   </div>
   <!--   Core JS Files   -->
   <script src="../assets/js/core/jquery.min.js"></script>
@@ -263,8 +263,8 @@ include("../../conexion.php");
         });
       });
     });
-    $('.confir').on('click', function () {
-        return confirm('VAS A ELIMINAR UNA DIAPOSITIVA Y SU ARCHIVO?');
+    $('.confir').on('click', function() {
+      return confirm('VAS A ELIMINAR UNA DIAPOSITIVA Y SU ARCHIVO?');
     });
   </script>
 </body>

@@ -37,7 +37,7 @@
 		if(move_uploaded_file($_FILES['archivo']['tmp_name'], $target_path)) {
 			echo "El archivo ".  basename( $_FILES['archivo']['name']). 
 			" ha sido subido";
-		$sql = mysql_query("INSERT into web_imagenes (id,enlace,comentario,nombre,inicio,fin,tipo) 
+		$sql = $mysqli2->query("INSERT into web_imagenes (id,enlace,comentario,nombre,inicio,fin,tipo) 
 		VALUES ('','$enlace','$titulo','$archivo','$inicio','$fin',1)");
 		}
 		echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL=slider.php?activo=slider&newBD=true">';

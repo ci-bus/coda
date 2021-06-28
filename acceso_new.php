@@ -76,9 +76,10 @@ if(isset($_GET["id"])){//En el caso de pruebas creadas a través del PROGRAMA
 if(isset($idCarrera)){
 include("conexion.php");
 $dbQuery = "SELECT nombre,cartel FROM abc_57os_ca_carrera WHERE abc_57os_ca_carrera.id = '$idCarrera'";
-$resultado = mysql_query($dbQuery) or print "No se pudo acceder al contenido.";
-if(mysql_num_rows($resultado) > 0){
-	$titulo = @mysql_result($resultado, 0, "nombre");
+$resultado = $mysqli->query($dbQuery) or print "No se pudo acceder al contenido.";
+if($resultado->num_rows > 0){
+	$rows = $resultado ->fetch_array();
+	$titulo = $rows['nombre'];
 			}
 		}
 	}
@@ -95,7 +96,7 @@ if(mysql_num_rows($resultado) > 0){
 							</div>
 						</div>
 					</div>
-					<a href="tablon_new.php?id=<?php echo $idCarrera;?>&newBD=true" class="primary-btn text-uppercase">VOLVER</a>
+					<a href="tablon_new.php?id=<?php echo $idCarrera;?>" class="primary-btn text-uppercase">VOLVER</a>
 				</div>
 			</section>
 			<div class="section-top-border">

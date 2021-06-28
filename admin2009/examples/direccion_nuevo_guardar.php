@@ -29,8 +29,8 @@
 		$pass = $_POST['pass'];
 		$inicio = $_POST['inicio'];
 		$fin = $_POST['fin'];
-		$sql = mysql_query("INSERT into web_direccion (id_direccion,id_prueba,inicio,fin,pass) 
-		VALUES ('','$id','$inicio','$fin','$pass')");
+		$sql = $mysqli2->query("INSERT into web_direccion (id,idcarrera,pass,inicio,fin) 
+		VALUES ('','$id','$pass','$inicio','$fin')");
 		echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL=direccion.php?activo=direccion&newBD=true">';
 	?>
     </div>

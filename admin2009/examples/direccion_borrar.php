@@ -26,7 +26,7 @@
 		include("menu.php");
 		include("../../conexion.php");
 		$id = $_GET['id'];
-$sql = mysql_query("DELETE FROM web_direccion WHERE id_direccion='$id'");
+$sql = $mysqli2->query("DELETE FROM web_direccion WHERE id='$id'");
 echo '<META HTTP-EQUIV=Refresh CONTENT="0; URL=direccion.php?activo=direccion&newBD=true">';
 	?>
     </div>

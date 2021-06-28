@@ -1,144 +1,263 @@
 html,
 body {
-    margin:0;
-    padding:0;
-    height:100%;
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
+
 #wrapper {
-    min-height:100%;
-    position:relative;
-	background: #161616;
+    min-height: 100%;
+    position: relative;
+    background: #161616;
 }
+
 #header {
-	height:150px;
-	//background:#ccc;
+    height: 150px;
+    //background:#ccc;
 }
+
 #content {
-    padding-bottom:100px; /* Altura del footer */
+    padding-bottom: 100px;
+    /* Altura del footer */
 }
+
 #footer {
-    width:100%;
-    height:70px;
-    position:absolute;
-    bottom:0;
-    left:0;
-	background:#161616; 
+    width: 100%;
+    height: 70px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: #161616;
 }
-#logo{
-	//border: 1px solid;
-	width: 200px;
-	height: 150px;
-	position: absolute;
-	background: #FFF;
+
+#logo {
+    //border: 1px solid;
+    width: 200px;
+    height: 150px;
+    position: absolute;
+    background: #FFF;
 }
-#primero{
-	//border: 1px solid;
-	margin: 0 0 0 200px;
-	height: 95px;	
+
+#primero {
+    //border: 1px solid;
+    margin: 0 0 0 200px;
+    height: 95px;
 }
-#ult_tiempo{
-	margin: -21px 0 0 1250px;
-	position: absolute;
-	width:440px;
+
+#ult_tiempo {
+    margin: -21px 0 0 1250px;
+    position: absolute;
+    width: 580px;
 }
-#dor_pista{
-	height: 55px;
-	margin: 0 0 0 200px;
+
+#dor_pista {
+    height: 55px;
+    margin: 0 0 0 200px;
 }
-#tiempo1{
-	//border: 1px solid;
-	width: 800px;
-	margin: 0 auto;
-	margin: 0 465px;
+
+#tiempo1 {
+    //border: 1px solid;
+    width: 800px;
+    margin: 0 auto;
+    margin: 0 465px;
 }
-#tiempo2{
-	
+
+#tiempo2 {}
+
+#reloj {
+    width: 200px;
+    border: 1px solid;
+    height: 68px;
+    position: absolute;
 }
-#reloj{
-	width: 200px;
-	border: 1px solid;
-	height: 68px;
-	position: absolute;
-}
+
 #manga {
-	position: absolute;
-	border: 1px solid;
-	margin: 0 0 0 200px;
-	width: auto;
-	height: 68px;
+    position: absolute;
+    border: 1px solid;
+    margin: 0 0 0 200px;
+    width: auto;
+    height: 68px;
 }
-#num_enpista{
-	position: absolute;
-	margin: -21px 0 0 20px;
+
+#num_enpista {
+    position: absolute;
+    margin: -21px 0 0 20px;
 }
-.nomargen{
-		margin:0 auto;
+
+.nomargen {
+    margin: 0 auto;
 }
-.fuente{
-	font-family: 'Open 24 Display St';
+
+.fuente {
+    font-family: 'Open 24 Display St';
 }
-.t1{
-	font-size: 40px;
+
+.t1 {
+    font-size: 40px;
 }
-.t2{
-	font-size:42px;
+
+.t2 {
+    font-size: 75px;
 }
-.todos_tiempos{
-	
+
+.todos_tiempos {}
+
+.enpista {
+    float: left;
+    margin: 0 0 0 20px;
+    border: 1px solid;
+    padding: 0 8px 0 7px;
+    border-radius: 5px;
 }
-.enpista{
-	float: left;
-	margin: 0 0 0 20px;
-	border: 1px solid;
-	padding: 0 8px 0 7px;
-	border-radius: 5px;
+
+.t3 {
+    font-size: 25px;
 }
-.t3{
-	font-size:25px;
+
+.t4 {
+    font-size: 58px;
 }
-.t4{
-	font-size:58px;
+
+.t5 {
+    font-size: 100px
 }
-.t5{
-	font-size:100px
+
+.t6 {
+    font-size: 75px;
 }
-.t6{
-	font-size:75px;
+
+.t7 {
+    font-size: 500px;
+    letter-spacing: 2px;
+    text-shadow: 15px 15px 23px #FFFFFF;
 }
-.t7{
-	font-size:140px;
-	letter-spacing: 6px;
+
+.t8 {
+    font-size: 250px;
+    letter-spacing: 20px;
+    text-shadow: 5px 4px 3px #F0F;
+    ;
 }
-.centro{
-	text-align:center;
+
+.centro {
+    text-align: center;
 }
-.negrita{
-	font-weight:bold;
+
+.negrita {
+    font-weight: bold;
 }
-.logo{
-	margin: 20px 20px;
+
+.logo {
+    margin: 20px 20px;
 }
-@font-face{
-    font-family:'Open 24 Display St';
-    src: local('Open 24 Display St'),url('Open24DisplaySt.ttf') format('truetype');
+
+@font-face {
+    font-family: 'Open 24 Display St';
+    src: local('Open 24 Display St'), url('3X5.TTF') format('truetype');
 }
-.fuente1{
-  font-family: 'Open 24 Display St';
-  font-size:80px;
+
+.fuente1 {
+    font-family: 'Open 24 Display St';
+    font-size: 80px;
 }
-.fuente2{
-  font-family: 'Open 24 Display St';
-  font-size:100px;
+
+.fuente2 {
+    font-family: 'Open 24 Display St';
+    font-size: 100px;
 }
-.verde{
-	color: #00FF00;
+
+.verde {
+    color: #00FF00;
 }
-.rojo{
-	color: #FF0000;
+
+.naranja {
+    color: #FF00FF;
 }
-.amarillo{
-	color: #F7FE2E;
+
+.rojo {
+    color: #FF0000;
 }
-.blanco{
-	color:#FFFFFF;
+
+.amarillo {
+    color: #F7FE2E;
 }
+
+.blanco {
+    color: #FFFFFF;
+}
+
+#separador {
+    width: 600px;
+    float: left;
+    height: 1000px;
+}
+
+.dorsal {
+    background-color: white;
+    color: #000;
+    font-size: 40px;
+    margin: 5px;
+    padding: 0 5px;
+    border-radius: 10px;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+    /* If you want dots under the hoverable text */
+}
+
+
+/* Tooltip text */
+
+.tooltip {
+    width: 200%;
+    position: absolute;
+    margin: -430px auto;
+}
+
+.tooltiptext {
+    animation-duration: 10s;
+    animation-name: slidein;
+    animation-iteration-count: infinite;
+}
+
+@keyframes slidein {
+    from {
+        margin-left: 100%;
+        width: 400%
+    }
+    to {
+        margin-left: -200%;
+        width: 100%;
+    }
+}
+
+.blinking {
+    animation: blinkingText 1.2s infinite;
+}
+
+@keyframes blinkingText {
+    0% {
+        color: #00FF00;
+    }
+    49% {
+        color: #00FF00;
+    }
+    60% {
+        color: transparent;
+    }
+    99% {
+        color: transparent;
+    }
+    100% {
+        color: #00FF00;
+    }
+}
+
+.alin1 {}
+
+.alin2 {}
+
+.alin3 {}
