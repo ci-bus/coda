@@ -13,7 +13,7 @@ $usuario2 = "web2020";
 $clave2 = "Kp!vt750";
 
 // BASE DE DATOS DEL SERVIDOR DE JOSE
-if ($_SERVER['SERVER_ADDR'] == '::1') {
+if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == 'localhost') {
   $IPservidor3 = "localhost";
 } else {
   $IPservidor3 = "sistema2020.codea.es";

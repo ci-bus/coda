@@ -188,7 +188,7 @@ INNER JOIN abc_57os_ca_etapa eta ON sec.id_ca_etapa=eta.id WHERE eta.id_ca_carre
 								while ($fil = $sql_oficial->fetch_array()) {
 									$tipo = $fil['tipo'];
 									$orden = $fil['orden'];
-									if ($orden == 0) { //ES SALIDA
+									if ($orden == 0 || $orden == 5) { //ES SALIDA
 										$t_s = tiempo_a_milisegundos($fil['tiempo']);
 									}
 									if ($orden == 10) { //ES LLEGADA

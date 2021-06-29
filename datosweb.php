@@ -1,16 +1,16 @@
-<script type="text/javascript">
-    setTimeout(function() {
-        location.reload();
-    }, 3000);
-</script>
 <?php
 
-// mostrar mensajes de procesamiento para verificar el funcionamiento del script
-$mostrar_mensajes = $_GET['mostrar_mensajes'] !== "false";
+set_time_limit(60);
 
-// Comprueba si no está ya en ejecución
-if (!file_exists("./datosweb_ejecutando")) {
-    file_put_contents("./datosweb_ejecutando", " ");
+$lastTime = time(); 
+
+// mostrar mensajes de procesamiento para verificar el funcionamiento del script
+$mostrar_mensajes = false;
+if (isset($_GET['mostrar_mensajes']) && $_GET['mostrar_mensajes'] !== "false") {
+    $mostrar_mensajes = true;
+}
+
+while (time() - $lastTime <= 50) {
 
     // Funciones de tiempo
     function tiempo_a_milisegundos($tiempo)
@@ -103,7 +103,6 @@ if (!file_exists("./datosweb_ejecutando")) {
         $id_carrera = $ultimo_tiempo['id_ca_carrera'];
         // Si los ids son iguales detenemos la ejecución
         if (trim($ultima_id_procesada . "") == trim($ultima_id_base_de_datos . "")) {
-            unlink("./datosweb_ejecutando");
             if ($mostrar_mensajes) {
                 echo "<br>No hay registros nuevos";
             }
@@ -298,15 +297,12 @@ if (!file_exists("./datosweb_ejecutando")) {
         // Guarda la última id
         file_put_contents("./datosweb_ultima_id", $ultima_id_base_de_datos);
 
-        // Elimina el archivo que marca si se está ejecutando
-        unlink("./datosweb_ejecutando");
     } catch (Exception $e) {
-
-        // Se borra el archivo que marca si se está ejecutando
-        unlink("./datosweb_ejecutando");
 
         // Se guarda el error
         file_put_contents("./datosweb_error", $e->getMessage());
+    } finally {
+        sleep(3);
     }
 }
 ?>
