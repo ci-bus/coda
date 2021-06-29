@@ -54,6 +54,12 @@ while ($mifila = $campeonatos_carrera->fetch_array()) {
 	ORDER BY tiempos.t_t ASC";
 	}
 	$resultado = $mysqli2->query($sql) or print "No se pudo acceder al contenido de los tiempos online CONSULTA1.";
+
+	if (!$resultado) {
+
+		echo "Eiii piyinn<hr>";
+		echo $sql;
+	}
 	if ($resultado->num_rows > 0) {
 		$pos = 1;
 		$par = 0;

@@ -54,15 +54,12 @@ function segundos_a_milisegundos($segundos)
     return $segundos;
 }
 
+include "conexion_credenciales.php";
+
 echo "Conectando a la base de datos local...";
 
 // Conexion a la base de datos del sistema
-$IPservidor = "sistema2020.codea.es";
-$nombreBD = "codea_sistema";
-$usuario = "codea_sistema_user";
-$clave = "n^;eRM8+MWZu";
-$DB_PREFIJO = "abc_57os_";
-$mysqli = new mysqli($IPservidor, $usuario, $clave, $nombreBD);
+$mysqli = new mysqli($IPservidor3, $usuario3, $clave3, $nombreBD3);
 if ($mysqli) {
     $mysqli->set_charset("utf8");
     echo " Conectado!";
@@ -73,11 +70,7 @@ if ($mysqli) {
 echo "<br>Conectando a la base de la web...";
 
 // Conexion a la base de datos de la web
-$IPservidor = "localhost:3306";
-$nombreBD2 = "web2020";
-$usuario2 = "web2020";
-$clave2 = "Kp!vt750";
-$mysqli2 = new mysqli($IPservidor, $usuario2, $clave2, $nombreBD2);
+$mysqli2 = new mysqli($IPservidor2, $usuario2, $clave2, $nombreBD2);
 if ($mysqli2) {
     $mysqli2->set_charset("utf8");
     echo " Conectado!";

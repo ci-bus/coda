@@ -1,22 +1,11 @@
 <?php
-/*BASE DE DATOS DE SERVER CODA
-$IPservidor = "localhost:3306";
-$nombreBD = "codea_es_sistema";
-$usuario = "manuel";
-$clave = "coda200900==";
-*/
+
+include "conexion_credenciales.php";
+
 /*BASE DE DATOS DEL SERVIDOR DE JOSE*/
-$IPservidor = "sistema2020.codea.es";
-$nombreBD = "codea_sistema";
-$usuario = "codea_sistema_user";
-$clave = "n^;eRM8+MWZu";
-$mysqli = new mysqli($IPservidor, $usuario, $clave, $nombreBD);
+$mysqli = new mysqli($IPservidor3, $usuario3, $clave3, $nombreBD3);
 $mysqli->set_charset("utf8");
 
-$IPservidor2 = "localhost:3306";
-$nombreBD2 = "web2020";
-$usuario2 = "web2020";
-$clave2 = "Kp!vt750";
 $mysqli2 = new mysqli($IPservidor2, $usuario2, $clave2, $nombreBD2);
 $mysqli2->set_charset("utf8");
 

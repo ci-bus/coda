@@ -1,4 +1,8 @@
-<script type="text/javascript">setTimeout(function () { location.reload(); }, 3000);</script>
+<script type="text/javascript">
+    setTimeout(function() {
+        location.reload();
+    }, 3000);
+</script>
 <?php
 
 // mostrar mensajes de procesamiento para verificar el funcionamiento del script
@@ -62,8 +66,7 @@ if (!file_exists("./datosweb_ejecutando")) {
         return $segundos;
     }
 
-    /* Se usa un try catch por si se produce algún error 
-    que el archivo que marca si se está ejecutando sea borrado */
+    include "conexion_credenciales.php";
 
     try {
 
@@ -72,11 +75,7 @@ if (!file_exists("./datosweb_ejecutando")) {
         }
 
         // Conexion a la base de datos del sistema
-        $IPservidor = "sistema2020.codea.es";
-        $nombreBD = "codea_sistema";
-        $usuario = "codea_sistema_user";
-        $clave = "n^;eRM8+MWZu";
-        $mysqli = new mysqli($IPservidor, $usuario, $clave, $nombreBD);
+        $mysqli = new mysqli($IPservidor3, $usuario3, $clave3, $nombreBD3);
         if ($mysqli) {
             $mysqli->set_charset("utf8");
             if ($mostrar_mensajes) {
@@ -103,7 +102,7 @@ if (!file_exists("./datosweb_ejecutando")) {
         $ultima_id_base_de_datos = $ultimo_tiempo['id'];
         $id_carrera = $ultimo_tiempo['id_ca_carrera'];
         // Si los ids son iguales detenemos la ejecución
-        if (trim($ultima_id_procesada."") == trim($ultima_id_base_de_datos."")) {
+        if (trim($ultima_id_procesada . "") == trim($ultima_id_base_de_datos . "")) {
             unlink("./datosweb_ejecutando");
             if ($mostrar_mensajes) {
                 echo "<br>No hay registros nuevos";
@@ -122,11 +121,7 @@ if (!file_exists("./datosweb_ejecutando")) {
         }
 
         // Conexion a la base de datos de la web
-        $IPservidor = "localhost:3306";
-        $nombreBD2 = "web2020";
-        $usuario2 = "web2020";
-        $clave2 = "Kp!vt750";
-        $mysqli2 = new mysqli($IPservidor, $usuario2, $clave2, $nombreBD2);
+        $mysqli2 = new mysqli($IPservidor2, $usuario2, $clave2, $nombreBD2);
         if ($mysqli2) {
             $mysqli2->set_charset("utf8");
             if ($mostrar_mensajes) {
@@ -283,20 +278,20 @@ if (!file_exists("./datosweb_ejecutando")) {
                             //FALTABA SUMAR SUS PENALIZACIONES EN MILISEGUNDOS
                             $t_t += segundos_a_milisegundos($penal);
                             //HE MOFIDICADO QUE BORRE DIRECTAMENTE EL idisncrito
-                            $mysqli2->query("DELETE FROM web_tiempos WHERE idmanga=" . $manga['id'] . " AND idinscrito=" . $competidor['id'] ." AND idcampeonato = ".$idcampeonato);
+                            $mysqli2->query("DELETE FROM web_tiempos WHERE idmanga=" . $manga['id'] . " AND idinscrito=" . $competidor['id'] . " AND idcampeonato = " . $idcampeonato);
                             // $idtiempos esta repe asi que como es valor Auto Increment lo dejo en blanco
                             $SQL = "INSERT INTO `web_tiempos` (`idtiempos`, `idmanga`, `h_s`, `h_l`, `idcarrera`, `t_t`, `penalizacion`, `idinscrito`, `num_manga`, `tipo_manga`, `idcampeonato`) "
-                            ." VALUES ('', '$idmanga', '$h_s', '$h_l', '$idcarrera', '$t_t', '$penal', '".$competidor['id']."', '$num_manga', '$tipo_manga', '$idcampeonato')";
-                            echo $SQL."<br>";
+                                . " VALUES ('', '$idmanga', '$h_s', '$h_l', '$idcarrera', '$t_t', '$penal', '" . $competidor['id'] . "', '$num_manga', '$tipo_manga', '$idcampeonato')";
+                            echo $SQL . "<br>";
                             $mysqli2->query($SQL);
                         } else if ($tiempo_salida) {
-                            $pilotos_en_pista ++;
+                            $pilotos_en_pista++;
                         }
                     }
                 }
 
                 // Inserta pilotos en pista
-                $mysqli2->query("UPDATE web_pruebas SET pilotos_en_pista=".$pilotos_en_pista." WHERE idcarrera=".$id_carrera);
+                $mysqli2->query("UPDATE web_pruebas SET pilotos_en_pista=" . $pilotos_en_pista . " WHERE idcarrera=" . $id_carrera);
             }
         } //Fin while campeonatos
 
@@ -305,7 +300,6 @@ if (!file_exists("./datosweb_ejecutando")) {
 
         // Elimina el archivo que marca si se está ejecutando
         unlink("./datosweb_ejecutando");
-
     } catch (Exception $e) {
 
         // Se borra el archivo que marca si se está ejecutando
@@ -314,6 +308,5 @@ if (!file_exists("./datosweb_ejecutando")) {
         // Se guarda el error
         file_put_contents("./datosweb_error", $e->getMessage());
     }
-
 }
 ?>
