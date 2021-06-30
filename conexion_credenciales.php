@@ -1,11 +1,5 @@
 <?php
 
-// CONEXION BASE DE DATOS LOCAL SISTEMA
-$IPservidor = "localhost";
-$nombreBD = "codea_sistema";
-$usuario = "codea_sistema_user";
-$clave = "n^;eRM8+MWZu";
-
 // ESTA ES LA B.D DE WEB EN CODA
 $IPservidor2 = "localhost";
 $nombreBD2 = "web2020";
