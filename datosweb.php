@@ -71,7 +71,7 @@ while (time() - $lastTime <= 50) {
     try {
 
         if ($mostrar_mensajes) {
-            echo "Conectando a la base de datos del sistema...";
+            echo "<br>Conectando a la base de datos del sistema...";
         }
 
         // Conexion a la base de datos del sistema
@@ -245,9 +245,6 @@ while (time() - $lastTime <= 50) {
                             while ($tiempo = $tiempos->fetch_array()) {
                                 if ($tiempo['control_horario'] == 'SALIDA') {
                                     $tiempo_salida = tiempo_a_milisegundos($tiempo['tiempo']);
-                                } else if ($tiempo['control_horario'] == 'LLEGADA') {
-                                    $tiempo_llegada = tiempo_a_milisegundos($tiempo['tiempo']);
-
                                     $idtiempos = $tiempo['id'];
                                     $idmanga = $manga['id'];
                                     $idcarrera = $tiempo['id_ca_carrera'];
@@ -255,6 +252,8 @@ while (time() - $lastTime <= 50) {
                                     $num_manga = $manga['numero'];
                                     $tipo_manga = $manga['tipo'];
                                     $idcampeonato = $campeonato['id'];
+                                } else if ($tiempo['control_horario'] == 'LLEGADA') {
+                                    $tiempo_llegada = tiempo_a_milisegundos($tiempo['tiempo']);
                                 }
                             }
 
@@ -277,10 +276,19 @@ while (time() - $lastTime <= 50) {
                                 // $idtiempos esta repe asi que como es valor Auto Increment lo dejo en blanco
                                 $SQL = "INSERT INTO `web_tiempos` (`idtiempos`, `idmanga`, `h_s`, `h_l`, `idcarrera`, `t_t`, `penalizacion`, `idinscrito`, `num_manga`, `tipo_manga`, `idcampeonato`) "
                                     . " VALUES ('', '$idmanga', '$h_s', '$h_l', '$idcarrera', '$t_t', '$penal', '" . $competidor['id'] . "', '$num_manga', '$tipo_manga', '$idcampeonato')";
-                                echo $SQL . "<br>";
+                                if ($mostrar_mensajes) {
+                                    echo "<br>" . $SQL;
+                                }
                                 $mysqli2->query($SQL);
+
                             } else if ($tiempo_salida) {
                                 $pilotos_en_pista++;
+                                $SQL = "INSERT INTO `web_tiempos` (`idtiempos`, `idmanga`, `h_s`, `h_l`, `idcarrera`, `t_t`, `penalizacion`, `idinscrito`, `num_manga`, `tipo_manga`, `idcampeonato`) "
+                                    . " VALUES ('', '$idmanga', '$tiempo_salida', '0', '$idcarrera', '0', '$penal', '" . $competidor['id'] . "', '$num_manga', '$tipo_manga', '$idcampeonato')";
+                                if ($mostrar_mensajes) {
+                                    echo "<br>" . $SQL;
+                                }
+                                $mysqli2->query($SQL);
                             }
                         }
                     }

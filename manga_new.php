@@ -1,5 +1,4 @@
 <?php
-$DB_PREFIJO = "abc_57os_";
 if (isset($_GET["idmanga"]) && isset($_GET["id"])) {
     $idManga = $_GET["idmanga"];
     $idCarrera = $_GET["id"];
@@ -22,7 +21,6 @@ if (isset($_GET["id"])) {
     include("conexion.php");
     //include("escudos.php");
     //include("includes/funciones.php");
-    $DB_PREFIJO = "abc_57os_";
     $dbQuery = "SELECT titulo,fecha_larga,modo_tiempos FROM web_pruebas WHERE idcarrera = '$idCarrera'";
     $resultado = $mysqli2->query($dbQuery) or print "No se pudo acceder al contenido.";
     if ($resultado->num_rows > 0) {
@@ -35,18 +33,11 @@ if (isset($_GET["id"])) {
 }
 //////////////////////////////////ESTO ES NUEVO, PARA SELECCIONAR EL MODO DE MOSTRAR TIEMPOS/////////////////////////////////////
 switch ($modo_tiempos) {
-    case 0:
-        $miurl = "mangas_recarga_new.php";
-        break;
-    case 1:
-        $miurl = "mangas_recarga_new.php";
-        break;
-    case 2:
-        $miurl = "mangas_recarga_new.php";
-        break;
     case 3:
         $miurl = "mangas_recarga2_new.php";
         break;
+    default:
+        $miurl = "mangas_recarga_new.php";
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*ESTE MODO TIEMPOS LO QUITARE XQ YA CAPTURO EN LA PRUEBA NO EN CAMPEONATO Y QUITAR LA RECARGA DE 460 EN REFreSH*/
@@ -158,10 +149,8 @@ $enlace_actual = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             <form>
                 <tr>
                     <?php
-                    // TODO Descomentar cuando se vaya a arreglar
                     
                         echo "<td>COPAS:</td><td><select name='copas' onchange='surfto2(this.form)'>";
-                        //echo "<td>COPAS:</td><td><select name='copas'>";
                         $FiltroCopa = "SELECT descripcion,id FROM web_copas WHERE idcarrera='$idCarrera'";
 
                         $copas = $mysqli2->query($FiltroCopa);
@@ -225,7 +214,6 @@ $enlace_actual = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
     <script src="js/vendor/jquery-2.2.4.min.js"></script>
     <script src="js/vendor/bootstrap.min.js"></script>
-    <!--script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script-->
     <script type="text/javascript">
         function surfto(form) {
             var myindex = form.mangas.selectedIndex;

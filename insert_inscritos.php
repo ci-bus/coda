@@ -140,6 +140,87 @@ if ($sql_carrera->num_rows > 0) {
         }
     } else
         echo "NO EXISTEN ETAPAS";
+
+
+
+
+
+
+
+
+
+
+
+    // ------------------------------------- //
+    // Cogemos los campeonatos de la carrera //
+    // ------------------------------------- //
+    $campeonatos = $mysqli->query("SELECT * FROM abc_57os_ca_campeonato WHERE id_ca_carrera = '$idCarrera'");
+
+    // Si existen campeonatos
+    if ($campeonatos->num_rows > 0) {
+
+        echo "<h3>Campeonatos encontrados <strong>" . $campeonatos->num_rows . "</strong></h3>";
+
+        // Recorre los campeonatos
+        while ($campeonato = $campeonatos->fetch_array()) {
+
+            // Datos del campeonato
+            $modo_tiempo = $campeonato['tiempo_tipo'];
+            $id_campeonato = $campeonato['id'];
+            $modalidad = $campeonato['id_ca_modalidad'];
+            $nombre_campeonato = $campeonato['nombre'];
+            // Fix arregla caracteres
+            $nombre_campeonato = str_ireplace(array('Ã‘', 'Ã±'), array('Ñ', 'ñ'), $nombre_campeonato);
+
+            echo "<br>Campeonato <strong>" . $nombre_campeonato . "</strong> ID <strong>" . $id_campeonato . "</strong>";
+            echo "<br>Modo tiempo <strong>";
+            switch ($modo_tiempo) {
+                case 0:
+                    echo "Acumulado";
+                    break;
+                case 1:
+                    echo "Mejor manga";
+                    break;
+                case 2:
+                    echo "Dos mejores mangas";
+                    break;
+                case 3:
+                    echo "Tres mejores mangas";
+                    break;
+                default:
+                    echo "Desconocido";
+                    break;
+            }
+            echo "</strong>";
+
+            // Cuenta el número de mangas oficiales
+            $mangas_oficiales = $mysqli->query("SELECT count(manga.id) FROM abc_57os_ca_manga manga 
+                        INNER JOIN abc_57os_ca_campeonato_manga campeonato_manga ON campeonato_manga.id_ca_manga=manga.id 
+                        WHERE campeonato_manga.id_ca_campeonato='$id_campeonato' AND manga.tipo='1'")->fetch_array();
+            $numero_mangas_oficiales = $mangas_oficiales[0];
+
+            echo "<br>Número de mangas oficiales: <strong>" . $numero_mangas_oficiales . "</strong>";
+
+            // Actualiza el campeonato
+            $mysqli2->query("DELETE FROM web_campeonatos WHERE id='$id_campeonato'");
+            $SQL = "INSERT INTO web_campeonatos (id, idcarrera, nombre, idmodalidad, tipo_tiempo, mangas_oficiales) VALUES ('$id_campeonato', '$idCarrera', '$nombre_campeonato', '$modalidad', '$modo_tiempo', '$numero_mangas_oficiales')";
+            if ($mysqli2->query($SQL)) {
+                echo "<br><br> - Se ha insertado el campeonato: <strong>" . $nombre_campeonato . "</strong> ID <strong>" . $id_campeonato . "</strong>";
+            } else {
+                echo "ALERTA: No se ha podido borrar un campeonato SQL: " . $SQL;
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
     ///////////////////////////////////////////////////////////
     /////INSCRIBIR A CADA PARTICIPANTE EN CADA CAMPEONATO////////
     ///////////////////////////////////////////////////////////
