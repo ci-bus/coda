@@ -29,8 +29,8 @@ function acortar_nombre($nombre){
 }
 include("../../conexion.php");
 $id = $_GET['id'];
-$sql_temporada = mysql_query("SELECT temporada FROM abc_57os_ca_carrera WHERE id='$id'");
-    while($myrow=mysql_fetch_array($sql_temporada))
+$sql_temporada = $mysqli2->query("SELECT temporada FROM web_pruebas WHERE idcarrera='$id'");
+    while($myrow=$sql_temporada->fetch_array())
       $temporada = $myrow['temporada'];
 	?>
 <html lang="en">
@@ -131,45 +131,44 @@ $sql_temporada = mysql_query("SELECT temporada FROM abc_57os_ca_carrera WHERE id
                     </thead>
                     <tbody>
                       <?php
-						$sql=mysql_query("SELECT com.id AS id_com,con.nombre AS concursante,pi.nombre AS piloto,copi.nombre AS copiloto FROM abc_57os_ca_competidor com 
-						INNER JOIN abc_57os_ca_concursante con ON con.id=com.id_ca_concursante
-						INNER JOIN abc_57os_ca_piloto pi ON pi.id=com.id_ca_piloto
-						INNER JOIN abc_57os_ca_copiloto copi ON copi.id=com.id_ca_copiloto WHERE com.id_ca_carrera = '$id'");
-							if(mysql_num_rows($sql)==0)
+						$sql=$mysqli2->query("SELECT idinscrito,concursante,piloto,copiloto FROM web_inscritos 
+					WHERE idcarrera = '$id'");
+							if($sql->num_rows==0)
 								echo "<tr><td colspan='4'>No hay Pilotos Inscritos</td></tr>";
 							else
 								{
-								while($fila=mysql_fetch_array($sql))
+								while($fila=$sql->fetch_array())
 									{
-									$id_com = $fila['id_com'];
+									$id_com = $fila['idinscrito'];
 									$concursante = $fila['concursante'];
 									$piloto = acortar_nombre($fila['piloto']);	
 									$copiloto = acortar_nombre($fila['copiloto']);
-										$img = mysql_query("SELECT * FROM web_fotos WHERE id_ca_competidor = '$id_com'");
-											if(mysql_num_rows($img)>0)
+										$img = $mysqli2->query("SELECT * FROM web_fotos WHERE id_ca_competidor = '$id_com'");                    
+											if($img->num_rows>0)
 											{
-											$img_pi = @mysql_result($img, 0, "img_piloto");
-												if(empty($img_pi) || $img_pi=='')
+											//$img_pi = @mysql_result($img, 0, "img_piloto");
+                      $img_pi ->fetch_array($img);
+												if(empty($img_pi['img_piloto']) || $img_pi['img_piloto']=='')
 													$img_pi = "<input type='file' class='form-control-file' name='img_pi'>";
 												else
 													$img_pi = "<img src='../../img/equipos/".$temporada."/".$id."/".$img_pi."' width='80px'><br><a href='borrar_foto.php?id_com=".$id_com."&tipo=img_piloto&id=".$id."&temporada=".$temporada."&tipo2=piloto'>BORRAR</a>";
-											$img_copi = @mysql_result($img, 0, "img_copiloto");
-												if(empty($img_copi) || $img_copi=='')
+										  //$img_copi = @mysql_result($img, 0, "img_copiloto");
+												if(empty($img_pi['img_copiloto']) || $img_pi['copiloto']=='')
 													$img_copi = "<input type='file' class='form-control-file' name='img_copi'>";
 												else
 													$img_copi = "<img src='../../img/equipos/".$temporada."/".$id."/".$img_copi."' width='80px'><br><a href='borrar_foto.php?id_com=".$id_com."&tipo=img_copiloto&id=".$id."&temporada=".$temporada."&tipo2=copiloto'>BORRAR</a>";
-											$img_com = @mysql_result($img, 0, "img_competidor");
-												if(empty($img_com) || $img_com=='')
+											//$img_com = @mysql_result($img, 0, "img_competidor");
+												if(empty($$img_pi['img_com']) || $img_pi['img_com']=='')
 													$img_com = "<input type='file' class='form-control-file' name='img_com'>";
 												else
 													$img_com = "<img src='../../img/equipos/".$temporada."/".$id."/".$img_com."' width='80px'><br><a href='borrar_foto.php?id_com=".$id_com."&tipo=img_competidor&id=".$id."&temporada=".$temporada."&tipo2=competidor'>BORRAR</a>";
-											$extra1 = @mysql_result($img, 0, "extra1");
-												if(empty($extra1) || $extra1=='')
+											//$extra1 = @mysql_result($img, 0, "extra1");
+												if(empty($img_pi['extra1']) || $img_pi['extra1']=='')
 													$extra1 = "<input type='file' class='form-control-file' name='extra1'>";
 												else
 													$extra1 = "<img src='../../img/equipos/".$temporada."/".$id."/".$extra1."' width='80px'><br><a href='borrar_foto.php?id_com=".$id_com."&tipo=extra1&id=".$id."&temporada=".$temporada."&tipo2=extra1'>BORRAR</a>";
-											$extra2 = @mysql_result($img, 0, "extra2");
-												if(empty($extra2) || $extra2=='')
+											//$extra2 = @mysql_result($img, 0, "extra2");
+												if(empty($img_pi['extra2']) || $img_pi['extra2']=='')
 													$extra2 = "<input type='file' class='form-control-file' name='extra2'>";
 												else
 													$extra2 = "<img src='../../img/equipos/".$temporada."/".$id."/".$extra2."' width='80px'><br><a href='borrar_foto.php?id_com=".$id_com."&tipo=extra2&id=".$id."&temporada=".$temporada."&tipo2=extra2'>BORRAR</a>";

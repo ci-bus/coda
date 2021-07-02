@@ -1,15 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-
-			$IPservidor = "localhost";
-	$nombreBD = "codea_es_sistema";
-	$usuario = "manuel";
-	$clave = "coda200900==";
-	//echo "newW_BD";
-$conexion = mysql_connect($IPservidor, $usuario, $clave) or die("<h2>No hay conexi&oacute;n con el servidor MySQL</h2>");
-mysql_query ("SET NAMES 'utf8'");
-mysql_select_db($nombreBD) or die('no se encontro la bd');
+include("../../conexion.php");
 ?>
 <head>
   <meta charset="utf-8" />
@@ -111,14 +103,14 @@ mysql_select_db($nombreBD) or die('no se encontro la bd');
                         <select class="form-control" name="id">
 							<?php
 							$anio = date('Y');
-							$sql=mysql_query("SELECT id,nombre FROM abc_57os_ca_carrera WHERE estado!=5 AND temporada='$anio' AND prueba_web=0");
-								if(mysql_num_rows($sql)>0)
+							$sql=$mysqli2->query("SELECT idcarrera,titulo FROM web_pruebas WHERE estado!=5 AND temporada='$anio' AND web=0");
+								if($sql->num_rows>0)
 									{
 										echo "<option value='0' class='negro'>SELECCIONA CARRERA...</option>";
-									while($fila=mysql_fetch_array($sql))
+									while($fila=$sql->fetch_array())
 										{
-										$id=$fila['id'];
-										$nombre = $fila['nombre'];
+										$id=$fila['idcarrera'];
+										$nombre = $fila['titulo'];
 										echo "<option value='".$id."' class='negro'>".$nombre."</option>";
 										}
 									}
@@ -141,13 +133,13 @@ mysql_select_db($nombreBD) or die('no se encontro la bd');
                     <div class="col-md-4 pr-md-1">
                       <div class="form-group">
                         <label>Fecha Inicio Acceso</label>
-                        <input type="text" class="form-control" placeholder="inicio.." name="inicio">
+                        <input type="date" class="form-control" placeholder="inicio.." name="inicio">
                       </div>
                     </div>
                     <div class="col-md-4 px-md-1">
                       <div class="form-group">
                         <label>Fecha Inicio Acceso</label>
-                        <input type="text" class="form-control" placeholder="fin..." name="fin">
+                        <input type="date" class="form-control" placeholder="fin..." name="fin">
                       </div>
                     </div>
                     <!--div class="col-md-4 pl-md-1">

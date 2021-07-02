@@ -88,16 +88,16 @@ include("../../conexion.php");
                     </thead>
                     <tbody>
                       <?php
-						$sql=mysql_query("SELECT nombre,id FROM abc_57os_ca_carrera ORDER BY id DESC");
-							if(mysql_num_rows($sql)==0)
+						$sql=$mysqli2->query("SELECT titulo,idcarrera FROM web_pruebas ORDER BY idcarrera DESC");
+							if($sql->num_rows==0)
 								echo "<tr><td colspan='4'>No hay Pruebas creadas</td></tr>";
 							else
 								{
-								while($fila=mysql_fetch_array($sql))
+                  while($fila=$sql->fetch_array())
 									{
-									$id = $fila['id'];
-									$nombre = $fila['nombre'];	
-									echo "<tr><td><a href='fotos_ver.php?id=".$id."&newBD=true&activo=extras'>".$nombre."</a></td></tr>";
+									$id = $fila['idcarrera'];
+									$nombre = $fila['titulo'];	
+									echo "<tr><td><a href='fotos_ver.php?id=".$id."&activo=extras'>".$nombre."</a></td></tr>";
 									}
 								}
 					  ?>

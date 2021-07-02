@@ -96,12 +96,12 @@ include("../../conexion.php");
                     </thead>
                     <tbody>
                       <?php
-						$sql=mysql_query("SELECT * FROM imagenes WHERE tipo=1");
-							if(mysql_num_rows($sql)==0)
+						$sql=$mysqli2->query("SELECT * FROM web_imagenes WHERE tipo=1");
+							if($sql->num_rows==0)
 								echo "<tr><td colspan='4'>No hay eventos en el home</td></tr>";
 							else
 								{
-								while($fila=mysql_fetch_array($sql))
+								while($fila=$sql->fetch_array())
 									{
 									$archivo = $fila['nombre'];	
 									$enlace = $fila['enlace'];	
@@ -110,7 +110,7 @@ include("../../conexion.php");
 									$id = $fila['id'];									
 									$comentario = $fila['comentario'];
 									echo "<tr><td>".$comentario."</td><td><a href='slider_editar.php?id=".$id."'>".$enlace."</a></td><td>".$inicio."-".$fin."</td>
-									<td class='text-center'><img src='http://codea.es/codea/normal/images/eventos/".$archivo."' width='80px'></td></tr>";
+									<td class='text-center'><img src='http://codea.es/slider/".$archivo."' width='80px'></td></tr>";
 									}
 								}
 					  ?>

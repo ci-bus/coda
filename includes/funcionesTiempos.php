@@ -1,4 +1,12 @@
 <?php
+function decimales($t_t,$decimales){
+	if($decimales==1){
+		$t_t = substr($t_t,0,-2);
+		$t_t .= "00";
+	}
+	return $t_t;
+}
+/*
 function NumeroMangas ($idcarreras,$orden)
 {
 //include('Connections/TiemposOnline.php');
@@ -44,7 +52,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
       break;
   }
   return $theValue;
-}
+}*/
 function FormatearTiempo ($tiempo)
 {
    $miles = $tiempo % 1000;

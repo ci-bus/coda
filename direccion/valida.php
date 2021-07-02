@@ -23,37 +23,37 @@ $todo= $fecha.(" a las ").$hora;
 $pass = $_POST['pass'];
 	if (isset($_POST['pass']) && !empty($_POST['pass']))
 		{
-		include("conexion.php");
-		$sql = mysql_query("SELECT * FROM web_direccion WHERE pass='$pass'") or print("Error Accediendo a la B.D");	
-			if($fila=mysql_fetch_array($sql))
+		include("../conexion.php");
+		$sql = $mysqli2->query("SELECT * FROM web_direccion WHERE pass='$pass'") or print("Error Accediendo a la B.D");	
+			if($fila=$sql->fetch_array())
 				{
 				$inicio = $fila['inicio'];
 				$fin = $fila['fin'];
-				$id=$fila['id_prueba'];
-		/*if (check_in_range($inicio, $fin, date('Y-m-d'))) {
+				$id=$fila['idcarrera'];
+		if (check_in_range($inicio, $fin, date('Y-m-d'))) {
 					$activo= 1;
 					} else {
 					$activo= 0;
 					}				
 				}
 				if($activo==1 || $activo=='1')
-					{*/
+					{
 					session_start();
 					$_SESSION['pass'] = $pass;
 					echo "<img src='cargando.gif' style='left:35%;margin: 5% auto;position:absolute;'>";
 					//$conexiones = mysql_query("INSERT INTO conexiones (usuario,ip,fecha,id_conexion) VALUES ('$pass','$ip','$todo','')") or die('hubo problemas de acceso a B.D');
-					echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL=direccion.php?id='.$id.'&modo=tiempo">';			
-					}/*}
+					echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL=direccion_web.php?id='.$id.'&modo=tiempo">';			
+					}
 				else
 					{
 					echo "<img src='cargando.gif' style='left:35%;margin: 5% auto;position:absolute;'>";
-					echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL=index.html">';
-					}*/
+					echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL=index.php?noactivo=1">';
+					}
 		}
 	else
 		{
 		echo "<img src='cargando.gif' style='left:35%;margin: 5% auto;position:absolute;'>";
-		echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL=index.html">';
+		echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL=index.php">';
 		}
 ?>
 

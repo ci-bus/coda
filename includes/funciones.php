@@ -42,6 +42,9 @@
 			else if(stristr($cadena, 'LIB') == TRUE || stristr($cadena, 'lib') == TRUE){
 				return("img/banderas/libano.jpg");
 			}
+			else if(stristr($cadena, 'FIN') == TRUE || stristr($cadena, 'fin') == TRUE){
+				return("img/banderas/fin.jpg");
+			}
 			else if(stristr($cadena, 'AND') == TRUE || stristr($cadena, 'and') == TRUE){
 				return("img/banderas/comunidades/andalucia.jpg");
 			}
@@ -97,7 +100,7 @@
 				return("img/banderas/comunidades/vasco.jpg");
 			}
 			else
-				return("img/banderas/nobandera.jpg");
+				return("img/banderas/nobandera.png");
 	}
 	function Afecha($fecha){
 	$fecha = date_create($fecha);

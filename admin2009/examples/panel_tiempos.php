@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <?php
+session_start();
+include("valida1.php");
 include("../../conexion.php");
 $temporada = date('Y');
 	?>

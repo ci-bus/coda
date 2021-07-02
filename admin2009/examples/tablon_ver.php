@@ -57,7 +57,7 @@ $id = $_GET['id'];
         $saber_archivo = $mysqli2->query("SELECT ruta FROM web_archivos WHERE id = '$id_tablon'");
         $saber_archivo2 = $saber_archivo->fetch_array();
         $archivaco = $saber_archivo2['ruta'];
-        unlink ("../../pruebas/2021/50/".$archivaco);
+        unlink ("../../pruebas/2021/".$id."/".$archivaco);
         $borrar_tablon = $mysqli2->query("DELETE FROM web_archivos WHERE id = '$id_tablon'");
       }
 			?>
@@ -83,6 +83,7 @@ $id = $_GET['id'];
             <div class="card ">
               <div class="card-header">
                 <h4 class="card-title"><a href="tablon_nuevo.php?id=<?php echo $id;?>"> NUEVO ARCHIVO</a></h4>
+                <h4 class="card-title"><a href="tablon_nuevo2.php?id=<?php echo $id;?>"> ENLACE EXTERNO</a></h4>
                 <h4 class="card-title"> ARCHIVOS EN TABL&Oacute;N DE ANUNCIOS:</h4>
               </div>
               <div class="card-body">

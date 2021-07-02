@@ -24,20 +24,11 @@
   <div class="wrapper">
     <?php
 	include("menu.php");
-	$IPservidor = "localhost";
-	$nombreBD = "codea_es_sistema";
-	$usuario = "manuel";
-	$clave = "coda200900==";
-	//echo "newW_BD";
-
-$conexion = mysql_connect($IPservidor, $usuario, $clave) or die("<h2>No hay conexi&oacute;n con el servidor MySQL</h2>");
-mysql_query ("SET NAMES 'utf8'");
-mysql_select_db($nombreBD) or die('no se encontro la bd');
-
+  include("../../conexion.php");
 
 		$id = $_POST['id'];
-    $sql_temporada = mysql_query("SELECT temporada FROM abc_57os_ca_carrera WHERE id='$id'");
-    while($myrow=mysql_fetch_array($sql_temporada))
+    $sql_temporada = $mysqli2->query("SELECT temporada FROM web_prueba WHERE id='$id'");
+    while($myrow=$sql_temporada->fetch_array())
       $temporada = $myrow['temporada'];
 		function crearThumbJPEG($rutaImagen,$rutaDestino,$anchoThumb=500,$calidad = 70){
 
@@ -75,11 +66,11 @@ mysql_select_db($nombreBD) or die('no se encontro la bd');
 				echo "El archivo ".  basename( $_FILES['img_pi']['name']). 
 				" ha sido subido";
 				}
-			$con_afectada = mysql_query("SELECT * FROM web_fotos WHERE id_ca_competidor = '$id_com'");
-				if(mysql_num_rows($con_afectada)>0) // Existe en BD, Actualizamos
-					$sql = mysql_query("UPDATE web_fotos SET img_piloto='$nombre' WHERE id_ca_competidor='$id_com'");
+			$con_afectada = $mysqli2->query("SELECT * FROM web_fotos WHERE id_ca_competidor = '$id_com'");
+				if($con_afectada->num_rows>0) // Existe en BD, Actualizamos
+					$sql = $mysqli2->query("UPDATE web_fotos SET img_piloto='$nombre' WHERE id_ca_competidor='$id_com'");
 				else //NO EXISTE AUN, CREAMOS CON ESTA IMAGEN
-					$sql = mysql_query("INSERT into web_fotos (id_ca_competidor,img_piloto,img_copiloto,img_competidor,extra1,extra2) 
+					$sql = $mysqli2->query("INSERT into web_fotos (id_ca_competidor,img_piloto,img_copiloto,img_competidor,extra1,extra2) 
 					VALUES ('$id_com','$nombre','','','','')");
 			crearThumbJPEG($target_path,$target_path);
 			}
@@ -92,11 +83,11 @@ mysql_select_db($nombreBD) or die('no se encontro la bd');
 				echo "El archivo ".  basename( $_FILES['img_copi']['name']). 
 				" ha sido subido";
 				}
-			$con_afectada = mysql_query("SELECT * FROM web_fotos WHERE id_ca_competidor = '$id_com'");
-				if(mysql_num_rows($con_afectada)>0) // Existe en BD, Actualizamos
-					$sql = mysql_query("UPDATE web_fotos SET img_copiloto='$nombre' WHERE id_ca_competidor='$id_com'");
+			$con_afectada = $mysqli2->query("SELECT * FROM web_fotos WHERE id_ca_competidor = '$id_com'");
+				if($con_afectada->num_rows>0) // Existe en BD, Actualizamos
+					$sql = $mysqli2->query("UPDATE web_fotos SET img_copiloto='$nombre' WHERE id_ca_competidor='$id_com'");
 				else //NO EXISTE AUN, CREAMOS CON ESTA IMAGEN
-					$sql = mysql_query("INSERT into web_fotos (id_ca_competidor,img_piloto,img_copiloto,img_competidor,extra1,extra2) 
+					$sql = $mysqli2->query("INSERT into web_fotos (id_ca_competidor,img_piloto,img_copiloto,img_competidor,extra1,extra2) 
 					VALUES ('$id_com','','$nombre','','','')");
 			}
 			if($img_com!='')
@@ -108,11 +99,11 @@ mysql_select_db($nombreBD) or die('no se encontro la bd');
 				echo "El archivo ".  basename( $_FILES['img_com']['name']). 
 				" ha sido subido";
 				}
-			$con_afectada = mysql_query("SELECT * FROM web_fotos WHERE id_ca_competidor = '$id_com'");
-				if(mysql_num_rows($con_afectada)>0) // Existe en BD, Actualizamos
-					$sql = mysql_query("UPDATE web_fotos SET img_competidor='$nombre' WHERE id_ca_competidor='$id_com'");
+			$con_afectada = $mysqli2->query("SELECT * FROM web_fotos WHERE id_ca_competidor = '$id_com'");
+				if($con_afectada->num_rows>0) // Existe en BD, Actualizamos
+					$sql = $mysqli2->query("UPDATE web_fotos SET img_competidor='$nombre' WHERE id_ca_competidor='$id_com'");
 				else //NO EXISTE AUN, CREAMOS CON ESTA IMAGEN
-					$sql = mysql_query("INSERT into web_fotos (id_ca_competidor,img_piloto,img_copiloto,img_competidor,extra1,extra2) 
+					$sql = $mysqli2->query("INSERT into web_fotos (id_ca_competidor,img_piloto,img_copiloto,img_competidor,extra1,extra2) 
 					VALUES ('$id_com','','','$nombre','','')");
 			}
 			if($extra1!='')
@@ -124,11 +115,11 @@ mysql_select_db($nombreBD) or die('no se encontro la bd');
 				echo "El archivo ".  basename( $_FILES['extra1']['name']). 
 				" ha sido subido";
 				}
-			$con_afectada = mysql_query("SELECT * FROM web_fotos WHERE id_ca_competidor = '$id_com'");
-				if(mysql_num_rows($con_afectada)>0) // Existe en BD, Actualizamos
-					$sql = mysql_query("UPDATE web_fotos SET extra1='$nombre' WHERE id_ca_competidor='$id_com'");
+			$con_afectada = $mysqli2->query("SELECT * FROM web_fotos WHERE id_ca_competidor = '$id_com'");
+				if($con_afectada->num_rows>0) // Existe en BD, Actualizamos
+					$sql = $mysqli2->query("UPDATE web_fotos SET extra1='$nombre' WHERE id_ca_competidor='$id_com'");
 				else //NO EXISTE AUN, CREAMOS CON ESTA IMAGEN
-					$sql = mysql_query("INSERT into web_fotos (id_ca_competidor,img_piloto,img_copiloto,img_competidor,extra1,extra2) 
+					$sql = $mysqli2->query("INSERT into web_fotos (id_ca_competidor,img_piloto,img_copiloto,img_competidor,extra1,extra2) 
 					VALUES ('$id_com','','','','$nombre','')");
 			}
 			if($extra2!='')
@@ -140,14 +131,14 @@ mysql_select_db($nombreBD) or die('no se encontro la bd');
 				echo "El archivo ".  basename( $_FILES['extra2']['name']). 
 				" ha sido subido";
 				}
-			$con_afectada = mysql_query("SELECT * FROM web_fotos WHERE id_ca_competidor = '$id_com'");
-				if(mysql_num_rows($con_afectada)>0) // Existe en BD, Actualizamos
-					$sql = mysql_query("UPDATE web_fotos SET extra2='$nombre' WHERE id_ca_competidor='$id_com'");
+			$con_afectada = $mysqli2->query("SELECT * FROM web_fotos WHERE id_ca_competidor = '$id_com'");
+				if($con_afectada->num_rows>0) // Existe en BD, Actualizamos
+					$sql = $mysqli2->query("UPDATE web_fotos SET extra2='$nombre' WHERE id_ca_competidor='$id_com'");
 				else //NO EXISTE AUN, CREAMOS CON ESTA IMAGEN
-					$sql = mysql_query("INSERT into web_fotos (id_ca_competidor,img_piloto,img_copiloto,img_competidor,extra1,extra2) 
+					$sql = $mysqli2->query("INSERT into web_fotos (id_ca_competidor,img_piloto,img_copiloto,img_competidor,extra1,extra2) 
 					VALUES ('$id_com','','','','','$nombre')");
 			}
-		echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL=fotos_ver.php?activo=extras&newBD=true&id='.$id.'">';
+		echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL=fotos_ver.php?activo=extras&id='.$id.'">';
 	?>
     </div>
     <div class="main-panel">

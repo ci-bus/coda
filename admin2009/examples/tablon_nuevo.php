@@ -100,18 +100,6 @@
                         <input type="text" class="form-control" placeholder="Titulo..." name="titulo">
                       </div>
                     </div>
-                    <!--div class="col-md-3 px-md-1">
-                      <div class="form-group">
-                        <label>Username</label>
-                        <input type="text" class="form-control" placeholder="Username" value="michael23">
-                      </div>
-                    </div>
-                    <div class="col-md-4 pl-md-1">
-                      <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" class="form-control" placeholder="mike@email.com">
-                      </div>
-                    </div-->
                   </div>
                   <div class="row">
                     <div class="col-md-6 pr-md-1">
@@ -124,12 +112,6 @@
                         <input type="radio" value="direccion" name="tipo">DIRECCI&Oacute;N DE CARRERA
                       </div>
                     </div>
-                    <!--div class="col-md-6 pl-md-1">
-                      <div class="form-group">
-                        <label>Last Name</label>
-                        <input type="text" class="form-control" placeholder="Last Name" value="Andrew">
-                      </div>
-                    </div-->
                   </div>
                   <div class="row">
                     <div class="col-md-12">
@@ -139,16 +121,6 @@
                       </div>
                     </div>
                   </div>
-                  
-                  <!--div class="row">
-                    <div class="col-md-8">
-                      <div class="form-group">
-                        <label>About Me</label>
-                        <textarea rows="4" cols="80" class="form-control" placeholder="Here can be your description" value="Mike">Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</textarea>
-                      </div>
-                    </div>
-                  </div-->
-                
               </div>
               <div class="card-footer">
                 <button type="submit" class="btn btn-fill btn-primary">Guardar</button>
